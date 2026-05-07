@@ -29,6 +29,24 @@ const languageLabels: Record<string, string> = {
   de: 'Alemão',
 }
 
+const runTypeLabels: Record<string, string> = {
+  road: 'Asfalto / Rua',
+  trail: 'Trilha',
+  track: 'Pista',
+  beach: 'Praia / Areia',
+  mountain: 'Montanha',
+  urban: 'Urbano',
+}
+
+const serviceLabels: Record<string, string> = {
+  pace_guide: 'Guia de ritmo',
+  training_plan: 'Plano de treino',
+  race_prep: 'Preparação para prova',
+  route_planning: 'Planejamento de rota',
+  photography: 'Fotos durante a corrida',
+  group_run: 'Corrida em grupo',
+}
+
 export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
   const [showBookingForm, setShowBookingForm] = useState(false)
 
@@ -172,7 +190,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
             <div className="flex flex-wrap gap-2">
               {guide.run_types.map((rt) => (
                 <span key={rt} className="text-sm bg-[#F9F5EE] text-[#1A1A1A] font-medium px-3 py-1.5 rounded-full">
-                  {rt}
+                  {runTypeLabels[rt] ?? rt}
                 </span>
               ))}
             </div>
@@ -187,7 +205,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
               {guide.services.map((s) => (
                 <li key={s} className="flex items-center gap-2 text-sm text-[#6B6B6B]">
                   <CheckCircle2 size={15} className="text-[#F5A623] flex-shrink-0" />
-                  {s}
+                  {serviceLabels[s] ?? s}
                 </li>
               ))}
             </ul>

@@ -1,0 +1,121 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { LayoutDashboard, User, PlusCircle, LogOut, Menu, X } from 'lucide-react'
+
+interface Profile {
+  name?: string | null
+  email?: string | null
+  role?: string | null
+}
+
+interface Props {
+  profile: Profile | null
+  signOutAction: () => Promise<void>
+}
+
+const navItems = [
+  { href: '/dashboard', icon: LayoutDashboard, label: 'Meus pedidos', exact: true },
+  { href: '/dashboard/novo-pedido', icon: PlusCircle, label: 'Nova solicitação', exact: false },
+  { href: '/dashboard/perfil', icon: User, label: 'Meu perfil', exact: false },
+]
+
+function NavContent({ profile, pathname, signOutAction, onClose }: {
+  profile: Profile | null
+  pathname: string
+  signOutAction: () => Promise<void>
+  onClose?: () => void
+}) {
+  return (
+    <>
+      <div className="p-5 border-b border-[#E5E5E5]">
+        <Link href="/" onClick={onClose}>
+          <Image src="/images/logo/pacehive-horizontal-dark.svg" alt="PaceHive" width={120} height={32} />
+        </Link>
+      </div>
+
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        {navItems.map(({ href, icon: Icon, label, exact }) => {
+          const active = exact ? pathname === href : pathname.startsWith(href)
+          return (
+            <Link key={href} href={href} onClick={onClose}
+              className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                active ? 'bg-[#FEF3DC] text-[#1A1A1A]' : 'text-[#1A1A1A] hover:bg-[#F9F5EE]'
+              }`}>
+              <Icon size={17} className={active ? 'text-[#F5A623]' : 'text-[#6B6B6B]'} />
+              {label}
+            </Link>
+          )
+        })}
+        {(profile?.role === 'guide' || profile?.role === 'both') && (
+          <Link href="/guia/dashboard" onClick={onClose}
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-[#1A1A1A] hover:bg-[#F9F5EE] transition-colors">
+            <LayoutDashboard size={17} className="text-[#6B6B6B]" />
+            Painel do guia
+          </Link>
+        )}
+      </nav>
+
+      <div className="p-4 border-t border-[#E5E5E5]">
+        <div className="flex items-center gap-2.5 mb-3 px-2">
+          <div className="w-8 h-8 rounded-full bg-[#F5A623] flex items-center justify-center text-black font-bold text-sm flex-shrink-0">
+            {profile?.name?.charAt(0).toUpperCase()}
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-[#1A1A1A] truncate">{profile?.name}</p>
+            <p className="text-xs text-[#6B6B6B] truncate">{profile?.email}</p>
+          </div>
+        </div>
+        <form action={signOutAction}>
+          <button type="submit"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-[#EF4444] hover:bg-red-50 transition-colors">
+            <LogOut size={16} />
+            Sair
+          </button>
+        </form>
+      </div>
+    </>
+  )
+}
+
+export default function RunnerSidebar({ profile, signOutAction }: Props) {
+  const pathname = usePathname()
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-64 bg-white border-r border-[#E5E5E5] flex-col fixed inset-y-0 z-20">
+        <NavContent profile={profile} pathname={pathname} signOutAction={signOutAction} />
+      </aside>
+
+      {/* Mobile topbar */}
+      <header className="lg:hidden fixed top-0 inset-x-0 h-14 bg-white border-b border-[#E5E5E5] flex items-center justify-between px-4 z-30">
+        <Link href="/">
+          <Image src="/images/logo/pacehive-horizontal-dark.svg" alt="PaceHive" width={100} height={28} />
+        </Link>
+        <button onClick={() => setOpen(true)} className="p-2 rounded-xl hover:bg-[#F9F5EE] transition-colors">
+          <Menu size={20} />
+        </button>
+      </header>
+
+      {/* Mobile drawer */}
+      {open && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setOpen(false)} />
+          <aside className="fixed inset-y-0 left-0 w-72 bg-white z-50 flex flex-col shadow-xl">
+            <div className="flex justify-end p-3">
+              <button onClick={() => setOpen(false)} className="p-2 rounded-xl hover:bg-[#F9F5EE] transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+            <NavContent profile={profile} pathname={pathname} signOutAction={signOutAction} onClose={() => setOpen(false)} />
+          </aside>
+        </>
+      )}
+    </>
+  )
+}

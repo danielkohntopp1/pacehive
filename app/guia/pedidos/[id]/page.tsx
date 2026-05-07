@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import BookingStatus from '@/components/bookings/BookingStatus'
+import AcceptRefuseButtons from '@/components/bookings/AcceptRefuseButtons'
 import ReviewForm from '@/components/reviews/ReviewForm'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
@@ -98,20 +99,7 @@ export default async function GuiaBookingPage({ params, searchParams }: Props) {
       {b.status === 'pending' && (
         <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
           <h2 className="font-bold text-[#1A1A1A] mb-4">Responder pedido</h2>
-          <div className="flex gap-3">
-            <form action={`/api/bookings/${id}/accept`} method="POST" className="flex-1">
-              <button type="submit"
-                className="w-full py-3 bg-[#22C55E] text-white font-semibold rounded-full hover:bg-green-600 transition-colors text-sm">
-                ✅ Aceitar corrida
-              </button>
-            </form>
-            <form action={`/api/bookings/${id}/refuse`} method="POST" className="flex-1">
-              <button type="submit"
-                className="w-full py-3 border-2 border-[#EF4444] text-[#EF4444] font-semibold rounded-full hover:bg-red-50 transition-colors text-sm">
-                ❌ Recusar
-              </button>
-            </form>
-          </div>
+          <AcceptRefuseButtons bookingId={b.id} />
         </div>
       )}
 
