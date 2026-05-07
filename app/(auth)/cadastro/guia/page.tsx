@@ -8,6 +8,7 @@ import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
+import TermsModal from '@/components/bookings/TermsModal'
 
 const schema = z.object({
   city: z.string().min(2, 'Informe a cidade'),
@@ -28,6 +29,8 @@ type FormData = z.infer<typeof schema>
 export default function CadastroGuiaPage() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
+  const [showTerms, setShowTerms] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -80,6 +83,15 @@ export default function CadastroGuiaPage() {
   }
 
   return (
+    <>
+      {showTerms && (
+        <TermsModal
+          variant="guide"
+          onAccept={() => { setTermsAccepted(true); setShowTerms(false) }}
+          onClose={() => setShowTerms(false)}
+        />
+      )}
+
     <div className="w-full max-w-2xl">
       <div className="text-center mb-8">
         <Image
@@ -177,13 +189,33 @@ export default function CadastroGuiaPage() {
             </div>
           </div>
 
-          <button type="submit" disabled={isSubmitting}
-            className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          <div className="flex items-center justify-between gap-3">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                className="accent-[#F5A623] w-4 h-4"
+              />
+              <span className="text-sm text-[#6B6B6B]">Li e aceito os Termos de Uso para guias</span>
+            </label>
+            <button
+              type="button"
+              onClick={() => setShowTerms(true)}
+              className="text-sm text-[#F5A623] font-semibold hover:underline flex-shrink-0"
+            >
+              Ver termos
+            </button>
+          </div>
+
+          <button type="submit" disabled={isSubmitting || !termsAccepted}
+            className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
             {isSubmitting && <Loader2 size={16} className="animate-spin" />}
             {isSubmitting ? 'Salvando...' : 'Criar meu perfil de guia →'}
           </button>
         </form>
       </div>
     </div>
+    </>
   )
 }

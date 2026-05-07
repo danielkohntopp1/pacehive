@@ -4,9 +4,10 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { X, Loader2 } from 'lucide-react'
+import { X, Loader2, CreditCard } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { Guide, Profile } from '@/types'
+import TermsModal from './TermsModal'
 
 const schema = z.object({
   city: z.string().min(2, 'Informe a cidade'),
@@ -30,6 +31,8 @@ export default function BookingForm({ guide, onClose }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showTerms, setShowTerms] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -68,6 +71,15 @@ export default function BookingForm({ guide, onClose }: Props) {
   }
 
   return (
+    <>
+      {showTerms && (
+        <TermsModal
+          variant="runner"
+          onAccept={() => { setTermsAccepted(true); setShowTerms(false) }}
+          onClose={() => setShowTerms(false)}
+        />
+      )}
+
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="flex items-center justify-between p-6 border-b border-[#E5E5E5]">
@@ -81,6 +93,20 @@ export default function BookingForm({ guide, onClose }: Props) {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
+          {guide.is_paid && guide.price_brl && (
+            <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <CreditCard size={16} className="text-amber-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-amber-800">
+                  Este guia cobra R$ {guide.price_brl.toFixed(0)}/corrida
+                </p>
+                <p className="text-xs text-amber-700 mt-0.5 leading-relaxed">
+                  O pagamento é combinado diretamente entre você e o guia. A PaceHive não processa nem garante pagamentos.
+                </p>
+              </div>
+            </div>
+          )}
+
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700">
               {error}
@@ -182,10 +208,29 @@ export default function BookingForm({ guide, onClose }: Props) {
             />
           </div>
 
+          <div className="flex items-center justify-between gap-3 pt-1">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                className="accent-[#F5A623] w-4 h-4"
+              />
+              <span className="text-sm text-[#6B6B6B]">Li e aceito os Termos de Uso</span>
+            </label>
+            <button
+              type="button"
+              onClick={() => setShowTerms(true)}
+              className="text-sm text-[#F5A623] font-semibold hover:underline flex-shrink-0"
+            >
+              Ver termos
+            </button>
+          </div>
+
           <button
             type="submit"
-            disabled={loading}
-            className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            disabled={loading || !termsAccepted}
+            className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading && <Loader2 size={16} className="animate-spin" />}
             {loading ? 'Enviando pedido...' : 'Solicitar corrida'}
@@ -193,5 +238,6 @@ export default function BookingForm({ guide, onClose }: Props) {
         </form>
       </div>
     </div>
+    </>
   )
 }
