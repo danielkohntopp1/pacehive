@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import BookingStatus from '@/components/bookings/BookingStatus'
 import AcceptRefuseButtons from '@/components/bookings/AcceptRefuseButtons'
+import CompleteButton from '@/components/bookings/CompleteButton'
 import ReviewForm from '@/components/reviews/ReviewForm'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
@@ -119,6 +120,14 @@ export default async function GuiaBookingPage({ params, searchParams }: Props) {
           <h2 className="font-bold text-[#1A1A1A] mb-1">Responder pedido</h2>
           <p className="text-sm text-[#6B6B6B] mb-4">Aceite ou recuse dentro de 24 horas para manter sua reputação.</p>
           <AcceptRefuseButtons bookingId={b.id} />
+        </div>
+      )}
+
+      {b.status === 'accepted' && (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
+          <h2 className="font-bold text-[#1A1A1A] mb-1">Corrida realizada?</h2>
+          <p className="text-sm text-[#6B6B6B] mb-4">Registre a conclusão para liberar as avaliações.</p>
+          <CompleteButton bookingId={b.id} />
         </div>
       )}
 

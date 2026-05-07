@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import BookingStatus from '@/components/bookings/BookingStatus'
+import CompleteButton from '@/components/bookings/CompleteButton'
 import ReviewForm from '@/components/reviews/ReviewForm'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
@@ -85,6 +86,14 @@ export default async function RunnerBookingPage({ params }: Props) {
           </div>
         )}
       </div>
+
+      {b.status === 'accepted' && (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
+          <h2 className="font-bold text-[#1A1A1A] mb-1">Corrida realizada?</h2>
+          <p className="text-sm text-[#6B6B6B] mb-4">Registre a conclusão para liberar as avaliações.</p>
+          <CompleteButton bookingId={b.id} />
+        </div>
+      )}
 
       {b.status === 'completed' && !existingReview && b.guide && (
         <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
