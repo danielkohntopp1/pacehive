@@ -11,20 +11,29 @@ export default function SejaUmGuiaPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] text-white py-24 px-4">
-        <div className="max-w-3xl mx-auto text-center">
+      <section className="relative bg-[#0A0A0A] text-white py-24 px-4 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }}
+        />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-[#F5A623] opacity-10 blur-[100px] rounded-full pointer-events-none" />
+
+        <div className="relative max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-8">
+            <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse flex-shrink-0" />
+            Para guias de corrida
+          </div>
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
             Compartilhe seu caminho.{' '}
             <span className="text-[#F5A623]">Inspire outros a correr.</span>
-            {' '}Seja um guia PaceHive.
           </h1>
-          <p className="text-white/70 text-lg mb-10 leading-relaxed">
+          <p className="text-white/60 text-lg mb-10 leading-relaxed max-w-xl mx-auto">
             Para ser guia, você precisa conhecer a cidade, ter empatia com o próximo
             e responsabilidade com quem vai confiar na sua liderança.
           </p>
           <Link
             href="/cadastro/guia"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors text-base"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#F5A623] text-black font-bold rounded-full hover:bg-[#E09510] transition-colors text-base shadow-lg shadow-[#F5A623]/20"
           >
             Quero ser guia agora
             <ArrowRight size={18} />
@@ -33,11 +42,14 @@ export default function SejaUmGuiaPage() {
       </section>
 
       {/* O que é ser guia */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-24 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1A1A1A] text-center mb-12">
-            O que é ser um guia PaceHive?
-          </h2>
+          <div className="text-center mb-14">
+            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">O perfil ideal</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A]">
+              O que é ser um guia PaceHive?
+            </h2>
+          </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
@@ -56,8 +68,8 @@ export default function SejaUmGuiaPage() {
                 desc: 'Você se compromete a responder pedidos em até 24h e a honrar o compromisso agendado.',
               },
             ].map((item) => (
-              <div key={item.title} className="bg-[#F9F5EE] rounded-2xl p-8 text-center">
-                <div className="w-14 h-14 bg-[#F5A623] rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div key={item.title} className="bg-[#F9F5EE] rounded-2xl p-8 text-center hover:shadow-md transition-shadow duration-200">
+                <div className="w-14 h-14 bg-[#F5A623] rounded-2xl flex items-center justify-center mx-auto mb-5">
                   <item.icon size={24} className="text-black" />
                 </div>
                 <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">{item.title}</h3>
@@ -69,11 +81,14 @@ export default function SejaUmGuiaPage() {
       </section>
 
       {/* Como funciona */}
-      <section className="py-20 px-4 bg-[#F9F5EE]">
+      <section className="py-24 px-4 bg-[#F9F5EE]">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1A1A1A] text-center mb-12">
-            Como funciona a intermediação
-          </h2>
+          <div className="text-center mb-14">
+            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">Passo a passo</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A]">
+              Como funciona a intermediação
+            </h2>
+          </div>
           <div className="space-y-0">
             {[
               { num: '01', title: 'Você se cadastra e cria seu perfil', desc: 'Informe sua cidade, modalidade (presencial/virtual), bio e disponibilidade.' },
@@ -100,11 +115,14 @@ export default function SejaUmGuiaPage() {
       </section>
 
       {/* Modalidades */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-24 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1A1A1A] text-center mb-12">
-            Modelos de atuação
-          </h2>
+          <div className="text-center mb-14">
+            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">Flexibilidade</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A]">
+              Modelos de atuação
+            </h2>
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl border-2 border-[#F5A623] p-8">
               <div className="flex items-center gap-3 mb-4">
@@ -153,9 +171,10 @@ export default function SejaUmGuiaPage() {
       </section>
 
       {/* Voluntário ou remunerado */}
-      <section className="py-20 px-4 bg-[#F9F5EE]">
+      <section className="py-24 px-4 bg-[#F9F5EE]">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-[#1A1A1A] mb-6">Voluntário ou remunerado?</h2>
+          <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">Sua escolha</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] mb-6">Voluntário ou remunerado?</h2>
           <p className="text-[#6B6B6B] leading-relaxed mb-4">
             Na PaceHive, você decide. Muitos guias atuam como voluntários porque amam
             compartilhar sua cidade e fazer conexões genuínas. Outros optam por cobrar
@@ -169,19 +188,20 @@ export default function SejaUmGuiaPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#0A0A0A] py-20 px-4">
+      <section className="bg-[#F5A623] py-24 px-4">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+          <p className="text-sm font-bold text-black/40 uppercase tracking-widest mb-4">Junte-se à rede</p>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#0A0A0A] mb-5 leading-tight">
             Pronto para ser guia?
           </h2>
-          <p className="text-white/60 mb-8">
+          <p className="text-[#0A0A0A]/65 text-lg mb-10 max-w-md mx-auto">
             Leva menos de 5 minutos para criar seu perfil e começar a receber pedidos.
           </p>
           <Link
             href="/cadastro/guia"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors"
+            className="inline-flex items-center gap-2 px-10 py-4 bg-[#0A0A0A] text-white font-bold rounded-full hover:bg-[#1A1A1A] transition-colors text-base"
           >
-            Ser guia agora!
+            Criar meu perfil de guia
             <ArrowRight size={18} />
           </Link>
         </div>

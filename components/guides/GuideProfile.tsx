@@ -231,28 +231,33 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
             <Star size={18} className="text-[#F5A623] fill-[#F5A623]" />
             Avaliações ({reviews.length})
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {reviews.map((review) => (
-              <div key={review.id} className="border-b border-[#E5E5E5] pb-4 last:border-0 last:pb-0">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-[#F5A623] flex items-center justify-center text-black font-bold text-sm flex-shrink-0">
+              <div key={review.id} className="border-b border-[#E5E5E5] pb-5 last:border-0 last:pb-0">
+                <div className="flex items-center justify-between mb-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-full bg-[#F5A623] flex items-center justify-center text-black font-bold text-sm flex-shrink-0">
                       {review.reviewer?.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="font-semibold text-sm text-[#1A1A1A]">{review.reviewer?.name}</span>
+                    <div>
+                      <span className="font-semibold text-sm text-[#1A1A1A]">{review.reviewer?.name}</span>
+                      <p className="text-xs text-[#6B6B6B]/60">
+                        {new Date(review.created_at).toLocaleDateString('pt-BR')}
+                      </p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}
-                        size={13}
+                        size={14}
                         className={i < review.rating ? 'text-[#F5A623] fill-[#F5A623]' : 'text-[#E5E5E5] fill-[#E5E5E5]'}
                       />
                     ))}
                   </div>
                 </div>
                 {review.comment && (
-                  <p className="text-sm text-[#6B6B6B] leading-relaxed">{review.comment}</p>
+                  <p className="text-sm text-[#6B6B6B] leading-relaxed pl-11">{review.comment}</p>
                 )}
               </div>
             ))}

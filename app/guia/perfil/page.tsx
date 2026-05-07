@@ -77,7 +77,10 @@ export default function GuiaPerfilPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-extrabold text-[#1A1A1A] mb-6">Meu perfil público</h1>
+      <div className="mb-8">
+        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Meu perfil público</h1>
+        <p className="text-[#6B6B6B] text-sm mt-1">Estas informações são exibidas para corredores que buscam guias</p>
+      </div>
 
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

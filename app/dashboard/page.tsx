@@ -52,8 +52,11 @@ export default async function RunnerDashboard() {
       )}
 
       {bookings?.length === 0 && (
-        <div className="text-center py-20">
-          <p className="text-[#6B6B6B] text-lg mb-2">Você ainda não tem pedidos</p>
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-12 text-center">
+          <div className="w-16 h-16 bg-[#FEF3DC] rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <PlusCircle size={28} className="text-[#F5A623]" />
+          </div>
+          <h2 className="text-lg font-bold text-[#1A1A1A] mb-1">Nenhum pedido ainda</h2>
           <p className="text-[#6B6B6B] text-sm mb-6">Encontre um guia e solicite sua primeira corrida!</p>
           <Link href="/guias"
             className="inline-block px-6 py-3 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors text-sm">

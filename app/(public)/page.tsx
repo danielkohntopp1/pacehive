@@ -1,92 +1,62 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Users, Map, Star, ArrowRight } from 'lucide-react'
+import { Users, Map, Star, ArrowRight, Route, Timer, Trophy } from 'lucide-react'
 
 export default function HomePage() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="bg-[#0A0A0A] text-white py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="flex-shrink-0 flex justify-center md:justify-start">
-              <Image
-                src="/images/logo/pacehive-vertical-white.svg"
-                alt="PaceHive"
-                width={180}
-                height={220}
-                priority
-              />
-            </div>
-            <div className="max-w-2xl text-center md:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-                Transforme cada destino em uma{' '}
-                <span className="text-[#F5A623]">experiência de corrida</span>
-              </h1>
-              <p className="text-lg text-white/70 mb-10 leading-relaxed">
-                Sua corrida continua, mesmo longe de casa. Explore guias e grupos com a PaceHive.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                <Link
-                  href="/guias"
-                  className="px-8 py-4 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors text-base"
-                >
-                  Encontrar um guia
-                </Link>
-                <Link
-                  href="/seja-um-guia"
-                  className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all text-base"
-                >
-                  Seja um guia
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section className="relative bg-[#0A0A0A] text-white pt-24 pb-20 px-4 overflow-hidden">
+        {/* Dot grid background */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }}
+        />
+        {/* Orange glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#F5A623] opacity-10 blur-[120px] rounded-full pointer-events-none" />
 
-      {/* ── SERVIÇOS ── */}
-      <section className="bg-[#F9F5EE] py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">Nossos serviços</h2>
-            <p className="text-[#6B6B6B] text-lg max-w-xl mx-auto">
-              Na PaceHive, transformamos viagens em experiências de corrida inesquecíveis.
-            </p>
+        <div className="relative max-w-4xl mx-auto text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-8">
+            <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse flex-shrink-0" />
+            Marketplace de guias de corrida
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.08] mb-6 tracking-tight">
+            Cada cidade tem{' '}
+            <span className="text-[#F5A623]">seus segredos.</span>
+            <br />Encontre quem os conhece.
+          </h1>
+
+          <p className="text-lg sm:text-xl text-white/55 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Conecte-se com guias locais e explore lugares que mapas não mostram.
+          </p>
+
+          <div className="flex flex-wrap gap-4 justify-center mb-16">
+            <Link
+              href="/guias"
+              className="px-8 py-4 bg-[#F5A623] text-black font-bold rounded-full hover:bg-[#E09510] transition-colors text-base shadow-lg shadow-[#F5A623]/20"
+            >
+              Encontrar um guia
+            </Link>
+            <Link
+              href="/seja-um-guia"
+              className="px-8 py-4 border border-white/20 text-white font-semibold rounded-full hover:border-white/50 hover:bg-white/5 transition-all text-base"
+            >
+              Seja um guia →
+            </Link>
+          </div>
+
+          {/* Stats */}
+          <div className="border-t border-white/10 pt-10 grid grid-cols-3 gap-4 max-w-sm mx-auto">
             {[
-              {
-                icon: Users,
-                title: 'Corredores Guias',
-                desc: 'Corra com quem conhece cada curva da cidade.',
-                cta: 'Conheça →',
-                href: '/guias',
-              },
-              {
-                icon: Map,
-                title: 'Grupos de Corrida',
-                desc: 'Encontre grupos ativos onde quer que esteja.',
-                cta: 'Conheça →',
-                href: '/grupos',
-              },
-              {
-                icon: Star,
-                title: 'Seja um Guia',
-                desc: 'Compartilhe sua cidade correndo com outros corredores.',
-                cta: 'Saiba mais →',
-                href: '/seja-um-guia',
-              },
-            ].map((item) => (
-              <div key={item.title} className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm hover:shadow-md transition-all duration-200 p-8">
-                <div className="w-12 h-12 bg-[#FEF3DC] rounded-xl flex items-center justify-center mb-4">
-                  <item.icon size={22} className="text-[#F5A623]" />
-                </div>
-                <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">{item.title}</h3>
-                <p className="text-[#6B6B6B] text-sm mb-4 leading-relaxed">{item.desc}</p>
-                <Link href={item.href} className="text-[#F5A623] font-semibold text-sm hover:underline">
-                  {item.cta}
-                </Link>
+              { value: '50+', label: 'Guias ativos' },
+              { value: '20+', label: 'Cidades' },
+              { value: '500+', label: 'Corridas' },
+            ].map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#F5A623]">{value}</div>
+                <div className="text-xs text-white/40 mt-1 font-medium">{label}</div>
               </div>
             ))}
           </div>
@@ -94,89 +64,194 @@ export default function HomePage() {
       </section>
 
       {/* ── COMO FUNCIONA ── */}
-      <section className="bg-white py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">Como funciona</h2>
+      <section className="bg-[#F9F5EE] py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">Como funciona</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A]">
+              Sua corrida em 3 passos
+            </h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+
+          <div className="grid md:grid-cols-3 gap-6 md:gap-10 relative">
+            {/* Connector line */}
+            <div className="hidden md:block absolute top-10 left-[calc(16.66%+40px)] right-[calc(16.66%+40px)] h-px bg-gradient-to-r from-transparent via-[#F5A623]/30 to-transparent" />
+
             {[
               {
                 number: '1',
+                icon: Route,
                 title: 'Encontre o guia ideal',
-                desc: 'Filtre por cidade e estilo de corrida para encontrar o guia perfeito para você.',
+                desc: 'Busque por cidade, modalidade e estilo de corrida. Veja avaliações reais de outros corredores.',
               },
               {
                 number: '2',
+                icon: Timer,
                 title: 'Solicite sua corrida',
-                desc: 'Preencha o formulário com data, horário e preferências. É rápido e simples.',
+                desc: 'Escolha data, horário e preferências. O guia recebe sua solicitação e responde em até 24 horas.',
               },
               {
                 number: '3',
+                icon: Trophy,
                 title: 'Corra com confiança',
-                desc: 'Receba a confirmação por e-mail e aproveite uma experiência única.',
+                desc: 'Receba a confirmação por e-mail com todos os detalhes. Depois, avalie sua experiência.',
               },
-            ].map((step) => (
-              <div key={step.number} className="text-center">
-                <div className="text-7xl font-extrabold text-[#F5A623] mb-4 leading-none">{step.number}</div>
-                <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">{step.title}</h3>
-                <p className="text-[#6B6B6B] text-sm leading-relaxed max-w-xs mx-auto">{step.desc}</p>
+            ].map(({ number, icon: Icon, title, desc }) => (
+              <div key={number} className="relative flex flex-col items-center text-center">
+                <div className="relative mb-6">
+                  <div className="w-20 h-20 rounded-2xl bg-white border border-[#E5E5E5] shadow-sm flex items-center justify-center">
+                    <Icon size={28} className="text-[#F5A623]" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#F5A623] text-black text-xs font-extrabold flex items-center justify-center">
+                    {number}
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">{title}</h3>
+                <p className="text-[#6B6B6B] text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
-          <div className="text-center">
+
+          <div className="text-center mt-14">
             <Link
               href="/guias"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#1A1A1A] text-white font-semibold rounded-full hover:bg-[#0A0A0A] transition-colors"
             >
-              Conhecer os guias
+              Ver guias disponíveis
               <ArrowRight size={18} />
             </Link>
           </div>
         </div>
       </section>
 
+      {/* ── SERVIÇOS ── */}
+      <section className="bg-white py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">O que oferecemos</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] mb-4">
+              Tudo para a sua corrida
+            </h2>
+            <p className="text-[#6B6B6B] text-lg max-w-xl mx-auto">
+              Do guia local ao grupo de corrida, a PaceHive conecta você com a comunidade certa.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Users,
+                title: 'Guias de Corrida',
+                desc: 'Corredores locais que conhecem cada rua, trilha e atalho da cidade. Corra com confiança onde quer que esteja.',
+                cta: 'Ver guias',
+                href: '/guias',
+                accent: true,
+              },
+              {
+                icon: Map,
+                title: 'Grupos de Corrida',
+                desc: 'Encontre grupos ativos na sua cidade ou no seu próximo destino. Treine junto, evolua junto.',
+                cta: 'Ver grupos',
+                href: '/grupos',
+                accent: false,
+              },
+              {
+                icon: Star,
+                title: 'Seja um Guia',
+                desc: 'Compartilhe sua cidade correndo com viajantes do mundo todo. Transforme seu conhecimento local em experiência.',
+                cta: 'Saiba mais',
+                href: '/seja-um-guia',
+                accent: false,
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className={`rounded-2xl border p-8 flex flex-col transition-all duration-200 hover:shadow-md ${
+                  item.accent
+                    ? 'bg-[#0A0A0A] border-[#0A0A0A] text-white'
+                    : 'bg-white border-[#E5E5E5]'
+                }`}
+              >
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${
+                  item.accent ? 'bg-[#F5A623]/20' : 'bg-[#FEF3DC]'
+                }`}>
+                  <item.icon size={22} className="text-[#F5A623]" />
+                </div>
+                <h3 className={`text-xl font-bold mb-2 ${item.accent ? 'text-white' : 'text-[#1A1A1A]'}`}>
+                  {item.title}
+                </h3>
+                <p className={`text-sm leading-relaxed flex-1 mb-6 ${item.accent ? 'text-white/60' : 'text-[#6B6B6B]'}`}>
+                  {item.desc}
+                </p>
+                <Link
+                  href={item.href}
+                  className={`inline-flex items-center gap-1.5 text-sm font-semibold ${
+                    item.accent ? 'text-[#F5A623]' : 'text-[#F5A623]'
+                  } hover:gap-3 transition-all`}
+                >
+                  {item.cta} <ArrowRight size={15} />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA GUIA ── */}
-      <section className="bg-[#F5A623] py-20 px-4">
+      <section className="bg-[#F5A623] py-24 px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#0A0A0A] mb-4">
-            Conhece cada canto de sua cidade e quer compartilhar isso?
+          <p className="text-sm font-bold text-black/40 uppercase tracking-widest mb-4">Para guias</p>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#0A0A0A] mb-5 leading-tight">
+            Você conhece cada canto da sua cidade?
           </h2>
-          <p className="text-[#0A0A0A]/80 text-lg mb-8">
-            Faça parte da nossa rede de guias e vamos explorar juntos!
+          <p className="text-[#0A0A0A]/65 text-lg mb-10 max-w-xl mx-auto">
+            Faça parte da nossa rede de guias e compartilhe sua cidade com corredores do mundo todo.
+            Você define seu ritmo, seu preço e sua disponibilidade.
           </p>
           <Link
             href="/seja-um-guia"
-            className="inline-block px-8 py-4 bg-[#0A0A0A] text-white font-semibold rounded-full hover:bg-[#1A1A1A] transition-colors"
+            className="inline-block px-10 py-4 bg-[#0A0A0A] text-white font-bold rounded-full hover:bg-[#1A1A1A] transition-colors text-base"
           >
-            Seja um guia PaceHive
+            Quero ser um guia PaceHive
           </Link>
         </div>
       </section>
 
       {/* ── SOBRE ── */}
-      <section className="bg-[#0A0A0A] py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Conectando corredores com novas experiências
-          </h2>
-          <p className="text-white/60 text-lg leading-relaxed">
-            O nome <span className="text-[#F5A623] font-semibold">PaceHive</span> nasceu da união de dois conceitos:{' '}
-            <span className="text-white font-medium">Pace</span> — o ritmo único de cada corredor — e{' '}
-            <span className="text-white font-medium">Hive</span> — a colmeia, uma comunidade viva e colaborativa.
-            Assim como numa colmeia, cada corredor faz parte de um sistema conectado.
-            Você não está sozinho. Há uma rede te esperando — e correndo com você!
-          </p>
+      <section className="bg-[#0A0A0A] py-24 px-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <Image
+              src="/images/logo/pacehive-vertical-white.svg"
+              alt="PaceHive"
+              width={64}
+              height={80}
+              className="mx-auto mb-8 opacity-80"
+            />
+            <blockquote className="text-2xl md:text-3xl font-bold text-white leading-snug mb-8">
+              &ldquo;Cada corrida é uma nova forma de{' '}
+              <span className="text-[#F5A623]">conhecer um lugar</span>.&rdquo;
+            </blockquote>
+            <p className="text-white/45 text-base leading-relaxed max-w-xl mx-auto">
+              O nome <span className="text-white font-semibold">PaceHive</span> une{' '}
+              <span className="text-[#F5A623]">Pace</span> — o ritmo único de cada corredor — e{' '}
+              <span className="text-[#F5A623]">Hive</span> — a colmeia, uma comunidade viva e colaborativa.
+              Assim como numa colmeia, cada corredor faz parte de algo maior.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* ── CONTATO ── */}
-      <section className="bg-[#F9F5EE] py-20 px-4">
-        <div className="max-w-2xl mx-auto">
+      <section className="bg-[#F9F5EE] py-24 px-4">
+        <div className="max-w-xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-[#1A1A1A] mb-3">Fale com a equipe PaceHive</h2>
+            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">Fale com a gente</p>
+            <h2 className="text-3xl font-extrabold text-[#1A1A1A] mb-3">
+              Alguma dúvida?
+            </h2>
             <p className="text-[#6B6B6B]">
-              Quer tirar dúvidas, sugerir algo ou colaborar com a comunidade? Manda um alô!
+              Manda uma mensagem — respondemos rapidinho.
             </p>
           </div>
           <ContactForm />
@@ -195,25 +270,27 @@ function ContactForm() {
     >
       <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="_subject" value="Contato via PaceHive" />
-      <div>
-        <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Nome</label>
-        <input
-          type="text"
-          name="name"
-          required
-          placeholder="Seu nome"
-          className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">E-mail</label>
-        <input
-          type="email"
-          name="email"
-          required
-          placeholder="seu@email.com"
-          className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
-        />
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Nome</label>
+          <input
+            type="text"
+            name="name"
+            required
+            placeholder="Seu nome"
+            className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">E-mail</label>
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="seu@email.com"
+            className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
+          />
+        </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Mensagem</label>
@@ -227,7 +304,7 @@ function ContactForm() {
       </div>
       <button
         type="submit"
-        className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors"
+        className="w-full py-3.5 bg-[#F5A623] text-black font-bold rounded-full hover:bg-[#E09510] transition-colors"
       >
         Enviar mensagem
       </button>

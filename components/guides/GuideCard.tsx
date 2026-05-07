@@ -7,17 +7,17 @@ interface Props {
   guide: Guide & { profile: Profile }
 }
 
-export default function GuideCard({ guide }: Props) {
-  const modalityLabels: Record<string, string> = {
-    presential: 'Presencial',
-    virtual: 'Virtual',
-  }
+const modalityLabels: Record<string, string> = {
+  presential: 'Presencial',
+  virtual: 'Virtual',
+}
 
+export default function GuideCard({ guide }: Props) {
   return (
     <Link href={`/guias/${guide.id}`} className="group block">
-      <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
         {/* Photo */}
-        <div className="relative aspect-square overflow-hidden bg-[#F9F5EE]">
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#F9F5EE]">
           {guide.profile.avatar_url ? (
             <Image
               src={guide.profile.avatar_url}
@@ -27,61 +27,66 @@ export default function GuideCard({ guide }: Props) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="text-6xl font-extrabold text-[#F5A623]">
+              <span className="text-7xl font-extrabold text-[#F5A623]">
                 {guide.profile.name.charAt(0).toUpperCase()}
               </span>
             </div>
           )}
+
+          {/* City overlay */}
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />
+          <div className="absolute bottom-3 left-3 right-3 flex items-center gap-1.5">
+            <MapPin size={12} className="text-[#F5A623] flex-shrink-0" />
+            <span className="text-white text-xs font-medium truncate">{guide.city}</span>
+          </div>
+
+          {/* Price / free badge top-right */}
+          <div className="absolute top-3 right-3">
+            {guide.is_paid && guide.price_brl ? (
+              <span className="bg-black/70 backdrop-blur-sm text-white text-xs font-bold rounded-full px-2.5 py-1">
+                R$ {guide.price_brl.toFixed(0)}
+              </span>
+            ) : (
+              <span className="bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-full px-2.5 py-1">
+                Gratuito
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Info */}
         <div className="p-4">
-          <h3 className="font-bold text-[#1A1A1A] text-base mb-1 truncate">
+          <h3 className="font-bold text-[#1A1A1A] text-base mb-2 truncate">
             {guide.profile.name}
           </h3>
-
-          <div className="flex items-center gap-1 text-[#6B6B6B] text-sm mb-3">
-            <MapPin size={13} className="text-[#F5A623] flex-shrink-0" />
-            <span className="truncate">{guide.city}</span>
-          </div>
 
           {/* Modality badges */}
           <div className="flex flex-wrap gap-1.5 mb-3">
             {guide.modality.map((m) => (
               <span
                 key={m}
-                className="bg-[#F5A623] text-black text-xs font-semibold rounded-full px-2.5 py-0.5"
+                className="bg-[#FEF3DC] text-[#1A1A1A] text-xs font-semibold rounded-full px-2.5 py-0.5"
               >
                 {modalityLabels[m] ?? m}
               </span>
             ))}
-            {guide.is_paid && guide.price_brl && (
-              <span className="bg-[#0A0A0A] text-white text-xs font-semibold rounded-full px-2.5 py-0.5">
-                R$ {guide.price_brl.toFixed(0)}
-              </span>
-            )}
-            {!guide.is_paid && (
-              <span className="bg-green-100 text-green-700 text-xs font-semibold rounded-full px-2.5 py-0.5">
-                Gratuito
-              </span>
-            )}
           </div>
 
           {/* Rating & runs */}
           <div className="flex items-center justify-between text-sm text-[#6B6B6B]">
             {guide.rating_count > 0 ? (
               <div className="flex items-center gap-1">
-                <Star size={14} className="text-[#F5A623] fill-[#F5A623]" />
+                <Star size={13} className="text-[#F5A623] fill-[#F5A623]" />
                 <span className="font-semibold text-[#1A1A1A]">{guide.rating_avg.toFixed(1)}</span>
-                <span>({guide.rating_count})</span>
+                <span className="text-xs">({guide.rating_count})</span>
               </div>
             ) : (
-              <span className="text-xs text-[#6B6B6B]">Sem avaliações</span>
+              <span className="text-xs text-[#6B6B6B]/60">Novo guia</span>
             )}
             {guide.total_runs > 0 && (
               <div className="flex items-center gap-1">
-                <Users size={13} />
-                <span>{guide.total_runs} corridas</span>
+                <Users size={12} />
+                <span className="text-xs">{guide.total_runs} corridas</span>
               </div>
             )}
           </div>

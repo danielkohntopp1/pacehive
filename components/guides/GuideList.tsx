@@ -27,22 +27,33 @@ export default function GuideList({ guides }: Props) {
   return (
     <div>
       {/* Search */}
-      <div className="relative max-w-lg mx-auto mb-10">
+      <div className="relative max-w-lg mx-auto mb-8">
         <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B6B6B]" />
         <input
           type="text"
           placeholder="Buscar por cidade ou nome do guia..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-11 pr-4 py-3.5 border border-[#E5E5E5] rounded-xl focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 text-sm transition-all"
+          className="w-full pl-11 pr-4 py-3.5 bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 text-sm transition-all shadow-sm"
         />
       </div>
 
+      {filtered.length > 0 && (
+        <p className="text-sm text-[#6B6B6B] text-center mb-8">
+          {search.trim()
+            ? `${filtered.length} guia${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''} para "${search}"`
+            : `${filtered.length} guia${filtered.length !== 1 ? 's' : ''} disponíve${filtered.length !== 1 ? 'is' : 'l'}`}
+        </p>
+      )}
+
       {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-[#6B6B6B] text-lg mb-2">Nenhum guia encontrado para &ldquo;{search}&rdquo;</p>
+        <div className="text-center py-20">
+          <div className="w-16 h-16 bg-[#E5E5E5] rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Search size={24} className="text-[#6B6B6B]" />
+          </div>
+          <p className="text-[#1A1A1A] font-semibold mb-1">Nenhum guia encontrado</p>
           <p className="text-[#6B6B6B] text-sm mb-6">
-            Que tal ser o primeiro guia nessa cidade?
+            Que tal ser o primeiro guia em {search || 'essa cidade'}?
           </p>
           <Link
             href="/seja-um-guia"
@@ -52,7 +63,7 @@ export default function GuideList({ guides }: Props) {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filtered.map((guide) => (
             <GuideCard key={guide.id} guide={guide} />
           ))}

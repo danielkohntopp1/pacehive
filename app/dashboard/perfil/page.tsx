@@ -58,11 +58,20 @@ export default function RunnerProfilePage() {
 
   return (
     <div className="max-w-xl">
-      <h1 className="text-2xl font-extrabold text-[#1A1A1A] mb-6">Meu perfil</h1>
+      <div className="mb-8">
+        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Meu perfil</h1>
+        <p className="text-[#6B6B6B] text-sm mt-1">Suas informações pessoais e preferências</p>
+      </div>
 
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-        <div className="w-16 h-16 rounded-full bg-[#F5A623] flex items-center justify-center text-black font-extrabold text-2xl mb-6">
-          {profile.name.charAt(0).toUpperCase()}
+        <div className="flex items-center gap-4 mb-6 pb-6 border-b border-[#E5E5E5]">
+          <div className="w-16 h-16 rounded-full bg-[#F5A623] flex items-center justify-center text-black font-extrabold text-2xl flex-shrink-0">
+            {profile.name.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <p className="font-bold text-[#1A1A1A]">{profile.name}</p>
+            <p className="text-sm text-[#6B6B6B]">{profile.email}</p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

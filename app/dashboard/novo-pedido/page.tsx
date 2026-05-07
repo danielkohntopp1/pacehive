@@ -19,14 +19,13 @@ export default async function NovoPedidoPage() {
           Escolha um guia para solicitar sua corrida
         </p>
       </div>
-      <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-6">
-        <p className="text-sm text-[#6B6B6B]">
-          Escolha um guia abaixo e clique no perfil para solicitar uma corrida.
-          Você também pode{' '}
+      <div className="flex items-start gap-3 bg-[#FEF3DC] border border-[#F5A623]/20 rounded-xl p-4 mb-6">
+        <span className="text-[#F5A623] text-base leading-none mt-0.5">💡</span>
+        <p className="text-sm text-[#1A1A1A]">
+          Clique no perfil de um guia para ver detalhes e solicitar uma corrida. Quer ver mais opções?{' '}
           <Link href="/guias" className="text-[#F5A623] font-semibold hover:underline">
-            ver o catálogo completo
+            Ver catálogo completo
           </Link>
-          {' '}com mais informações.
         </p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">

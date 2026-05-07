@@ -54,8 +54,13 @@ export default async function GuiaDashboard() {
       )}
 
       {bookings?.length === 0 && (
-        <div className="text-center py-20 bg-white rounded-2xl border border-[#E5E5E5]">
-          <p className="text-[#6B6B6B] text-lg mb-2">Nenhum pedido ainda</p>
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-12 text-center">
+          <div className="w-16 h-16 bg-[#FEF3DC] rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F5A623" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h2 className="text-lg font-bold text-[#1A1A1A] mb-1">Nenhum pedido ainda</h2>
           <p className="text-[#6B6B6B] text-sm">Complete seu perfil público para ser encontrado por corredores.</p>
         </div>
       )}
