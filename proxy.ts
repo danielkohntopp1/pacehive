@@ -25,21 +25,22 @@ export async function proxy(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  const path = request.nextUrl.pathname
+  const path = request.nextUrl.pathname + request.nextUrl.search
 
   const protectedPaths = ['/dashboard', '/guia']
-  const isProtected = protectedPaths.some(p => path.startsWith(p))
+  const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
+    url.search = ''
     url.searchParams.set('redirect', path)
     return NextResponse.redirect(url)
   }
 
   // Redirect authenticated users away from auth pages
   const authPaths = ['/login', '/cadastro']
-  const isAuthPage = authPaths.some(p => path === p)
+  const isAuthPage = authPaths.some(p => request.nextUrl.pathname === p)
   if (isAuthPage && user) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
