@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { notifyNewReview } from '@/lib/supabase/notifications'
 
 export async function POST(req: Request) {
   try {
@@ -48,6 +49,16 @@ export async function POST(req: Request) {
         .from('guides')
         .update({ rating_avg: Math.round(avg * 100) / 100, rating_count: allReviews.length })
         .eq('id', reviewed_id)
+    }
+
+    // Notify reviewed person
+    try {
+      const { data: reviewer } = await supabase.from('profiles').select('name').eq('id', user.id).single()
+      if (reviewer) {
+        await notifyNewReview(reviewed_id, booking_id, reviewer.name, rating)
+      }
+    } catch (e) {
+      console.error('Notification error:', e)
     }
 
     return NextResponse.json(review, { status: 201 })

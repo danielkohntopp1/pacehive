@@ -69,6 +69,17 @@ export interface Review {
   reviewer?: Profile
 }
 
+export interface Notification {
+  id: string
+  user_id: string
+  type: string
+  title: string
+  body?: string
+  booking_id?: string
+  is_read: boolean
+  created_at: string
+}
+
 export interface Group {
   id: string
   name: string

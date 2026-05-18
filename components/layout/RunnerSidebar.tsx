@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, User, PlusCircle, LogOut, Menu, X } from 'lucide-react'
+import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X } from 'lucide-react'
 
 interface Profile {
   name?: string | null
@@ -15,19 +15,22 @@ interface Profile {
 interface Props {
   profile: Profile | null
   signOutAction: () => Promise<void>
+  unreadCount?: number
 }
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Meus pedidos', exact: true },
   { href: '/dashboard/novo-pedido', icon: PlusCircle, label: 'Nova solicitação', exact: false },
+  { href: '/dashboard/notificacoes', icon: Bell, label: 'Notificações', exact: false },
   { href: '/dashboard/perfil', icon: User, label: 'Meu perfil', exact: false },
 ]
 
-function NavContent({ profile, pathname, signOutAction, onClose }: {
+function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: {
   profile: Profile | null
   pathname: string
   signOutAction: () => Promise<void>
   onClose?: () => void
+  unreadCount?: number
 }) {
   return (
     <>
@@ -40,13 +43,19 @@ function NavContent({ profile, pathname, signOutAction, onClose }: {
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {navItems.map(({ href, icon: Icon, label, exact }) => {
           const active = exact ? pathname === href : pathname.startsWith(href)
+          const isNotif = href === '/dashboard/notificacoes'
           return (
             <Link key={href} href={href} onClick={onClose}
               className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                 active ? 'bg-[#FEF3DC] text-[#1A1A1A]' : 'text-[#1A1A1A] hover:bg-[#F9F5EE]'
               }`}>
               <Icon size={17} className={active ? 'text-[#F5A623]' : 'text-[#6B6B6B]'} />
-              {label}
+              <span className="flex-1">{label}</span>
+              {isNotif && unreadCount && unreadCount > 0 ? (
+                <span className="bg-[#F5A623] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              ) : null}
             </Link>
           )
         })}
@@ -81,7 +90,7 @@ function NavContent({ profile, pathname, signOutAction, onClose }: {
   )
 }
 
-export default function RunnerSidebar({ profile, signOutAction }: Props) {
+export default function RunnerSidebar({ profile, signOutAction, unreadCount }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -89,7 +98,7 @@ export default function RunnerSidebar({ profile, signOutAction }: Props) {
     <>
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex w-64 bg-white border-r border-[#E5E5E5] flex-col fixed inset-y-0 z-20">
-        <NavContent profile={profile} pathname={pathname} signOutAction={signOutAction} />
+        <NavContent profile={profile} pathname={pathname} signOutAction={signOutAction} unreadCount={unreadCount} />
       </aside>
 
       {/* Mobile topbar */}
@@ -97,9 +106,17 @@ export default function RunnerSidebar({ profile, signOutAction }: Props) {
         <Link href="/">
           <Image src="/images/logo/pacehive-horizontal-dark.svg" alt="PaceHive" width={100} height={28} />
         </Link>
-        <button onClick={() => setOpen(true)} className="p-2 rounded-xl hover:bg-[#F9F5EE] transition-colors">
-          <Menu size={20} />
-        </button>
+        <div className="flex items-center gap-2">
+          {unreadCount && unreadCount > 0 ? (
+            <Link href="/dashboard/notificacoes" className="relative p-2">
+              <Bell size={20} />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#F5A623]" />
+            </Link>
+          ) : null}
+          <button onClick={() => setOpen(true)} className="p-2 rounded-xl hover:bg-[#F9F5EE] transition-colors">
+            <Menu size={20} />
+          </button>
+        </div>
       </header>
 
       {/* Mobile drawer */}
@@ -112,7 +129,7 @@ export default function RunnerSidebar({ profile, signOutAction }: Props) {
                 <X size={20} />
               </button>
             </div>
-            <NavContent profile={profile} pathname={pathname} signOutAction={signOutAction} onClose={() => setOpen(false)} />
+            <NavContent profile={profile} pathname={pathname} signOutAction={signOutAction} onClose={() => setOpen(false)} unreadCount={unreadCount} />
           </aside>
         </>
       )}

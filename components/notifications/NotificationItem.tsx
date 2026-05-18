@@ -1,0 +1,75 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { Bell, CheckCircle, MessageCircle, PlusCircle, Star, XCircle } from 'lucide-react'
+import type { Notification } from '@/types'
+
+const iconMap: Record<string, { icon: React.ElementType; color: string }> = {
+  new_booking:       { icon: PlusCircle,    color: 'text-[#F5A623]' },
+  booking_accepted:  { icon: CheckCircle,   color: 'text-green-500' },
+  booking_refused:   { icon: XCircle,       color: 'text-red-500' },
+  booking_cancelled: { icon: XCircle,       color: 'text-red-500' },
+  booking_completed: { icon: CheckCircle,   color: 'text-blue-500' },
+  new_message:       { icon: MessageCircle, color: 'text-[#F5A623]' },
+  new_review:        { icon: Star,          color: 'text-yellow-500' },
+}
+
+function timeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 60) return `${mins}min atrás`
+  const hours = Math.floor(mins / 60)
+  if (hours < 24) return `${hours}h atrás`
+  const days = Math.floor(hours / 24)
+  return `${days}d atrás`
+}
+
+interface Props {
+  notification: Notification
+  bookingBasePath: string
+}
+
+export default function NotificationItem({ notification: n, bookingBasePath }: Props) {
+  const [isRead, setIsRead] = useState(n.is_read)
+  const router = useRouter()
+  const supabase = createClient()
+
+  async function handleClick() {
+    if (!isRead) {
+      setIsRead(true)
+      await supabase.from('notifications').update({ is_read: true }).eq('id', n.id)
+    }
+    if (n.booking_id) {
+      router.push(`${bookingBasePath}/${n.booking_id}`)
+    }
+  }
+
+  const { icon: Icon, color } = iconMap[n.type] ?? { icon: Bell, color: 'text-[#6B6B6B]' }
+
+  return (
+    <button
+      onClick={handleClick}
+      className={`w-full flex items-start gap-4 p-4 rounded-2xl text-left transition-colors ${
+        isRead ? 'bg-white hover:bg-[#F9F5EE]' : 'bg-[#FEF3DC] hover:bg-[#fde9ba]'
+      } border border-[#E5E5E5]`}
+    >
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${isRead ? 'bg-[#F9F5EE]' : 'bg-white'}`}>
+        <Icon size={20} className={color} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-start justify-between gap-2">
+          <p className={`text-sm ${isRead ? 'font-medium text-[#1A1A1A]' : 'font-bold text-[#1A1A1A]'}`}>
+            {n.title}
+          </p>
+          <span className="text-xs text-[#6B6B6B] flex-shrink-0">{timeAgo(n.created_at)}</span>
+        </div>
+        {n.body && <p className="text-sm text-[#6B6B6B] mt-0.5 leading-snug">{n.body}</p>}
+      </div>
+      {!isRead && (
+        <div className="w-2 h-2 rounded-full bg-[#F5A623] flex-shrink-0 mt-1.5" />
+      )}
+    </button>
+  )
+}

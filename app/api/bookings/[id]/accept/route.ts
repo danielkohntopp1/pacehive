@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendBookingAcceptedToRunner, sendBookingAcceptedToGuide } from '@/lib/resend/emails'
+import { notifyBookingAccepted } from '@/lib/supabase/notifications'
 import type { Profile } from '@/types'
 
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -34,6 +35,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
         await Promise.all([
           sendBookingAcceptedToRunner(booking, runnerRes.data as Profile, guideProfile),
           sendBookingAcceptedToGuide(booking, runnerRes.data as Profile, guideRes.data as Profile),
+          notifyBookingAccepted(booking.id, booking.runner_id, guideRes.data.name, booking.run_date),
         ])
       }
     } catch (e) {

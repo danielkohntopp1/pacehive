@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendBookingCancelledToGuide, sendBookingCancelledToRunner } from '@/lib/resend/emails'
+import { notifyBookingCancelled } from '@/lib/supabase/notifications'
 import type { Profile } from '@/types'
 
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -42,9 +43,15 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
       ])
       if (runnerRes.data && guideRes.data) {
         if (isRunner) {
-          await sendBookingCancelledToGuide(booking, runnerRes.data as Profile, guideRes.data as Profile)
+          await Promise.all([
+            sendBookingCancelledToGuide(booking, runnerRes.data as Profile, guideRes.data as Profile),
+            notifyBookingCancelled(booking.id, booking.guide_id, runnerRes.data.name, booking.run_date),
+          ])
         } else {
-          await sendBookingCancelledToRunner(booking, runnerRes.data as Profile, guideRes.data as Profile)
+          await Promise.all([
+            sendBookingCancelledToRunner(booking, runnerRes.data as Profile, guideRes.data as Profile),
+            notifyBookingCancelled(booking.id, booking.runner_id, guideRes.data.name, booking.run_date),
+          ])
         }
       }
     } catch (e) {

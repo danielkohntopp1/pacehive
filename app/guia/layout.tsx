@@ -7,7 +7,10 @@ export default async function GuiaDashboardLayout({ children }: { children: Reac
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login?redirect=/guia/dashboard')
 
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+  const [{ data: profile }, { count: unreadCount }] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    supabase.from('notifications').select('*', { count: 'exact', head: true }).eq('user_id', user.id).eq('is_read', false),
+  ])
   if (!profile || (profile.role !== 'guide' && profile.role !== 'both')) {
     redirect('/cadastro/guia')
   }
@@ -22,7 +25,7 @@ export default async function GuiaDashboardLayout({ children }: { children: Reac
 
   return (
     <div className="min-h-screen bg-[#F9F5EE] flex">
-      <GuiaSidebar profile={profile} signOutAction={handleSignOut} />
+      <GuiaSidebar profile={profile} signOutAction={handleSignOut} unreadCount={unreadCount ?? 0} />
       <main className="flex-1 pt-14 lg:pt-0 lg:ml-64 p-6 lg:p-8">
         {children}
       </main>

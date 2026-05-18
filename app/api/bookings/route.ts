@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendNewBookingToGuide } from '@/lib/resend/emails'
+import { notifyNewBooking } from '@/lib/supabase/notifications'
 import type { Profile } from '@/types'
 
 export async function POST(req: Request) {
@@ -43,7 +44,10 @@ export async function POST(req: Request) {
         supabase.from('profiles').select('*').eq('id', guide_id).single(),
       ])
       if (runnerRes.data && guideRes.data) {
-        await sendNewBookingToGuide(booking, runnerRes.data as Profile, guideRes.data as Profile)
+        await Promise.all([
+          sendNewBookingToGuide(booking, runnerRes.data as Profile, guideRes.data as Profile),
+          notifyNewBooking(booking.id, guide_id, runnerRes.data.name, booking.run_date),
+        ])
       }
     } catch (emailError) {
       console.error('Email send failed:', emailError)

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendBookingRefusedToRunner } from '@/lib/resend/emails'
+import { notifyBookingRefused } from '@/lib/supabase/notifications'
 import type { Profile } from '@/types'
 
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -27,7 +28,10 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
         supabase.from('profiles').select('*').eq('id', user.id).single(),
       ])
       if (runnerRes.data && guideRes.data) {
-        await sendBookingRefusedToRunner(booking, runnerRes.data as Profile, guideRes.data as Profile)
+        await Promise.all([
+          sendBookingRefusedToRunner(booking, runnerRes.data as Profile, guideRes.data as Profile),
+          notifyBookingRefused(booking.id, booking.runner_id, guideRes.data.name, booking.run_date),
+        ])
       }
     } catch (e) {
       console.error('Email error:', e)
