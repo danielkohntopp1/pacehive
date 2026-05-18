@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 interface Profile {
+  id?: string | null
   name?: string | null
   email?: string | null
   role?: string | null
@@ -90,9 +92,25 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
   )
 }
 
-export default function RunnerSidebar({ profile, signOutAction, unreadCount }: Props) {
+export default function RunnerSidebar({ profile, signOutAction, unreadCount: initialCount }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(initialCount ?? 0)
+
+  useEffect(() => {
+    if (!profile?.id) return
+    const supabase = createClient()
+    const channel = supabase
+      .channel(`notif-runner:${profile.id}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${profile.id}` },
+        (payload) => { if (!payload.new.is_read) setUnreadCount((c) => c + 1) }
+      )
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'notifications', filter: `user_id=eq.${profile.id}` },
+        (payload) => { if (payload.new.is_read) setUnreadCount((c) => Math.max(0, c - 1)) }
+      )
+      .subscribe()
+    return () => { supabase.removeChannel(channel) }
+  }, [profile?.id])
 
   return (
     <>
