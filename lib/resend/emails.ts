@@ -200,6 +200,39 @@ export async function sendReviewRequestToBoth(booking: Booking, runner: Profile,
   ])
 }
 
+export async function sendBookingCancelledToGuide(booking: Booking, runner: Profile, guide: Profile) {
+  const content = `
+    <h1>Pedido de corrida cancelado</h1>
+    <p>Ola, <strong>${guide.name}</strong>! O corredor <strong>${runner.name}</strong> cancelou o pedido abaixo.</p>
+    ${bookingDetails(booking)}
+    <p style="color:#6B6B6B;font-size:13px;">Se tiver duvidas, entre em contato com a equipe PaceHive.</p>
+  `
+  return getResend().emails.send({
+    from: FROM,
+    to: guide.email,
+    subject: 'Pedido de corrida cancelado pelo corredor',
+    html: emailWrapper(content, 'Pedido cancelado'),
+  })
+}
+
+export async function sendBookingCancelledToRunner(booking: Booking, runner: Profile, guide: Profile) {
+  const content = `
+    <h1>Corrida cancelada pelo guia</h1>
+    <p>Ola, <strong>${runner.name}</strong>! Infelizmente <strong>${guide.name}</strong> precisou cancelar a corrida abaixo.</p>
+    ${bookingDetails(booking)}
+    <p>Nao desanime - ha outros guias incriveis disponiveis para voce!</p>
+    <div style="text-align:center;margin:32px 0;">
+      <a href="${APP_URL}/guias" class="btn btn-primary">Ver outros guias</a>
+    </div>
+  `
+  return getResend().emails.send({
+    from: FROM,
+    to: runner.email,
+    subject: 'Corrida cancelada pelo guia',
+    html: emailWrapper(content, 'Corrida cancelada'),
+  })
+}
+
 export async function sendWelcomeToGuide(profile: Profile) {
   const content = `
     <h1>Bem-vindo a comunidade PaceHive!</h1>

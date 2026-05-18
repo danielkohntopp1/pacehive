@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import BookingStatus from '@/components/bookings/BookingStatus'
 import AcceptRefuseButtons from '@/components/bookings/AcceptRefuseButtons'
 import CompleteButton from '@/components/bookings/CompleteButton'
+import CancelButton from '@/components/bookings/CancelButton'
+import ReportButton from '@/components/reports/ReportButton'
 import ReviewForm from '@/components/reviews/ReviewForm'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
@@ -132,13 +134,34 @@ export default async function GuiaBookingPage({ params, searchParams }: Props) {
       )}
 
       {b.status === 'completed' && !existingReview && b.runner && (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
           <h2 className="text-lg font-bold text-[#1A1A1A] mb-1">Avalie o corredor</h2>
           <p className="text-sm text-[#6B6B6B] mb-4">Como foi correr com {b.runner.name}?</p>
           <ReviewForm
             bookingId={b.id}
             reviewedId={b.runner_id}
             reviewedName={b.runner.name}
+          />
+        </div>
+      )}
+
+      {b.status === 'accepted' && (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
+          <h2 className="font-bold text-[#1A1A1A] mb-1">Cancelar corrida</h2>
+          <p className="text-sm text-[#6B6B6B] mb-4">Não consegue mais comparecer? O corredor será notificado.</p>
+          <CancelButton bookingId={b.id} />
+        </div>
+      )}
+
+      {(b.status === 'accepted' || b.status === 'completed') && b.runner && (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
+          <h2 className="font-bold text-[#1A1A1A] mb-1">Reportar problema</h2>
+          <p className="text-sm text-[#6B6B6B] mb-4">Teve algum problema com este corredor? Nos informe.</p>
+          <ReportButton
+            bookingId={b.id}
+            reportedId={b.runner_id}
+            reportedName={b.runner.name}
+            label="Denunciar corredor"
           />
         </div>
       )}

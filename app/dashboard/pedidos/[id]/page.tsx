@@ -1,40 +1,70 @@
-import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import BookingStatus from '@/components/bookings/BookingStatus'
 import CompleteButton from '@/components/bookings/CompleteButton'
+import CancelButton from '@/components/bookings/CancelButton'
+import ReportModal from '@/components/reports/ReportModal'
 import ReviewForm from '@/components/reviews/ReviewForm'
 import { formatDate } from '@/lib/utils'
 import Link from 'next/link'
-import { ArrowLeft, Calendar, CheckCircle, Clock, MapPin, User } from 'lucide-react'
+import { ArrowLeft, Calendar, CheckCircle, Clock, Flag, MapPin, User } from 'lucide-react'
 import type { Booking } from '@/types'
 
-interface Props { params: Promise<{ id: string }> }
+export default function RunnerBookingPage() {
+  const { id } = useParams<{ id: string }>()
+  const [booking, setBooking] = useState<Booking | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
+  const [hasReview, setHasReview] = useState(false)
+  const [notFound, setNotFound] = useState(false)
+  const [showReport, setShowReport] = useState(false)
 
-export default async function RunnerBookingPage({ params }: Props) {
-  const { id } = await params
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) return
+      setUserId(user.id)
 
-  const { data: booking } = await supabase
-    .from('bookings')
-    .select('*, runner:profiles!runner_id(*), guide:guides(*, profile:profiles(*))')
-    .eq('id', id)
-    .eq('runner_id', user!.id)
-    .single()
+      const { data } = await supabase
+        .from('bookings')
+        .select('*, runner:profiles!runner_id(*), guide:guides(*, profile:profiles(*))')
+        .eq('id', id)
+        .eq('runner_id', user.id)
+        .single()
 
-  if (!booking) notFound()
+      if (!data) { setNotFound(true); return }
+      setBooking(data as Booking)
 
-  const b = booking as Booking
+      const { data: review } = await supabase
+        .from('reviews')
+        .select('id')
+        .eq('booking_id', id)
+        .eq('reviewer_id', user.id)
+        .single()
+      setHasReview(!!review)
+    })
+  }, [id])
 
-  const { data: existingReview } = await supabase
-    .from('reviews')
-    .select('id')
-    .eq('booking_id', id)
-    .eq('reviewer_id', user!.id)
-    .single()
+  if (notFound) return <p className="text-sm text-[#6B6B6B]">Pedido não encontrado.</p>
+  if (!booking) return <p className="text-sm text-[#6B6B6B]">Carregando...</p>
+
+  const b = booking
+  const canCancel = b.status === 'pending' || b.status === 'accepted'
+  const canReport = b.status !== 'pending' && b.guide?.profile
 
   return (
     <div className="max-w-2xl">
+      {showReport && b.guide?.profile && (
+        <ReportModal
+          bookingId={b.id}
+          reportedId={b.guide_id}
+          reportedName={b.guide.profile.name}
+          onClose={() => setShowReport(false)}
+        />
+      )}
+
       <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors mb-6">
         <ArrowLeft size={16} /> Voltar para pedidos
       </Link>
@@ -95,8 +125,18 @@ export default async function RunnerBookingPage({ params }: Props) {
         </div>
       )}
 
-      {b.status === 'completed' && !existingReview && b.guide && (
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
+      {canCancel && (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
+          <h2 className="font-bold text-[#1A1A1A] mb-1">Cancelar pedido</h2>
+          <p className="text-sm text-[#6B6B6B] mb-4">
+            {b.status === 'pending' ? 'O guia ainda não respondeu.' : 'A corrida estava confirmada.'}
+          </p>
+          <CancelButton bookingId={b.id} />
+        </div>
+      )}
+
+      {b.status === 'completed' && !hasReview && b.guide && (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
           <h2 className="text-lg font-bold text-[#1A1A1A] mb-1">Avalie sua experiência</h2>
           <p className="text-sm text-[#6B6B6B] mb-4">Como foi correr com {b.guide.profile?.name ?? 'o guia'}?</p>
           <ReviewForm
@@ -104,6 +144,20 @@ export default async function RunnerBookingPage({ params }: Props) {
             reviewedId={b.guide_id}
             reviewedName={b.guide.profile?.name ?? 'Guia'}
           />
+        </div>
+      )}
+
+      {canReport && (
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
+          <h2 className="font-bold text-[#1A1A1A] mb-1">Reportar problema</h2>
+          <p className="text-sm text-[#6B6B6B] mb-4">Teve algum problema com este guia? Nos informe.</p>
+          <button
+            onClick={() => setShowReport(true)}
+            className="w-full flex items-center justify-center gap-2 py-3 border-2 border-[#E5E5E5] text-[#6B6B6B] font-semibold rounded-full hover:border-red-300 hover:text-red-500 transition-colors text-sm"
+          >
+            <Flag size={16} />
+            Denunciar guia
+          </button>
         </div>
       )}
     </div>
