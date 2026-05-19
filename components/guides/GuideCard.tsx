@@ -40,6 +40,16 @@ export default function GuideCard({ guide }: Props) {
             <span className="text-white text-xs font-medium truncate">{guide.city}</span>
           </div>
 
+          {/* Strava verified badge top-left */}
+          {guide.strava_stats && (
+            <div className="absolute top-3 left-3">
+              <span className="flex items-center gap-1 bg-[#FC4C02]/90 backdrop-blur-sm text-white text-xs font-bold rounded-full px-2 py-0.5">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169" /></svg>
+                Verificado
+              </span>
+            </div>
+          )}
+
           {/* Price / free badge top-right */}
           <div className="absolute top-3 right-3">
             {guide.is_paid && guide.price_brl ? (

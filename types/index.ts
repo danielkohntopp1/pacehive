@@ -2,6 +2,13 @@ export type UserRole = 'runner' | 'guide' | 'both'
 export type BookingStatus = 'pending' | 'accepted' | 'refused' | 'completed' | 'cancelled'
 export type Modality = 'presential' | 'virtual'
 
+export interface StravaStats {
+  ytd_run_distance: number
+  ytd_run_count: number
+  avg_pace: number | null
+  last_activity_at: string | null
+}
+
 export interface Profile {
   id: string
   name: string
@@ -10,6 +17,7 @@ export interface Profile {
   role: UserRole
   avatar_url?: string
   language: string
+  strava_stats?: StravaStats | null
   created_at: string
   updated_at: string
 }
@@ -33,6 +41,7 @@ export interface Guide {
   rating_avg: number
   rating_count: number
   total_runs: number
+  strava_stats?: StravaStats | null
   created_at: string
   updated_at: string
   profile?: Profile

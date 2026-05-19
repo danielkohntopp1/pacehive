@@ -7,7 +7,8 @@ import { z } from 'zod'
 import { Camera, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
-import type { Guide } from '@/types'
+import type { Guide, StravaStats } from '@/types'
+import StravaConnectCard from '@/components/strava/StravaConnectCard'
 
 const schema = z.object({
   city: z.string().min(2, 'Informe a cidade'),
@@ -25,6 +26,7 @@ type FormData = z.infer<typeof schema>
 
 export default function GuiaPerfilPage() {
   const [guide, setGuide] = useState<Guide | null>(null)
+  const [stravaStats, setStravaStats] = useState<StravaStats | null>(null)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
@@ -49,6 +51,7 @@ export default function GuiaPerfilPage() {
       ]).then(([guideRes, profileRes]) => {
         if (guideRes.data) {
           setGuide(guideRes.data as Guide)
+          setStravaStats((guideRes.data.strava_stats as StravaStats) ?? null)
           reset({
             city: guideRes.data.city,
             country: guideRes.data.country,
@@ -139,6 +142,8 @@ export default function GuiaPerfilPage() {
         <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Meu perfil público</h1>
         <p className="text-[#6B6B6B] text-sm mt-1">Estas informações são exibidas para corredores que buscam guias</p>
       </div>
+
+      <StravaConnectCard stravaStats={stravaStats} origin="/guia/perfil" />
 
       {/* Avatar section */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">

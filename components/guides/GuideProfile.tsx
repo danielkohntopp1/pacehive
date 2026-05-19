@@ -5,9 +5,10 @@ import Link from 'next/link'
 import { useState } from 'react'
 import {
   MapPin, Star, Users, Globe, ExternalLink, Award,
-  CheckCircle2, Clock, Languages
+  CheckCircle2, Clock, Languages, Activity, Timer, TrendingUp
 } from 'lucide-react'
 import type { Guide, Profile, Review } from '@/types'
+import { formatPace, formatDistance, formatLastActivity } from '@/lib/strava/client'
 import BookingForm from '@/components/bookings/BookingForm'
 
 interface Props {
@@ -152,6 +153,45 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                 </a>
               )}
             </div>
+
+            {/* Strava stats */}
+            {guide.strava_stats && (
+              <div className="bg-[#FFF4EE] border border-[#FC4C02]/20 rounded-xl p-4 mb-6">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg viewBox="0 0 24 24" fill="#FC4C02" className="w-4 h-4"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169" /></svg>
+                  <span className="text-xs font-bold text-[#FC4C02] uppercase tracking-wide">Dados verificados · Strava</span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {guide.strava_stats.ytd_run_distance > 0 && (
+                    <div className="flex flex-col gap-0.5">
+                      <div className="flex items-center gap-1 text-[#FC4C02]">
+                        <TrendingUp size={13} />
+                        <span className="text-xs text-[#6B6B6B]">km em 2025</span>
+                      </div>
+                      <span className="font-bold text-[#1A1A1A] text-sm">{formatDistance(guide.strava_stats.ytd_run_distance)}</span>
+                    </div>
+                  )}
+                  {guide.strava_stats.avg_pace && (
+                    <div className="flex flex-col gap-0.5">
+                      <div className="flex items-center gap-1 text-[#FC4C02]">
+                        <Timer size={13} />
+                        <span className="text-xs text-[#6B6B6B]">ritmo médio</span>
+                      </div>
+                      <span className="font-bold text-[#1A1A1A] text-sm">{formatPace(guide.strava_stats.avg_pace)}/km</span>
+                    </div>
+                  )}
+                  {guide.strava_stats.last_activity_at && (
+                    <div className="flex flex-col gap-0.5">
+                      <div className="flex items-center gap-1 text-[#FC4C02]">
+                        <Activity size={13} />
+                        <span className="text-xs text-[#6B6B6B]">última corrida</span>
+                      </div>
+                      <span className="font-bold text-[#1A1A1A] text-sm">{formatLastActivity(guide.strava_stats.last_activity_at)}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* CTA */}
             {isLoggedIn ? (
