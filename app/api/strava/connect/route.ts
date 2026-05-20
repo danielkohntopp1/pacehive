@@ -1,12 +1,16 @@
-import { redirect } from 'next/navigation'
+import { NextResponse } from 'next/server'
 import { buildStravaAuthUrl } from '@/lib/strava/client'
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const origin = searchParams.get('origin') ?? '/dashboard/perfil'
+  const clientId = process.env.STRAVA_CLIENT_ID
+  if (!clientId) {
+    return NextResponse.json({ error: 'STRAVA_CLIENT_ID not configured' }, { status: 500 })
+  }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
-  const redirectUri = `${appUrl}/api/strava/callback?origin=${encodeURIComponent(origin)}`
+  const { searchParams, origin: requestOrigin } = new URL(request.url)
+  const returnTo = searchParams.get('origin') ?? '/dashboard/perfil'
 
-  redirect(buildStravaAuthUrl(redirectUri))
+  const redirectUri = `${requestOrigin}/api/strava/callback?origin=${encodeURIComponent(returnTo)}`
+
+  return NextResponse.redirect(buildStravaAuthUrl(redirectUri))
 }

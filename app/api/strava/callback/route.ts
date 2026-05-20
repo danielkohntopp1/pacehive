@@ -1,27 +1,28 @@
-import { redirect } from 'next/navigation'
+import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { exchangeStravaCode, fetchStravaStats } from '@/lib/strava/client'
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
+  const { searchParams, origin: requestOrigin } = new URL(request.url)
   const code = searchParams.get('code')
   const error = searchParams.get('error')
-  const origin = searchParams.get('origin') ?? '/dashboard/perfil'
+  const returnTo = searchParams.get('origin') ?? '/dashboard/perfil'
 
   if (error || !code) {
-    redirect(`${origin}?strava=denied`)
+    return NextResponse.redirect(`${requestOrigin}${returnTo}?strava=denied`)
   }
 
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  if (!user) {
+    return NextResponse.redirect(`${requestOrigin}/login`)
+  }
 
   try {
     const tokens = await exchangeStravaCode(code)
 
     const admin = await createAdminClient()
-
     const expiresAt = new Date(tokens.expires_at * 1000).toISOString()
 
     await admin.from('strava_connections').upsert({
@@ -54,9 +55,10 @@ export async function GET(request: Request) {
       admin.from('guides').update({ strava_stats: stravaStats, updated_at: new Date().toISOString() }).eq('id', user.id),
       admin.from('profiles').update({ strava_stats: stravaStats, updated_at: new Date().toISOString() }).eq('id', user.id),
     ])
-  } catch {
-    redirect(`${origin}?strava=error`)
+  } catch (err) {
+    console.error('Strava callback error:', err)
+    return NextResponse.redirect(`${requestOrigin}${returnTo}?strava=error`)
   }
 
-  redirect(`${origin}?strava=connected`)
+  return NextResponse.redirect(`${requestOrigin}${returnTo}?strava=connected`)
 }
