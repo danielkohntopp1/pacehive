@@ -2,6 +2,12 @@ export type UserRole = 'runner' | 'guide' | 'both'
 export type BookingStatus = 'pending' | 'accepted' | 'refused' | 'completed' | 'cancelled'
 export type Modality = 'presential' | 'virtual'
 
+export interface GuideAvailability {
+  days: string[]    // 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
+  periods: string[] // 'morning' | 'afternoon' | 'evening'
+  notes?: string
+}
+
 export interface StravaStats {
   ytd_run_distance: number
   ytd_run_count: number
@@ -36,6 +42,7 @@ export interface Guide {
   is_paid: boolean
   price_brl?: number
   schedule?: string
+  availability?: GuideAvailability | null
   languages: string[]
   is_active: boolean
   rating_avg: number

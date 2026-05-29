@@ -7,7 +7,7 @@ import {
   MapPin, Star, Users, Globe, ExternalLink, Award,
   CheckCircle2, Clock, Languages, Activity, Timer, TrendingUp
 } from 'lucide-react'
-import type { Guide, Profile, Review } from '@/types'
+import type { Guide, Profile, Review, GuideAvailability } from '@/types'
 import { formatPace, formatDistance, formatLastActivity } from '@/lib/strava/client'
 import BookingForm from '@/components/bookings/BookingForm'
 
@@ -37,6 +37,51 @@ const runTypeLabels: Record<string, string> = {
   beach: 'Praia / Areia',
   mountain: 'Montanha',
   urban: 'Urbano',
+}
+
+const DAY_LABELS: Record<string, string> = {
+  mon: 'Seg', tue: 'Ter', wed: 'Qua', thu: 'Qui', fri: 'Sex', sat: 'Sáb', sun: 'Dom',
+}
+const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+
+const PERIOD_LABELS: Record<string, string> = {
+  morning: 'Manhã (5h–12h)',
+  afternoon: 'Tarde (12h–18h)',
+  evening: 'Noite (18h–22h)',
+}
+
+function AvailabilityDisplay({ availability, schedule }: { availability?: GuideAvailability | null, schedule?: string }) {
+  const hasDays = availability?.days && availability.days.length > 0
+  const hasPeriods = availability?.periods && availability.periods.length > 0
+  if (!hasDays && !hasPeriods && !availability?.notes && !schedule) return null
+
+  return (
+    <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
+      <h2 className="text-lg font-bold text-[#1A1A1A] mb-3 flex items-center gap-2">
+        <Clock size={18} className="text-[#F5A623]" />
+        Disponibilidade
+      </h2>
+      {hasDays && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {DAY_ORDER.filter((d) => availability!.days.includes(d)).map((d) => (
+            <span key={d} className="bg-[#F5A623] text-black text-xs font-bold rounded-full px-2.5 py-1">{DAY_LABELS[d]}</span>
+          ))}
+          {DAY_ORDER.filter((d) => !availability!.days.includes(d)).map((d) => (
+            <span key={d} className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2.5 py-1">{DAY_LABELS[d]}</span>
+          ))}
+        </div>
+      )}
+      {hasPeriods && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {availability!.periods.map((p) => (
+            <span key={p} className="text-xs bg-[#FEF3DC] text-[#1A1A1A] font-medium px-2.5 py-1 rounded-full">{PERIOD_LABELS[p]}</span>
+          ))}
+        </div>
+      )}
+      {availability?.notes && <p className="text-[#6B6B6B] text-sm leading-relaxed">{availability.notes}</p>}
+      {!hasDays && !hasPeriods && schedule && <p className="text-[#6B6B6B] text-sm leading-relaxed">{schedule}</p>}
+    </div>
+  )
 }
 
 const serviceLabels: Record<string, string> = {
@@ -101,12 +146,16 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
 
             {/* Stats */}
             <div className="flex flex-wrap gap-4 mb-5">
-              {guide.rating_count > 0 && (
+              {guide.rating_count > 0 ? (
                 <div className="flex items-center gap-1.5 text-sm">
                   <Star size={16} className="text-[#F5A623] fill-[#F5A623]" />
                   <span className="font-bold text-[#1A1A1A]">{guide.rating_avg.toFixed(1)}</span>
                   <span className="text-[#6B6B6B]">({guide.rating_count} avaliações)</span>
                 </div>
+              ) : (
+                <span className="text-xs bg-[#F9F5EE] text-[#6B6B6B] font-medium px-2.5 py-1 rounded-full border border-[#E5E5E5]">
+                  Novo guia
+                </span>
               )}
               {guide.total_runs > 0 && (
                 <div className="flex items-center gap-1.5 text-sm text-[#6B6B6B]">
@@ -252,16 +301,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
           </div>
         )}
 
-        {/* Schedule */}
-        {guide.schedule && (
-          <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-            <h2 className="text-lg font-bold text-[#1A1A1A] mb-3 flex items-center gap-2">
-              <Clock size={18} className="text-[#F5A623]" />
-              Disponibilidade
-            </h2>
-            <p className="text-[#6B6B6B] text-sm leading-relaxed">{guide.schedule}</p>
-          </div>
-        )}
+        <AvailabilityDisplay availability={guide.availability} schedule={guide.schedule} />
       </div>
 
       {/* Reviews */}

@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 
@@ -20,14 +20,17 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export default function CadastroPage() {
+function CadastroForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isGuideFlow = searchParams.get('guide') === 'true'
+
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { wantsToBeGuide: false },
+    defaultValues: { wantsToBeGuide: isGuideFlow },
   })
 
   const wantsGuide = watch('wantsToBeGuide')
@@ -79,7 +82,9 @@ export default function CadastroPage() {
           className="mx-auto mb-4"
         />
         <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Crie sua conta</h1>
-        <p className="text-[#6B6B6B] text-sm mt-1">Junte-se à comunidade PaceHive</p>
+        <p className="text-[#6B6B6B] text-sm mt-1">
+          {isGuideFlow ? 'Primeiro passo para criar seu perfil de guia' : 'Junte-se à comunidade PaceHive'}
+        </p>
       </div>
 
       <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm p-8">
@@ -168,5 +173,13 @@ export default function CadastroPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function CadastroPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-md" />}>
+      <CadastroForm />
+    </Suspense>
   )
 }

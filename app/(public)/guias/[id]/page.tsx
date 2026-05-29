@@ -13,14 +13,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = await createClient()
   const { data } = await supabase
     .from('guides')
-    .select('*, profile:profiles(name, city)')
+    .select('*, profile:profiles(name, avatar_url)')
     .eq('id', id)
     .single()
 
   if (!data) return { title: 'Guia não encontrado — PaceHive' }
+
+  const title = `${data.profile?.name} — Guia em ${data.city} | PaceHive`
+  const description = data.bio ?? `Corra com ${data.profile?.name} em ${data.city}. Encontre guias locais na PaceHive.`
+  const image = data.profile?.avatar_url ?? '/images/og-default.png'
+
   return {
-    title: `${data.profile?.name} — Guia em ${data.city} | PaceHive`,
-    description: data.bio ?? `Corra com ${data.profile?.name} em ${data.city}.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [{ url: image, width: 1200, height: 630, alt: `${data.profile?.name} — PaceHive` }],
+      type: 'profile',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    },
   }
 }
 

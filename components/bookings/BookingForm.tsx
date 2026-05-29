@@ -4,10 +4,25 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { X, Loader2, CreditCard } from 'lucide-react'
+import { X, Loader2, CreditCard, Calendar } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import type { Guide, Profile } from '@/types'
+import type { Guide, Profile, GuideAvailability } from '@/types'
 import TermsModal from './TermsModal'
+
+const DAY_LABELS: Record<string, string> = {
+  mon: 'Seg', tue: 'Ter', wed: 'Qua', thu: 'Qui', fri: 'Sex', sat: 'Sáb', sun: 'Dom',
+}
+const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+const PERIOD_LABELS: Record<string, string> = {
+  morning: 'Manhã', afternoon: 'Tarde', evening: 'Noite',
+}
+
+function formatAvailability(av: GuideAvailability): string {
+  const days = DAY_ORDER.filter((d) => av.days.includes(d)).map((d) => DAY_LABELS[d]).join(', ')
+  const periods = av.periods.map((p) => PERIOD_LABELS[p]).join(', ')
+  const parts = [days, periods].filter(Boolean)
+  return parts.join(' · ')
+}
 
 const schema = z.object({
   city: z.string().min(2, 'Informe a cidade'),
@@ -113,6 +128,20 @@ export default function BookingForm({ guide, onClose }: Props) {
             </div>
           )}
 
+          {/* Guide availability hint */}
+          {guide.availability && (guide.availability.days.length > 0 || guide.availability.periods.length > 0) && (
+            <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <Calendar size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-blue-800">Disponibilidade do guia</p>
+                <p className="text-xs text-blue-700 mt-0.5">{formatAvailability(guide.availability)}</p>
+                {guide.availability.notes && (
+                  <p className="text-xs text-blue-600 mt-1 leading-relaxed">{guide.availability.notes}</p>
+                )}
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Data *</label>
@@ -164,7 +193,10 @@ export default function BookingForm({ guide, onClose }: Props) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Distância (km)</label>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
+                Distância (km)
+                <span className="text-[#6B6B6B] font-normal ml-1">opcional</span>
+              </label>
               <input
                 type="number"
                 step="0.1"
@@ -173,15 +205,20 @@ export default function BookingForm({ guide, onClose }: Props) {
                 placeholder="Ex: 10"
                 className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
               />
+              <p className="text-xs text-[#6B6B6B] mt-1">Distância total planejada</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Ritmo (min/km)</label>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
+                Ritmo atual
+                <span className="text-[#6B6B6B] font-normal ml-1">opcional</span>
+              </label>
               <input
                 type="text"
                 {...register('pace')}
                 placeholder="Ex: 6:30"
                 className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
               />
+              <p className="text-xs text-[#6B6B6B] mt-1">Seu ritmo médio em min/km</p>
             </div>
           </div>
 

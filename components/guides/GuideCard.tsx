@@ -12,7 +12,19 @@ const modalityLabels: Record<string, string> = {
   virtual: 'Virtual',
 }
 
+const runTypeLabels: Record<string, string> = {
+  road: 'Asfalto',
+  trail: 'Trilha',
+  track: 'Pista',
+  beach: 'Praia',
+  mountain: 'Montanha',
+  urban: 'Urbano',
+}
+
 export default function GuideCard({ guide }: Props) {
+  const visibleRunTypes = guide.run_types.slice(0, 3)
+  const extraRunTypes = guide.run_types.length - 3
+
   return (
     <Link href={`/guias/${guide.id}`} className="group block">
       <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
@@ -66,12 +78,17 @@ export default function GuideCard({ guide }: Props) {
 
         {/* Info */}
         <div className="p-4">
-          <h3 className="font-bold text-[#1A1A1A] text-base mb-2 truncate">
+          <h3 className="font-bold text-[#1A1A1A] text-base mb-1.5 truncate">
             {guide.profile.name}
           </h3>
 
+          {/* Bio preview */}
+          {guide.bio && (
+            <p className="text-xs text-[#6B6B6B] leading-relaxed mb-2 line-clamp-1">{guide.bio}</p>
+          )}
+
           {/* Modality badges */}
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <div className="flex flex-wrap gap-1.5 mb-2">
             {guide.modality.map((m) => (
               <span
                 key={m}
@@ -81,6 +98,22 @@ export default function GuideCard({ guide }: Props) {
               </span>
             ))}
           </div>
+
+          {/* Run types */}
+          {visibleRunTypes.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {visibleRunTypes.map((rt) => (
+                <span key={rt} className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2 py-0.5">
+                  {runTypeLabels[rt] ?? rt}
+                </span>
+              ))}
+              {extraRunTypes > 0 && (
+                <span className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2 py-0.5">
+                  +{extraRunTypes}
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Rating & runs */}
           <div className="flex items-center justify-between text-sm text-[#6B6B6B]">

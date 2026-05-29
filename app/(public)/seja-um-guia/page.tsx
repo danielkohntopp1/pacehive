@@ -32,7 +32,7 @@ export default function SejaUmGuiaPage() {
             e responsabilidade com quem vai confiar na sua liderança.
           </p>
           <Link
-            href="/cadastro/guia"
+            href="/cadastro?guide=true"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#F5A623] text-black font-bold rounded-full hover:bg-[#E09510] transition-colors text-base shadow-lg shadow-[#F5A623]/20"
           >
             Quero ser guia agora
@@ -198,7 +198,7 @@ export default function SejaUmGuiaPage() {
             Leva menos de 5 minutos para criar seu perfil e começar a receber pedidos.
           </p>
           <Link
-            href="/cadastro/guia"
+            href="/cadastro?guide=true"
             className="inline-flex items-center gap-2 px-10 py-4 bg-[#0A0A0A] text-white font-bold rounded-full hover:bg-[#1A1A1A] transition-colors text-base"
           >
             Criar meu perfil de guia
