@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X } from 'lucide-react'
+import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X, Compass } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 interface Profile {
@@ -67,6 +67,15 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
             <LayoutDashboard size={17} className="text-[#6B6B6B]" />
             Painel do guia
           </Link>
+        )}
+        {profile?.role === 'runner' && (
+          <div className="pt-2 mt-2 border-t border-[#E5E5E5]">
+            <Link href="/cadastro/guia" onClick={onClose}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#F5A623] hover:bg-[#FEF3DC] transition-colors">
+              <Compass size={17} className="text-[#F5A623]" />
+              Seja um guia
+            </Link>
+          </div>
         )}
       </nav>
 

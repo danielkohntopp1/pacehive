@@ -27,7 +27,7 @@ export async function proxy(request: NextRequest) {
 
   const path = request.nextUrl.pathname + request.nextUrl.search
 
-  const protectedPaths = ['/dashboard', '/guia']
+  const protectedPaths = ['/dashboard', '/guia', '/cadastro/guia']
   const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
 
   if (isProtected && !user) {
@@ -42,6 +42,10 @@ export async function proxy(request: NextRequest) {
   const authPaths = ['/login', '/cadastro']
   const isAuthPage = authPaths.some(p => request.nextUrl.pathname === p)
   if (isAuthPage && user) {
+    // If the user is trying to become a guide, send them straight to /cadastro/guia
+    if (request.nextUrl.pathname === '/cadastro' && request.nextUrl.searchParams.get('guide') === 'true') {
+      return NextResponse.redirect(new URL('/cadastro/guia', request.url))
+    }
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
