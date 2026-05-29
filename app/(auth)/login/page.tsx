@@ -117,8 +117,11 @@ function LoginForm() {
         <div className="mt-6 text-center space-y-2">
           <p className="text-sm text-[#6B6B6B]">
             Não tem conta?{' '}
-            <Link href="/cadastro" className="text-[#F5A623] font-semibold hover:underline">
-              Cadastre-se
+            <Link
+              href={redirect === '/cadastro/guia' ? '/cadastro?guide=true' : '/cadastro'}
+              className="text-[#F5A623] font-semibold hover:underline"
+            >
+              {redirect === '/cadastro/guia' ? 'Cadastre-se como guia' : 'Cadastre-se'}
             </Link>
           </p>
         </div>

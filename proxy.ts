@@ -31,6 +31,10 @@ export async function proxy(request: NextRequest) {
   const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
 
   if (isProtected && !user) {
+    // /cadastro/guia requires a runner account first — send to signup with guide intent
+    if (request.nextUrl.pathname.startsWith('/cadastro/guia')) {
+      return NextResponse.redirect(new URL('/cadastro?guide=true', request.url))
+    }
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     url.search = ''
