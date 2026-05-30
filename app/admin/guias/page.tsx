@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { toggleGuideActive, removeGuideProfile } from '../actions'
+import ConfirmForm from '@/components/admin/ConfirmForm'
 import type { Guide, Profile } from '@/types'
 
 export default async function AdminGuiasPage() {
@@ -75,15 +76,13 @@ export default async function AdminGuiasPage() {
                     </Link>
 
                     {/* Remove guide profile */}
-                    <form action={removeGuideProfile} onSubmit={(e) => {
-                      if (!confirm(`Remover perfil de guia de ${guide.profile?.name}? O usuário continuará como corredor.`)) e.preventDefault()
-                    }}>
-                      <input type="hidden" name="id" value={guide.id} />
-                      <button type="submit"
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
-                        Remover guia
-                      </button>
-                    </form>
+                    <ConfirmForm
+                      action={removeGuideProfile}
+                      confirmMessage={`Remover perfil de guia de ${guide.profile?.name}? O usuário continuará como corredor.`}
+                      hiddenFields={{ id: guide.id }}
+                      buttonLabel="Remover guia"
+                      buttonClass="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                    />
                   </div>
                 </td>
               </tr>

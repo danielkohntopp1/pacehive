@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { toggleBanUser, deleteUser } from '../actions'
+import ConfirmForm from '@/components/admin/ConfirmForm'
 import type { Profile } from '@/types'
 
 const roleLabels: Record<string, string> = {
@@ -91,15 +92,13 @@ export default async function AdminCorredoresPage() {
                     </form>
 
                     {/* Delete */}
-                    <form action={deleteUser} onSubmit={(e) => {
-                      if (!confirm(`Excluir permanentemente a conta de ${profile.name}? Esta ação não pode ser desfeita.`)) e.preventDefault()
-                    }}>
-                      <input type="hidden" name="id" value={profile.id} />
-                      <button type="submit"
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
-                        Excluir
-                      </button>
-                    </form>
+                    <ConfirmForm
+                      action={deleteUser}
+                      confirmMessage={`Excluir permanentemente a conta de ${profile.name}? Esta ação não pode ser desfeita.`}
+                      hiddenFields={{ id: profile.id }}
+                      buttonLabel="Excluir"
+                      buttonClass="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                    />
                   </div>
                 </td>
               </tr>
