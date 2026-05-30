@@ -12,6 +12,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
     supabase.from('notifications').select('*', { count: 'exact', head: true }).eq('user_id', user.id).eq('is_read', false),
   ])
 
+  if (profile?.is_banned) redirect('/conta-suspensa')
+
   const handleSignOut = async () => {
     'use server'
     const { createClient: createServerClient } = await import('@/lib/supabase/server')

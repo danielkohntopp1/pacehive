@@ -11,6 +11,7 @@ export default async function GuiaDashboardLayout({ children }: { children: Reac
     supabase.from('profiles').select('*').eq('id', user.id).single(),
     supabase.from('notifications').select('*', { count: 'exact', head: true }).eq('user_id', user.id).eq('is_read', false),
   ])
+  if (profile?.is_banned) redirect('/conta-suspensa')
   if (!profile || (profile.role !== 'guide' && profile.role !== 'both')) {
     redirect('/cadastro/guia')
   }

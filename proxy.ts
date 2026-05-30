@@ -27,7 +27,14 @@ export async function proxy(request: NextRequest) {
 
   const path = request.nextUrl.pathname + request.nextUrl.search
 
-  const protectedPaths = ['/dashboard', '/guia', '/cadastro/guia']
+  const ADMIN_EMAIL = 'danielkohntopp@gmail.com'
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    if (!user || user.email !== ADMIN_EMAIL) {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+  }
+
+  const protectedPaths = ['/dashboard', '/guia', '/cadastro/guia', '/admin']
   const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
 
   if (isProtected && !user) {
