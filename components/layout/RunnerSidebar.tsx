@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X, Compass } from 'lucide-react'
+import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X, Compass, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 interface Profile {
@@ -74,6 +74,15 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#F5A623] hover:bg-[#FEF3DC] transition-colors">
               <Compass size={17} className="text-[#F5A623]" />
               Seja um guia
+            </Link>
+          </div>
+        )}
+        {profile?.email === 'danielkohntopp@gmail.com' && (
+          <div className="pt-2 mt-2 border-t border-[#E5E5E5]">
+            <Link href="/admin" onClick={onClose}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#1A1A1A] hover:bg-[#F9F5EE] transition-colors">
+              <ShieldCheck size={17} className="text-[#6B6B6B]" />
+              Admin
             </Link>
           </div>
         )}
