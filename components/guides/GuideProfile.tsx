@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import {
-  MapPin, Star, Users, Globe, ExternalLink, Award,
+  MapPin, Star, Users, ExternalLink, Award,
   CheckCircle2, Clock, Languages, Activity, Timer, TrendingUp
 } from 'lucide-react'
 import type { Guide, Profile, Review, GuideAvailability } from '@/types'
@@ -186,36 +186,42 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
             )}
 
             {/* Social links */}
-            <div className="flex items-center gap-3 mb-6">
-              {guide.strava_url && (
-                <a href={guide.strava_url} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-sm text-[#6B6B6B] hover:text-[#F5A623] transition-colors">
-                  <Globe size={14} />
-                  Strava
-                </a>
-              )}
-              {guide.instagram_url && (
+            {guide.instagram_url && (
+              <div className="flex items-center gap-3 mb-6">
                 <a href={guide.instagram_url} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1.5 text-sm text-[#6B6B6B] hover:text-[#F5A623] transition-colors">
                   <ExternalLink size={14} />
                   Instagram
                 </a>
-              )}
-            </div>
+              </div>
+            )}
 
-            {/* Strava stats */}
+            {/* Strava verified block */}
             {guide.strava_stats && (
               <div className="bg-[#FFF4EE] border border-[#FC4C02]/20 rounded-xl p-4 mb-6">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg viewBox="0 0 24 24" fill="#FC4C02" className="w-4 h-4"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169" /></svg>
-                  <span className="text-xs font-bold text-[#FC4C02] uppercase tracking-wide">Dados verificados · Strava</span>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-1.5">
+                    <svg viewBox="0 0 24 24" fill="#FC4C02" className="w-4 h-4"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169" /></svg>
+                    <span className="text-xs font-bold text-[#FC4C02] uppercase tracking-wide">Dados verificados · Strava</span>
+                  </div>
+                  {guide.strava_url && (
+                    <a
+                      href={guide.strava_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-xs font-semibold text-[#FC4C02] hover:underline"
+                    >
+                      Ver perfil
+                      <ExternalLink size={11} />
+                    </a>
+                  )}
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   {guide.strava_stats.ytd_run_distance > 0 && (
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center gap-1 text-[#FC4C02]">
                         <TrendingUp size={13} />
-                        <span className="text-xs text-[#6B6B6B]">km em 2025</span>
+                        <span className="text-xs text-[#6B6B6B]">km em {new Date().getFullYear()}</span>
                       </div>
                       <span className="font-bold text-[#1A1A1A] text-sm">{formatDistance(guide.strava_stats.ytd_run_distance)}</span>
                     </div>

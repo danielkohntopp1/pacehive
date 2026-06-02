@@ -1,8 +1,21 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Users, Map, Star, ArrowRight, Route, Timer, Trophy } from 'lucide-react'
+import { Users, Map, Star, ArrowRight, Route, Timer, Trophy, ShieldCheck, Clock, MessageSquare } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
+import GuideCard from '@/components/guides/GuideCard'
+import type { Guide, Profile } from '@/types'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient()
+  const { data: featuredGuides } = await supabase
+    .from('guides')
+    .select('*, profile:profiles(*)')
+    .eq('is_active', true)
+    .order('rating_avg', { ascending: false })
+    .limit(3)
+
+  const guides = (featuredGuides ?? []) as (Guide & { profile: Profile })[]
+
   return (
     <>
       {/* ── HERO ── */}
@@ -47,24 +60,59 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Stats */}
-          <div className="border-t border-white/10 pt-10 grid grid-cols-3 gap-4 max-w-sm mx-auto">
+          {/* Value props */}
+          <div className="border-t border-white/10 pt-10 flex flex-wrap justify-center gap-6">
             {[
-              { value: '50+', label: 'Guias ativos' },
-              { value: '20+', label: 'Cidades' },
-              { value: '500+', label: 'Corridas' },
-            ].map(({ value, label }) => (
-              <div key={label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-extrabold text-[#F5A623]">{value}</div>
-                <div className="text-xs text-white/40 mt-1 font-medium">{label}</div>
+              { icon: ShieldCheck, label: 'Guias verificados' },
+              { icon: Clock, label: 'Resposta em até 24h' },
+              { icon: MessageSquare, label: 'Avaliações reais' },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-2 text-white/60 text-sm">
+                <Icon size={15} className="text-[#F5A623] flex-shrink-0" />
+                {label}
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* ── GUIAS EM DESTAQUE ── */}
+      {guides.length > 0 && (
+        <section className="bg-[#F9F5EE] py-20 px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-2">Conheça os guias</p>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A]">Prontos para correr com você</h2>
+              </div>
+              <Link
+                href="/guias"
+                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#F5A623] hover:gap-3 transition-all"
+              >
+                Ver todos <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {guides.map((guide) => (
+                <GuideCard key={guide.id} guide={guide} />
+              ))}
+            </div>
+
+            <div className="mt-8 text-center sm:hidden">
+              <Link
+                href="/guias"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#1A1A1A] text-white font-semibold rounded-full text-sm"
+              >
+                Ver todos os guias <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── COMO FUNCIONA ── */}
-      <section className="bg-[#F9F5EE] py-24 px-4">
+      <section className="bg-white py-24 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">Como funciona</p>
@@ -125,7 +173,7 @@ export default function HomePage() {
       </section>
 
       {/* ── SERVIÇOS ── */}
-      <section className="bg-white py-24 px-4">
+      <section className="bg-[#F9F5EE] py-24 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">O que oferecemos</p>

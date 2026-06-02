@@ -36,13 +36,14 @@ export async function updateGuide(formData: FormData) {
 export async function removeGuideProfile(formData: FormData) {
   const id = formData.get('id') as string
   const supabase = await createAdminClient()
-  // Cancel pending bookings before removing
+  // Cancel active bookings (pending and accepted) before removing
   await supabase.from('bookings')
     .update({ status: 'cancelled' })
     .eq('guide_id', id)
-    .eq('status', 'pending')
-  // Delete guide record — profile remains as runner
-  await supabase.from('guides').delete().eq('id', id)
+    .in('status', ['pending', 'accepted'])
+  // Delete guide record — guide_id in historical bookings will be SET NULL via FK cascade
+  const { error } = await supabase.from('guides').delete().eq('id', id)
+  if (error) throw new Error(`Erro ao remover guia: ${error.message}`)
   // Downgrade role to runner
   await supabase.from('profiles').update({ role: 'runner' }).eq('id', id)
   revalidatePath('/admin/guias')

@@ -51,10 +51,13 @@ export async function GET(request: Request) {
       }).eq('user_id', user.id)
     })
 
-    await Promise.all([
-      admin.from('guides').update({ strava_stats: stravaStats, updated_at: new Date().toISOString() }).eq('id', user.id),
-      admin.from('profiles').update({ strava_stats: stravaStats, updated_at: new Date().toISOString() }).eq('id', user.id),
-    ])
+    const stravaProfileUrl = `https://www.strava.com/athletes/${tokens.athlete.id}`
+
+    await admin.from('guides').update({
+      strava_stats: stravaStats,
+      strava_url: stravaProfileUrl,
+      updated_at: new Date().toISOString(),
+    }).eq('id', user.id)
   } catch (err) {
     console.error('Strava callback error:', err)
     return NextResponse.redirect(`${requestOrigin}${returnTo}?strava=error`)

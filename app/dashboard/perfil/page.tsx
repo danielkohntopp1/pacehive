@@ -7,8 +7,7 @@ import { z } from 'zod'
 import { Camera, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
-import type { Profile, StravaStats } from '@/types'
-import StravaConnectCard from '@/components/strava/StravaConnectCard'
+import type { Profile } from '@/types'
 
 const schema = z.object({
   name: z.string().min(2, 'Nome muito curto'),
@@ -20,7 +19,6 @@ type FormData = z.infer<typeof schema>
 
 export default function RunnerProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null)
-  const [stravaStats, setStravaStats] = useState<StravaStats | null>(null)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
@@ -40,7 +38,6 @@ export default function RunnerProfilePage() {
         if (data) {
           setProfile(data as Profile)
           setAvatarUrl(data.avatar_url ?? null)
-          setStravaStats((data.strava_stats as StravaStats) ?? null)
           reset({ name: data.name, phone: data.phone, language: data.language })
         }
       })
@@ -115,8 +112,6 @@ export default function RunnerProfilePage() {
         <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Meu perfil</h1>
         <p className="text-[#6B6B6B] text-sm mt-1">Suas informações pessoais e preferências</p>
       </div>
-
-      <StravaConnectCard stravaStats={stravaStats} origin="/dashboard/perfil" />
 
       {/* Avatar */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
