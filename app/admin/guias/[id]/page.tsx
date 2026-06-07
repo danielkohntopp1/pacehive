@@ -110,7 +110,7 @@ export default async function AdminEditGuiaPage({ params }: Props) {
             </label>
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Valor (R$)</label>
-              <input type="number" name="price_brl" defaultValue={guide.price_brl ?? ''} step="10" min="0" className={inputClass} />
+              <input type="number" name="price_brl" defaultValue={guide.price_brl ?? ''} step="1" min="0" className={inputClass} />
             </div>
           </div>
 

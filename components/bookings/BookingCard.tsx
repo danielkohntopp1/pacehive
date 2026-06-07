@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Calendar, Clock, MapPin, ChevronRight } from 'lucide-react'
+import { Calendar, Clock, MapPin, ChevronRight, MessageCircle } from 'lucide-react'
 import type { Booking } from '@/types'
 import BookingStatus from './BookingStatus'
 import { formatDate } from '@/lib/utils'
@@ -20,9 +20,15 @@ export default function BookingCard({ booking, variant }: Props) {
 
   const counterpartLabel = variant === 'runner' ? 'Guia' : 'Corredor'
 
+  const isAccepted = booking.status === 'accepted'
+
   return (
-    <Link href={href}>
-      <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm hover:shadow-md hover:border-[#F5A623]/30 transition-all duration-200 p-5">
+    <Link href={isAccepted ? `${href}?tab=chat` : href}>
+      <div className={`bg-white rounded-2xl border shadow-sm hover:shadow-md transition-all duration-200 p-5 ${
+        isAccepted
+          ? 'border-[#F5A623]/50 ring-1 ring-[#F5A623]/20 hover:border-[#F5A623]'
+          : 'border-[#E5E5E5] hover:border-[#F5A623]/30'
+      }`}>
         <div className="flex items-center gap-3">
           {/* Avatar */}
           <div className="w-10 h-10 rounded-full bg-[#F5A623] flex items-center justify-center text-black font-bold text-sm flex-shrink-0">
@@ -53,6 +59,13 @@ export default function BookingCard({ booking, variant }: Props) {
                 <span className="truncate">{booking.city}</span>
               </div>
             </div>
+
+            {isAccepted && (
+              <div className="mt-2.5 flex items-center gap-1.5 text-[#F5A623]">
+                <MessageCircle size={13} className="fill-[#F5A623]/20" />
+                <span className="text-xs font-semibold">Chat disponível — combine os detalhes</span>
+              </div>
+            )}
           </div>
 
           {/* Arrow */}

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X, Compass, ShieldCheck } from 'lucide-react'
+import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X, Compass, ShieldCheck, Users, Calendar, Star } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 interface Profile {
@@ -23,6 +23,7 @@ interface Props {
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Meus pedidos', exact: true },
   { href: '/dashboard/novo-pedido', icon: PlusCircle, label: 'Nova solicitação', exact: false },
+  { href: '/dashboard/grupos', icon: Users, label: 'Meus grupos', exact: false },
   { href: '/dashboard/notificacoes', icon: Bell, label: 'Notificações', exact: false },
   { href: '/dashboard/perfil', icon: User, label: 'Meu perfil', exact: false },
 ]
@@ -43,6 +44,11 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
       </div>
 
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+
+        {/* ── Área do corredor ── */}
+        <p className="px-3 pt-1 pb-1 text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">
+          Corredor
+        </p>
         {navItems.map(({ href, icon: Icon, label, exact }) => {
           const active = exact ? pathname === href : pathname.startsWith(href)
           const isNotif = href === '/dashboard/notificacoes'
@@ -61,15 +67,36 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
             </Link>
           )
         })}
+
+        {/* ── Área do guia ── */}
         {(profile?.role === 'guide' || profile?.role === 'both') && (
-          <Link href="/guia/dashboard" onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-[#1A1A1A] hover:bg-[#F9F5EE] transition-colors">
-            <LayoutDashboard size={17} className="text-[#6B6B6B]" />
-            Painel do guia
-          </Link>
+          <div className="pt-3 mt-2 border-t border-[#E5E5E5] space-y-1">
+            <p className="px-3 pt-1 pb-1 text-[10px] font-bold text-[#F5A623] uppercase tracking-widest">
+              Guia
+            </p>
+            {[
+              { href: '/guia/dashboard', icon: LayoutDashboard, label: 'Pedidos recebidos' },
+              { href: '/guia/disponibilidade', icon: Calendar, label: 'Disponibilidade' },
+              { href: '/guia/perfil', icon: User, label: 'Perfil de guia' },
+              { href: '/guia/avaliacoes', icon: Star, label: 'Avaliações' },
+            ].map(({ href, icon: Icon, label }) => {
+              const active = pathname.startsWith(href)
+              return (
+                <Link key={href} href={href} onClick={onClose}
+                  className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                    active ? 'bg-[#FEF3DC] text-[#1A1A1A]' : 'text-[#1A1A1A] hover:bg-[#F9F5EE]'
+                  }`}>
+                  <Icon size={17} className={active ? 'text-[#F5A623]' : 'text-[#6B6B6B]'} />
+                  {label}
+                </Link>
+              )
+            })}
+          </div>
         )}
+
+        {/* ── CTA "Seja um guia" (só para runners puros) ── */}
         {profile?.role === 'runner' && (
-          <div className="pt-2 mt-2 border-t border-[#E5E5E5]">
+          <div className="pt-3 mt-2 border-t border-[#E5E5E5]">
             <Link href="/cadastro/guia" onClick={onClose}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#F5A623] hover:bg-[#FEF3DC] transition-colors">
               <Compass size={17} className="text-[#F5A623]" />
@@ -77,8 +104,10 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
             </Link>
           </div>
         )}
+
+        {/* ── Admin ── */}
         {profile?.email === 'danielkohntopp@gmail.com' && (
-          <div className="pt-2 mt-2 border-t border-[#E5E5E5]">
+          <div className="pt-3 mt-2 border-t border-[#E5E5E5]">
             <Link href="/admin" onClick={onClose}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#1A1A1A] hover:bg-[#F9F5EE] transition-colors">
               <ShieldCheck size={17} className="text-[#6B6B6B]" />

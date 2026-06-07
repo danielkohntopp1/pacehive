@@ -115,6 +115,9 @@ function LoginForm() {
         </form>
 
         <div className="mt-6 text-center space-y-2">
+          <Link href="/forgot-password" className="block text-sm text-[#6B6B6B] hover:text-[#F5A623] transition-colors">
+            Esqueceu a senha?
+          </Link>
           <p className="text-sm text-[#6B6B6B]">
             Não tem conta?{' '}
             <Link

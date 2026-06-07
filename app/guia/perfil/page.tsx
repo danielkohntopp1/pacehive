@@ -325,7 +325,7 @@ export default function GuiaPerfilPage() {
             {isPaid && (
               <div>
                 <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Valor por corrida (R$) *</label>
-                <input type="number" step="10" min="1" {...register('price_brl')} className={inputClass} />
+                <input type="number" step="1" min="1" {...register('price_brl')} className={inputClass} />
                 {errors.price_brl && <p className="text-xs text-red-500 mt-1">{errors.price_brl.message}</p>}
               </div>
             )}

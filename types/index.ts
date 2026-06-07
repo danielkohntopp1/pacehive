@@ -103,13 +103,21 @@ export interface Group {
   city: string
   state?: string
   country: string
+  description?: string
+  modality: string[]
+  level: string
   is_free: boolean
+  price_info?: string
   meeting_place?: string
   meeting_time?: string
   meeting_days: string[]
+  pace_range?: string
+  distance_range?: string
+  needs_registration: boolean
   how_to_join?: string
   contact?: string
   instagram_url?: string
   is_active: boolean
+  created_by?: string
   created_at: string
 }

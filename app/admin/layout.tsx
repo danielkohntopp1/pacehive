@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Image from 'next/image'
-import { LayoutDashboard, Users, Compass, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, Compass, LogOut, UsersRound } from 'lucide-react'
 
 const ADMIN_EMAIL = 'danielkohntopp@gmail.com'
 
@@ -10,6 +10,7 @@ const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/guias', label: 'Guias', icon: Compass, exact: false },
   { href: '/admin/corredores', label: 'Corredores', icon: Users, exact: false },
+  { href: '/admin/grupos', label: 'Grupos', icon: UsersRound, exact: false },
 ]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

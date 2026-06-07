@@ -43,6 +43,12 @@ export default function RunnerBookingPage() {
   const [activeTab, setActiveTab] = useState<'details' | 'chat'>('details')
 
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('tab') === 'chat') {
+      setActiveTab('chat')
+    }
+  }, [])
+
+  useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(async ({ data: { user } }) => {
       if (!user) return

@@ -30,6 +30,7 @@ type PriceFilter = 'all' | 'free' | 'paid'
 type ModalityFilter = 'all' | 'presential' | 'virtual'
 
 interface Filters {
+  city: string
   modality: ModalityFilter
   price: PriceFilter
   runTypes: string[]
@@ -38,6 +39,7 @@ interface Filters {
 }
 
 const defaultFilters = (): Filters => ({
+  city: '',
   modality: 'all',
   price: 'all',
   runTypes: [],
@@ -47,6 +49,7 @@ const defaultFilters = (): Filters => ({
 
 function countActiveFilters(f: Filters) {
   let n = 0
+  if (f.city !== '') n++
   if (f.modality !== 'all') n++
   if (f.price !== 'all') n++
   if (f.runTypes.length > 0) n++
@@ -59,6 +62,11 @@ export default function GuideList({ guides }: Props) {
   const [search, setSearch] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState<Filters>(defaultFilters())
+
+  const cities = useMemo(() => {
+    const unique = [...new Set(guides.map(g => g.city))].sort()
+    return unique
+  }, [guides])
 
   const activeFilterCount = countActiveFilters(filters)
 
@@ -88,6 +96,7 @@ export default function GuideList({ guides }: Props) {
           g.country.toLowerCase().includes(q)
         if (!matches) return false
       }
+      if (filters.city !== '' && g.city !== filters.city) return false
       if (filters.modality !== 'all' && !g.modality.includes(filters.modality)) return false
       if (filters.price === 'free' && g.is_paid) return false
       if (filters.price === 'paid' && !g.is_paid) return false
@@ -140,6 +149,23 @@ export default function GuideList({ guides }: Props) {
               </button>
             )}
           </div>
+
+          {/* Cidade */}
+          {cities.length > 1 && (
+            <div className="mb-4">
+              <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">Cidade</p>
+              <div className="flex gap-2 flex-wrap">
+                <button onClick={() => setFilters((f) => ({ ...f, city: '' }))} className={chipClass(filters.city === '')}>
+                  Todas
+                </button>
+                {cities.map((city) => (
+                  <button key={city} onClick={() => setFilters((f) => ({ ...f, city }))} className={chipClass(filters.city === city)}>
+                    {city}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Modalidade */}
           <div className="mb-4">

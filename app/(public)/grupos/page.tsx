@@ -11,11 +11,10 @@ export const metadata: Metadata = {
 export default async function GruposPage() {
   const supabase = await createClient()
 
-  const { data: groups } = await supabase
-    .from('groups')
-    .select('*')
-    .eq('is_active', true)
-    .order('city', { ascending: true })
+  const [{ data: groups }, { data: { user } }] = await Promise.all([
+    supabase.from('groups').select('*').eq('is_active', true).order('city', { ascending: true }),
+    supabase.auth.getUser(),
+  ])
 
   const groupList = (groups ?? []) as Group[]
 
@@ -47,7 +46,7 @@ export default async function GruposPage() {
       {/* List */}
       <section className="bg-[#F9F5EE] py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <GroupList groups={groupList} />
+          <GroupList groups={groupList} userLoggedIn={!!user} />
         </div>
       </section>
     </>

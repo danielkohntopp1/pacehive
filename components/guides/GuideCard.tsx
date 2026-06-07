@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { MapPin, Star, Users } from 'lucide-react'
+import { MapPin, Star, Users, DollarSign } from 'lucide-react'
 import type { Guide, Profile } from '@/types'
 
 interface Props {
@@ -62,18 +62,6 @@ export default function GuideCard({ guide }: Props) {
             </div>
           )}
 
-          {/* Price / free badge top-right */}
-          <div className="absolute top-3 right-3">
-            {guide.is_paid && guide.price_brl ? (
-              <span className="bg-black/70 backdrop-blur-sm text-white text-xs font-bold rounded-full px-2.5 py-1">
-                R$ {guide.price_brl.toFixed(0)}
-              </span>
-            ) : (
-              <span className="bg-green-500/90 backdrop-blur-sm text-white text-xs font-bold rounded-full px-2.5 py-1">
-                Gratuito
-              </span>
-            )}
-          </div>
         </div>
 
         {/* Info */}
@@ -116,7 +104,7 @@ export default function GuideCard({ guide }: Props) {
           )}
 
           {/* Rating & runs */}
-          <div className="flex items-center justify-between text-sm text-[#6B6B6B]">
+          <div className="flex items-center justify-between text-sm text-[#6B6B6B] mb-2.5">
             {guide.rating_count > 0 ? (
               <div className="flex items-center gap-1">
                 <Star size={13} className="text-[#F5A623] fill-[#F5A623]" />
@@ -131,6 +119,19 @@ export default function GuideCard({ guide }: Props) {
                 <Users size={12} />
                 <span className="text-xs">{guide.total_runs} corridas</span>
               </div>
+            )}
+          </div>
+
+          {/* Price row */}
+          <div className="border-t border-[#F9F5EE] pt-2.5 flex items-center gap-1.5">
+            <DollarSign size={13} className="text-[#F5A623]" />
+            {guide.is_paid && guide.price_brl ? (
+              <span className="text-sm font-bold text-[#1A1A1A]">
+                R$ {guide.price_brl.toFixed(0)}
+                <span className="text-xs font-normal text-[#6B6B6B] ml-1">/ corrida</span>
+              </span>
+            ) : (
+              <span className="text-sm font-bold text-green-600">Gratuito</span>
             )}
           </div>
         </div>

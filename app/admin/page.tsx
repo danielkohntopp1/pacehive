@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { Users, Compass, UserX, EyeOff } from 'lucide-react'
+import { Users, Compass, UserX, EyeOff, UsersRound } from 'lucide-react'
 
 export default async function AdminPage() {
   const supabase = await createAdminClient()
@@ -45,14 +45,14 @@ export default async function AdminPage() {
         ))}
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-3 gap-4">
         <Link href="/admin/guias" className="bg-white rounded-2xl border border-[#E5E5E5] p-6 hover:shadow-md transition-shadow flex items-center gap-4">
           <div className="w-12 h-12 bg-[#FEF3DC] rounded-2xl flex items-center justify-center flex-shrink-0">
             <Compass size={22} className="text-[#F5A623]" />
           </div>
           <div>
             <p className="font-bold text-[#1A1A1A]">Gerenciar guias</p>
-            <p className="text-sm text-[#6B6B6B]">Ativar, editar, remover perfis de guia</p>
+            <p className="text-sm text-[#6B6B6B]">Ativar, editar, remover perfis</p>
           </div>
           <span className="ml-auto text-[#6B6B6B]">→</span>
         </Link>
@@ -63,6 +63,16 @@ export default async function AdminPage() {
           <div>
             <p className="font-bold text-[#1A1A1A]">Gerenciar corredores</p>
             <p className="text-sm text-[#6B6B6B]">Banir, desbanir ou excluir contas</p>
+          </div>
+          <span className="ml-auto text-[#6B6B6B]">→</span>
+        </Link>
+        <Link href="/admin/grupos" className="bg-white rounded-2xl border border-[#E5E5E5] p-6 hover:shadow-md transition-shadow flex items-center gap-4">
+          <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center flex-shrink-0">
+            <UsersRound size={22} className="text-green-600" />
+          </div>
+          <div>
+            <p className="font-bold text-[#1A1A1A]">Gerenciar grupos</p>
+            <p className="text-sm text-[#6B6B6B]">Editar ou excluir grupos</p>
           </div>
           <span className="ml-auto text-[#6B6B6B]">→</span>
         </Link>
