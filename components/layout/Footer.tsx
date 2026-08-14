@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ExternalLink, Mail } from 'lucide-react'
+import { Mail } from 'lucide-react'
 
 const links = [
   { href: '/', label: 'Home' },
@@ -31,10 +31,16 @@ export default function Footer() {
                 href="https://www.instagram.com/pacehiveoficial"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#F5A623] hover:text-black transition-all duration-200"
+                className="group w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#F5A623] transition-all duration-200"
                 aria-label="Instagram"
               >
-                <ExternalLink size={16} />
+                <Image
+                  src="/images/icons/instagram.webp"
+                  alt="Instagram"
+                  width={16}
+                  height={16}
+                  className="invert group-hover:invert-0 transition-all duration-200"
+                />
               </a>
               <a
                 href="mailto:contato@pacehive.com"
