@@ -28,7 +28,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://instagram.com/pacehive"
+                href="https://www.instagram.com/pacehiveoficial"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#F5A623] hover:text-black transition-all duration-200"
