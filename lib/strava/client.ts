@@ -21,6 +21,10 @@ export interface StravaStats {
 
 const BASE = 'https://www.strava.com/api/v3'
 
+// Enquanto o app aguarda aprovação oficial do Strava, apenas um número
+// limitado de contas pode se conectar (contas de teste do app não-aprovado).
+export const STRAVA_ACCOUNT_LIMIT = 10
+
 export async function exchangeStravaCode(code: string): Promise<StravaTokens> {
   const res = await fetch('https://www.strava.com/oauth/token', {
     method: 'POST',

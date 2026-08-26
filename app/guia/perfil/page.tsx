@@ -70,6 +70,7 @@ type FormData = z.infer<typeof schema>
 export default function GuiaPerfilPage() {
   const [guide, setGuide] = useState<Guide | null>(null)
   const [stravaStats, setStravaStats] = useState<StravaStats | null>(null)
+  const [stravaLimitReached, setStravaLimitReached] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
@@ -95,6 +96,13 @@ export default function GuiaPerfilPage() {
       setValue(field, [...current, value], { shouldValidate: true })
     }
   }
+
+  useEffect(() => {
+    fetch('/api/strava/status')
+      .then((res) => res.json())
+      .then((data) => setStravaLimitReached(!!data.limitReached))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     const supabase = createClient()
@@ -191,7 +199,7 @@ export default function GuiaPerfilPage() {
         <p className="text-[#6B6B6B] text-sm mt-1">Estas informações são exibidas para corredores que buscam guias</p>
       </div>
 
-      <StravaConnectCard stravaStats={stravaStats} origin="/guia/perfil" />
+      <StravaConnectCard stravaStats={stravaStats} origin="/guia/perfil" limitReached={stravaLimitReached} />
 
       {/* Avatar */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
