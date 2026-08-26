@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { Loader2, Unlink } from 'lucide-react'
 import { formatPace, formatDistance, formatLastActivity } from '@/lib/strava/client'
 import type { StravaStats } from '@/types'
@@ -14,15 +14,22 @@ interface Props {
 
 export default function StravaConnectCard({ stravaStats, origin, limitReached = false }: Props) {
   const [disconnecting, setDisconnecting] = useState(false)
-  const router = useRouter()
+  const [disconnectError, setDisconnectError] = useState(false)
   const searchParams = useSearchParams()
   const status = searchParams.get('strava')
 
   const handleDisconnect = async () => {
     if (!confirm('Desconectar o Strava? Seus dados serão removidos do perfil.')) return
     setDisconnecting(true)
-    await fetch('/api/strava/disconnect', { method: 'POST' })
-    router.refresh()
+    setDisconnectError(false)
+    try {
+      const res = await fetch('/api/strava/disconnect', { method: 'POST' })
+      if (!res.ok) throw new Error('failed')
+      window.location.reload()
+    } catch {
+      setDisconnecting(false)
+      setDisconnectError(true)
+    }
   }
 
   return (
@@ -88,6 +95,9 @@ export default function StravaConnectCard({ stravaStats, origin, limitReached = 
             {disconnecting ? <Loader2 size={14} className="animate-spin" /> : <Unlink size={14} />}
             Desconectar Strava
           </button>
+          {disconnectError && (
+            <p className="text-xs text-red-500 mt-1.5">Erro ao desconectar. Tente novamente.</p>
+          )}
         </div>
       ) : (
         <div>
