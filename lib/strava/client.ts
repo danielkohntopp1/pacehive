@@ -79,7 +79,7 @@ export async function fetchStravaStats(
     fetch(`${BASE}/athletes/${connection.strava_athlete_id}/stats`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-    fetch(`${BASE}/athlete/activities?per_page=20&after=${Math.floor(Date.now() / 1000) - 90 * 86400}`, {
+    fetch(`${BASE}/athlete/activities?per_page=20&before=${Math.floor(Date.now() / 1000)}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
   ])
@@ -87,9 +87,10 @@ export async function fetchStravaStats(
   const stats = statsRes.ok ? await statsRes.json() : null
   const activities = activitiesRes.ok ? await activitiesRes.json() : []
 
-  const runs: { distance: number; moving_time: number; start_date: string }[] = Array.isArray(activities)
+  const runs: { distance: number; moving_time: number; start_date: string }[] = (Array.isArray(activities)
     ? activities.filter((a: { type: string }) => a.type === 'Run')
     : []
+  ).sort((a, b) => new Date(b.start_date).getTime() - new Date(a.start_date).getTime())
 
   let avgPace: number | null = null
   if (runs.length > 0) {
@@ -130,7 +131,8 @@ export function formatLastActivity(dateStr: string): string {
   if (days === 1) return 'ontem'
   if (days < 7) return `há ${days} dias`
   if (days < 30) return `há ${Math.floor(days / 7)} semana${Math.floor(days / 7) > 1 ? 's' : ''}`
-  return `há ${Math.floor(days / 30)} meses`
+  const months = Math.floor(days / 30)
+  return `há ${months} ${months === 1 ? 'mês' : 'meses'}`
 }
 
 export function buildStravaAuthUrl(redirectUri: string): string {
