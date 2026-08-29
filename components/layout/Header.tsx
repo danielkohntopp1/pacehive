@@ -84,7 +84,7 @@ export default function Header() {
                 }`}
               >
                 {link.label}
-                <span className={`absolute bottom-0 left-4 right-4 h-0.5 bg-[#F5A623] rounded-full transition-all duration-200 ${
+                <span className={`hex-clip absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-[6.5px] bg-[#F5A623] transition-opacity duration-200 ${
                   pathname === link.href ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                 }`} />
               </Link>
@@ -99,7 +99,7 @@ export default function Header() {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[#F9F5EE] transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-full bg-[#F5A623] flex items-center justify-center text-black font-bold text-sm">
+                  <div className="hex-clip w-8 h-[35px] bg-[#F5A623] flex items-center justify-center text-black font-bold text-sm">
                     {profile.name.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-sm font-medium text-[#1A1A1A]">{profile.name.split(' ')[0]}</span>

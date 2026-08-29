@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import GroupList from '@/components/groups/GroupList'
+import HiveField from '@/components/brand/HiveField'
 import type { Group } from '@/types'
 import type { Metadata } from 'next'
 
@@ -21,16 +22,12 @@ export default async function GruposPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-[#0A0A0A] text-white py-20 px-4 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }}
-        />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-[#F5A623] opacity-10 blur-[100px] rounded-full pointer-events-none" />
+      <section className="relative bg-hive-black text-white py-20 px-4 overflow-hidden">
+        <HiveField />
 
         <div className="relative max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-6">
-            <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse flex-shrink-0" />
+          <div className="inline-flex items-center gap-2.5 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-6">
+            <span className="hex-clip w-2.5 h-2.5 bg-[#F5A623] flex-shrink-0" />
             {groupList.length > 0 ? `${groupList.length} grupos cadastrados` : 'Comunidade de corrida'}
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">

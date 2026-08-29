@@ -35,7 +35,9 @@ export async function proxy(request: NextRequest) {
   }
 
   const protectedPaths = ['/dashboard', '/guia', '/cadastro/guia', '/admin']
-  const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
+  const isProtected = protectedPaths.some(
+    p => request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(p + '/')
+  )
 
   if (isProtected && !user) {
     // /cadastro/guia requires a runner account first — send to signup with guide intent

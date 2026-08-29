@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Users, Map, Star, ArrowRight, Route, Timer, Trophy, ShieldCheck, Clock, MessageSquare } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import GuideCard from '@/components/guides/GuideCard'
+import HiveField from '@/components/brand/HiveField'
 import type { Guide, Profile } from '@/types'
 
 export default async function HomePage() {
@@ -19,19 +20,13 @@ export default async function HomePage() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative bg-[#0A0A0A] text-white pt-24 pb-20 px-4 overflow-hidden">
-        {/* Dot grid background */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }}
-        />
-        {/* Orange glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#F5A623] opacity-10 blur-[120px] rounded-full pointer-events-none" />
+      <section className="relative bg-hive-black text-white pt-24 pb-20 px-4 overflow-hidden">
+        <HiveField />
 
         <div className="relative max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-8">
-            <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse flex-shrink-0" />
+          <div className="inline-flex items-center gap-2.5 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-8">
+            <span className="hex-clip w-2.5 h-2.5 bg-[#F5A623] flex-shrink-0" />
             Marketplace de guias de corrida
           </div>
 
@@ -121,41 +116,41 @@ export default async function HomePage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-10 relative">
-            {/* Connector line */}
-            <div className="hidden md:block absolute top-10 left-[calc(16.66%+40px)] right-[calc(16.66%+40px)] h-px bg-gradient-to-r from-transparent via-[#F5A623]/30 to-transparent" />
-
+          <div className="grid md:grid-cols-3 gap-x-6 gap-y-12 md:gap-x-2">
             {[
               {
-                number: '1',
                 icon: Route,
                 title: 'Encontre o guia ideal',
                 desc: 'Busque por cidade, modalidade e estilo de corrida. Veja avaliações reais de outros corredores.',
+                lift: false,
               },
               {
-                number: '2',
                 icon: Timer,
                 title: 'Solicite sua corrida',
                 desc: 'Escolha data, horário e preferências. O guia recebe sua solicitação e responde em até 24 horas.',
+                lift: true,
               },
               {
-                number: '3',
                 icon: Trophy,
                 title: 'Corra com confiança',
                 desc: 'Receba a confirmação por e-mail com todos os detalhes. Depois, avalie sua experiência.',
+                lift: false,
               },
-            ].map(({ number, icon: Icon, title, desc }) => (
-              <div key={number} className="relative flex flex-col items-center text-center">
+            ].map(({ icon: Icon, title, desc, lift }, i) => (
+              <div
+                key={title}
+                className={`flex flex-col items-center text-center ${lift ? 'md:-translate-y-6' : ''}`}
+              >
                 <div className="relative mb-6">
-                  <div className="w-20 h-20 rounded-2xl bg-white border border-[#E5E5E5] shadow-sm flex items-center justify-center">
-                    <Icon size={28} className="text-[#F5A623]" />
+                  <div className="hex-clip w-20 h-[86px] bg-hive-black flex items-center justify-center">
+                    <Icon size={26} className="text-[#F5A623]" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#F5A623] text-black text-xs font-extrabold flex items-center justify-center">
-                    {number}
+                  <div className="hex-clip absolute -bottom-2 -right-2 w-6 h-[26px] bg-[#F5A623] flex items-center justify-center">
+                    <span className="text-[11px] font-mono font-bold text-black">{i + 1}</span>
                   </div>
                 </div>
                 <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">{title}</h3>
-                <p className="text-[#6B6B6B] text-sm leading-relaxed">{desc}</p>
+                <p className="text-[#6B6B6B] text-sm leading-relaxed max-w-[240px]">{desc}</p>
               </div>
             ))}
           </div>
@@ -163,7 +158,7 @@ export default async function HomePage() {
           <div className="text-center mt-14">
             <Link
               href="/guias"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#1A1A1A] text-white font-semibold rounded-full hover:bg-[#0A0A0A] transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#1A1A1A] text-white font-semibold rounded-full hover:bg-hive-black transition-colors"
             >
               Ver guias disponíveis
               <ArrowRight size={18} />
@@ -216,14 +211,14 @@ export default async function HomePage() {
                 key={item.title}
                 className={`rounded-2xl border p-8 flex flex-col transition-all duration-200 hover:shadow-md ${
                   item.accent
-                    ? 'bg-[#0A0A0A] border-[#0A0A0A] text-white'
+                    ? 'bg-hive-black border-hive-black text-white'
                     : 'bg-white border-[#E5E5E5]'
                 }`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${
+                <div className={`hex-clip w-12 h-[52px] flex items-center justify-center mb-5 ${
                   item.accent ? 'bg-[#F5A623]/20' : 'bg-[#FEF3DC]'
                 }`}>
-                  <item.icon size={22} className="text-[#F5A623]" />
+                  <item.icon size={20} className="text-[#F5A623]" />
                 </div>
                 <h3 className={`text-xl font-bold mb-2 ${item.accent ? 'text-white' : 'text-[#1A1A1A]'}`}>
                   {item.title}
@@ -249,16 +244,16 @@ export default async function HomePage() {
       <section className="bg-[#F5A623] py-24 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-sm font-bold text-black/40 uppercase tracking-widest mb-4">Para guias</p>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#0A0A0A] mb-5 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-hive-black mb-5 leading-tight">
             Você conhece cada canto da sua cidade?
           </h2>
-          <p className="text-[#0A0A0A]/65 text-lg mb-10 max-w-xl mx-auto">
+          <p className="text-hive-black/65 text-lg mb-10 max-w-xl mx-auto">
             Faça parte da nossa rede de guias e compartilhe sua cidade com corredores do mundo todo.
             Você define seu ritmo, seu preço e sua disponibilidade.
           </p>
           <Link
             href="/seja-um-guia"
-            className="inline-block px-10 py-4 bg-[#0A0A0A] text-white font-bold rounded-full hover:bg-[#1A1A1A] transition-colors text-base"
+            className="inline-block px-10 py-4 bg-hive-black text-white font-bold rounded-full hover:bg-[#1A1A1A] transition-colors text-base"
           >
             Quero ser um guia PaceHive
           </Link>
@@ -266,7 +261,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── SOBRE ── */}
-      <section className="bg-[#0A0A0A] py-24 px-4">
+      <section className="bg-hive-black py-24 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
             <Image
