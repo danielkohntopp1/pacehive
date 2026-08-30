@@ -4,34 +4,40 @@ import { useState, Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 
-const schema = z.object({
-  email: z.string().email('E-mail inválido'),
-  password: z.string().min(6, 'Mínimo 6 caracteres'),
-})
+function buildSchema(t: ReturnType<typeof useTranslations>) {
+  return z.object({
+    email: z.string().email(t('invalidEmail')),
+    password: z.string().min(6, t('minChars')),
+  })
+}
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<ReturnType<typeof buildSchema>>
 
 export default function LoginPage() {
+  const t = useTranslations('common')
   return (
-    <Suspense fallback={<div className="w-full max-w-md text-center text-[#6B6B6B] text-sm">Carregando...</div>}>
+    <Suspense fallback={<div className="w-full max-w-md text-center text-[#6B6B6B] text-sm">{t('loading')}</div>}>
       <LoginForm />
     </Suspense>
   )
 }
 
 function LoginForm() {
+  const t = useTranslations('login')
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') ?? '/dashboard'
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const schema = buildSchema(t)
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
@@ -44,7 +50,7 @@ function LoginForm() {
       password: data.password,
     })
     if (authError) {
-      setError('E-mail ou senha incorretos.')
+      setError(t('wrongCredentials'))
       return
     }
     router.push(redirect)
@@ -61,8 +67,8 @@ function LoginForm() {
           height={100}
           className="mx-auto mb-4"
         />
-        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Bem-vindo de volta!</h1>
-        <p className="text-[#6B6B6B] text-sm mt-1">Entre na sua conta PaceHive</p>
+        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">{t('welcomeBack')}</h1>
+        <p className="text-[#6B6B6B] text-sm mt-1">{t('signInToYourAccount')}</p>
       </div>
 
       <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm p-8">
@@ -74,18 +80,18 @@ function LoginForm() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">E-mail</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('email')}</label>
             <input
               type="email"
               {...register('email')}
-              placeholder="seu@email.com"
+              placeholder={t('emailPlaceholder')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
             />
             {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Senha</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('password')}</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -110,21 +116,21 @@ function LoginForm() {
             className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
           >
             {isSubmitting && <Loader2 size={16} className="animate-spin" />}
-            {isSubmitting ? 'Entrando...' : 'Entrar'}
+            {isSubmitting ? t('signingIn') : t('signIn')}
           </button>
         </form>
 
         <div className="mt-6 text-center space-y-2">
           <Link href="/forgot-password" className="block text-sm text-[#6B6B6B] hover:text-[#F5A623] transition-colors">
-            Esqueceu a senha?
+            {t('forgotPassword')}
           </Link>
           <p className="text-sm text-[#6B6B6B]">
-            Não tem conta?{' '}
+            {t('noAccount')}{' '}
             <Link
               href={redirect === '/cadastro/guia' ? '/cadastro?guide=true' : '/cadastro'}
               className="text-[#F5A623] font-semibold hover:underline"
             >
-              {redirect === '/cadastro/guia' ? 'Cadastre-se como guia' : 'Cadastre-se'}
+              {redirect === '/cadastro/guia' ? t('signUpAsGuide') : t('signUp')}
             </Link>
           </p>
         </div>

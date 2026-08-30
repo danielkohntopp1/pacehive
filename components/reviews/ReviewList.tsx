@@ -1,19 +1,23 @@
 import { Star } from 'lucide-react'
+import { getTranslations, getLocale } from 'next-intl/server'
 import type { Review, Profile } from '@/types'
 
 interface Props {
   reviews: (Review & { reviewer?: Profile })[]
 }
 
-export default function ReviewList({ reviews }: Props) {
+export default async function ReviewList({ reviews }: Props) {
+  const t = await getTranslations('reviewList')
+  const locale = await getLocale()
+
   if (reviews.length === 0) {
     return (
       <div className="text-center py-8">
         <div className="w-12 h-12 bg-[#FEF3DC] rounded-xl flex items-center justify-center mx-auto mb-3">
           <Star size={20} className="text-[#F5A623]" />
         </div>
-        <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Nenhuma avaliação ainda</p>
-        <p className="text-xs text-[#6B6B6B]">As avaliações aparecerão aqui após cada corrida.</p>
+        <p className="text-sm font-semibold text-[#1A1A1A] mb-1">{t('noReviewsYet')}</p>
+        <p className="text-xs text-[#6B6B6B]">{t('reviewsWillAppearHere')}</p>
       </div>
     )
   }
@@ -28,9 +32,9 @@ export default function ReviewList({ reviews }: Props) {
                 {review.reviewer?.name.charAt(0).toUpperCase() ?? '?'}
               </div>
               <div>
-                <span className="font-semibold text-sm text-[#1A1A1A]">{review.reviewer?.name ?? 'Anônimo'}</span>
+                <span className="font-semibold text-sm text-[#1A1A1A]">{review.reviewer?.name ?? t('anonymous')}</span>
                 <p className="text-xs text-[#6B6B6B]/60">
-                  {new Date(review.created_at).toLocaleDateString('pt-BR')}
+                  {new Date(review.created_at).toLocaleDateString(locale === 'en' ? 'en-US' : 'pt-BR')}
                 </p>
               </div>
             </div>

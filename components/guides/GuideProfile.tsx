@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
 import {
   MapPin, Star, Users, ExternalLink, Award,
   CheckCircle2, Clock, Languages, Activity, Timer, TrendingUp
@@ -17,40 +18,10 @@ interface Props {
   isLoggedIn: boolean
 }
 
-const modalityLabels: Record<string, string> = {
-  presential: 'Presencial',
-  virtual: 'Virtual',
-}
-
-const languageLabels: Record<string, string> = {
-  pt: 'Português',
-  en: 'Inglês',
-  es: 'Espanhol',
-  fr: 'Francês',
-  de: 'Alemão',
-}
-
-const runTypeLabels: Record<string, string> = {
-  road: 'Asfalto / Rua',
-  trail: 'Trilha',
-  track: 'Pista',
-  beach: 'Praia / Areia',
-  mountain: 'Montanha',
-  urban: 'Urbano',
-}
-
-const DAY_LABELS: Record<string, string> = {
-  mon: 'Seg', tue: 'Ter', wed: 'Qua', thu: 'Qui', fri: 'Sex', sat: 'Sáb', sun: 'Dom',
-}
 const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
-const PERIOD_LABELS: Record<string, string> = {
-  morning: 'Manhã (5h–12h)',
-  afternoon: 'Tarde (12h–18h)',
-  evening: 'Noite (18h–22h)',
-}
-
 function AvailabilityDisplay({ availability, schedule }: { availability?: GuideAvailability | null, schedule?: string }) {
+  const t = useTranslations('guideProfile')
   const hasDays = availability?.days && availability.days.length > 0
   const hasPeriods = availability?.periods && availability.periods.length > 0
   if (!hasDays && !hasPeriods && !availability?.notes && !schedule) return null
@@ -59,22 +30,22 @@ function AvailabilityDisplay({ availability, schedule }: { availability?: GuideA
     <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
       <h2 className="text-lg font-bold text-[#1A1A1A] mb-3 flex items-center gap-2">
         <Clock size={18} className="text-[#F5A623]" />
-        Disponibilidade
+        {t('availability')}
       </h2>
       {hasDays && (
         <div className="flex flex-wrap gap-1.5 mb-3">
           {DAY_ORDER.filter((d) => availability!.days.includes(d)).map((d) => (
-            <span key={d} className="bg-[#F5A623] text-black text-xs font-bold rounded-full px-2.5 py-1">{DAY_LABELS[d]}</span>
+            <span key={d} className="bg-[#F5A623] text-black text-xs font-bold rounded-full px-2.5 py-1">{t(`days.${d}`)}</span>
           ))}
           {DAY_ORDER.filter((d) => !availability!.days.includes(d)).map((d) => (
-            <span key={d} className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2.5 py-1">{DAY_LABELS[d]}</span>
+            <span key={d} className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2.5 py-1">{t(`days.${d}`)}</span>
           ))}
         </div>
       )}
       {hasPeriods && (
         <div className="flex flex-wrap gap-1.5 mb-3">
           {availability!.periods.map((p) => (
-            <span key={p} className="text-xs bg-[#FEF3DC] text-[#1A1A1A] font-medium px-2.5 py-1 rounded-full">{PERIOD_LABELS[p]}</span>
+            <span key={p} className="text-xs bg-[#FEF3DC] text-[#1A1A1A] font-medium px-2.5 py-1 rounded-full">{t(`periods.${p}`)}</span>
           ))}
         </div>
       )}
@@ -84,16 +55,10 @@ function AvailabilityDisplay({ availability, schedule }: { availability?: GuideA
   )
 }
 
-const serviceLabels: Record<string, string> = {
-  pace_guide: 'Guia de ritmo',
-  training_plan: 'Plano de treino',
-  race_prep: 'Preparação para prova',
-  route_planning: 'Planejamento de rota',
-  photography: 'Fotos durante a corrida',
-  group_run: 'Corrida em grupo',
-}
-
 export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
+  const t = useTranslations('guideProfile')
+  const tFormat = useTranslations('stravaFormat')
+  const locale = useLocale()
   const [showBookingForm, setShowBookingForm] = useState(false)
 
   return (
@@ -121,16 +86,16 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
             <div className="flex flex-wrap gap-2 mb-3">
               {guide.modality.map((m) => (
                 <span key={m} className="bg-[#F5A623] text-black text-sm font-semibold rounded-full px-3 py-1">
-                  {modalityLabels[m]}
+                  {t(`modality.${m}`)}
                 </span>
               ))}
               {guide.is_paid && guide.price_brl ? (
                 <span className="bg-[#0A0A0A] text-white text-sm font-semibold rounded-full px-3 py-1">
-                  R$ {guide.price_brl.toFixed(0)}/corrida
+                  {t('pricePerRun', { price: guide.price_brl.toFixed(0) })}
                 </span>
               ) : (
                 <span className="bg-green-100 text-green-700 text-sm font-semibold rounded-full px-3 py-1">
-                  Voluntário
+                  {t('volunteer')}
                 </span>
               )}
             </div>
@@ -150,23 +115,23 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                 <div className="flex items-center gap-1.5 text-sm">
                   <Star size={16} className="text-[#F5A623] fill-[#F5A623]" />
                   <span className="font-bold text-[#1A1A1A]">{guide.rating_avg.toFixed(1)}</span>
-                  <span className="text-[#6B6B6B]">({guide.rating_count} avaliações)</span>
+                  <span className="text-[#6B6B6B]">{t('reviewsCount', { count: guide.rating_count })}</span>
                 </div>
               ) : (
                 <span className="text-xs bg-[#F9F5EE] text-[#6B6B6B] font-medium px-2.5 py-1 rounded-full border border-[#E5E5E5]">
-                  Novo guia
+                  {t('newGuide')}
                 </span>
               )}
               {guide.total_runs > 0 && (
                 <div className="flex items-center gap-1.5 text-sm text-[#6B6B6B]">
                   <Users size={16} />
-                  <span>{guide.total_runs} corridas realizadas</span>
+                  <span>{t('runsCompleted', { count: guide.total_runs })}</span>
                 </div>
               )}
               {guide.experience_years && (
                 <div className="flex items-center gap-1.5 text-sm text-[#6B6B6B]">
                   <Award size={16} />
-                  <span>{guide.experience_years} de experiência</span>
+                  <span>{t('yearsOfExperience', { years: guide.experience_years })}</span>
                 </div>
               )}
             </div>
@@ -178,7 +143,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                 <div className="flex flex-wrap gap-1.5">
                   {guide.languages.map((lang) => (
                     <span key={lang} className="text-xs bg-[#F9F5EE] text-[#6B6B6B] font-medium px-2.5 py-0.5 rounded-full">
-                      {languageLabels[lang] ?? lang}
+                      {t.has(`languages.${lang}`) ? t(`languages.${lang}`) : lang}
                     </span>
                   ))}
                 </div>
@@ -202,7 +167,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-1.5">
                     <svg viewBox="0 0 24 24" fill="#FC4C02" className="w-4 h-4"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169" /></svg>
-                    <span className="text-xs font-bold text-[#FC4C02] uppercase tracking-wide">Dados verificados · Strava</span>
+                    <span className="text-xs font-bold text-[#FC4C02] uppercase tracking-wide">{t('stravaVerified')}</span>
                   </div>
                   {guide.strava_url && (
                     <a
@@ -211,7 +176,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 text-xs font-semibold text-[#FC4C02] hover:underline"
                     >
-                      Ver perfil
+                      {t('viewProfile')}
                       <ExternalLink size={11} />
                     </a>
                   )}
@@ -221,16 +186,16 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center gap-1 text-[#FC4C02]">
                         <TrendingUp size={13} />
-                        <span className="text-xs text-[#6B6B6B]">km em {new Date().getFullYear()}</span>
+                        <span className="text-xs text-[#6B6B6B]">{t('kmThisYear', { year: new Date().getFullYear() })}</span>
                       </div>
-                      <span className="font-bold text-[#1A1A1A] text-sm">{formatDistance(guide.strava_stats.ytd_run_distance)}</span>
+                      <span className="font-bold text-[#1A1A1A] text-sm">{formatDistance(guide.strava_stats.ytd_run_distance, tFormat, locale as 'pt' | 'en')}</span>
                     </div>
                   )}
                   {guide.strava_stats.avg_pace && (
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center gap-1 text-[#FC4C02]">
                         <Timer size={13} />
-                        <span className="text-xs text-[#6B6B6B]">ritmo médio</span>
+                        <span className="text-xs text-[#6B6B6B]">{t('avgPace')}</span>
                       </div>
                       <span className="font-bold text-[#1A1A1A] text-sm">{formatPace(guide.strava_stats.avg_pace)}/km</span>
                     </div>
@@ -239,9 +204,9 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center gap-1 text-[#FC4C02]">
                         <Activity size={13} />
-                        <span className="text-xs text-[#6B6B6B]">última corrida</span>
+                        <span className="text-xs text-[#6B6B6B]">{t('lastRun')}</span>
                       </div>
-                      <span className="font-bold text-[#1A1A1A] text-sm">{formatLastActivity(guide.strava_stats.last_activity_at)}</span>
+                      <span className="font-bold text-[#1A1A1A] text-sm">{formatLastActivity(guide.strava_stats.last_activity_at, tFormat)}</span>
                     </div>
                   )}
                 </div>
@@ -254,14 +219,14 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                 onClick={() => setShowBookingForm(true)}
                 className="px-8 py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors text-sm"
               >
-                Solicitar corrida com este guia
+                {t('requestRun')}
               </button>
             ) : (
               <Link
                 href={`/login?redirect=/guias/${guide.id}`}
                 className="inline-block px-8 py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors text-sm"
               >
-                Entrar para solicitar corrida
+                {t('signInToRequest')}
               </Link>
             )}
           </div>
@@ -273,7 +238,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
         {/* Bio */}
         {guide.bio && (
           <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-            <h2 className="text-lg font-bold text-[#1A1A1A] mb-3">Sobre</h2>
+            <h2 className="text-lg font-bold text-[#1A1A1A] mb-3">{t('about')}</h2>
             <p className="text-[#6B6B6B] text-sm leading-relaxed">{guide.bio}</p>
           </div>
         )}
@@ -281,11 +246,11 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
         {/* Run types */}
         {guide.run_types.length > 0 && (
           <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-            <h2 className="text-lg font-bold text-[#1A1A1A] mb-3">Tipo de corrida</h2>
+            <h2 className="text-lg font-bold text-[#1A1A1A] mb-3">{t('runType')}</h2>
             <div className="flex flex-wrap gap-2">
               {guide.run_types.map((rt) => (
                 <span key={rt} className="text-sm bg-[#F9F5EE] text-[#1A1A1A] font-medium px-3 py-1.5 rounded-full">
-                  {runTypeLabels[rt] ?? rt}
+                  {t.has(`runTypes.${rt}`) ? t(`runTypes.${rt}`) : rt}
                 </span>
               ))}
             </div>
@@ -295,12 +260,12 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
         {/* Services */}
         {guide.services.length > 0 && (
           <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-            <h2 className="text-lg font-bold text-[#1A1A1A] mb-3">Serviços incluídos</h2>
+            <h2 className="text-lg font-bold text-[#1A1A1A] mb-3">{t('servicesIncluded')}</h2>
             <ul className="space-y-2">
               {guide.services.map((s) => (
                 <li key={s} className="flex items-center gap-2 text-sm text-[#6B6B6B]">
                   <CheckCircle2 size={15} className="text-[#F5A623] flex-shrink-0" />
-                  {serviceLabels[s] ?? s}
+                  {t.has(`services.${s}`) ? t(`services.${s}`) : s}
                 </li>
               ))}
             </ul>
@@ -315,7 +280,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
         <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-8">
           <h2 className="text-lg font-bold text-[#1A1A1A] mb-5 flex items-center gap-2">
             <Star size={18} className="text-[#F5A623] fill-[#F5A623]" />
-            Avaliações ({reviews.length})
+            {t('reviewsHeading', { count: reviews.length })}
           </h2>
           <div className="space-y-5">
             {reviews.map((review) => (
@@ -328,7 +293,7 @@ export default function GuideProfile({ guide, reviews, isLoggedIn }: Props) {
                     <div>
                       <span className="font-semibold text-sm text-[#1A1A1A]">{review.reviewer?.name}</span>
                       <p className="text-xs text-[#6B6B6B]/60">
-                        {new Date(review.created_at).toLocaleDateString('pt-BR')}
+                        {new Date(review.created_at).toLocaleDateString(locale === 'en' ? 'en-US' : 'pt-BR')}
                       </p>
                     </div>
                   </div>

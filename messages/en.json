@@ -1,0 +1,1328 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "rootMeta": {
+    "title": "PaceHive — Connecting runners with new experiences",
+    "description": "Running guide marketplace. Find a local runner to guide you in any city in the world."
+  },
+  "header": {
+    "nav": {
+      "home": "Home",
+      "services": "Services",
+      "groups": "Groups",
+      "guides": "Guides"
+    },
+    "myPanel": "My dashboard",
+    "myProfile": "My profile",
+    "signOut": "Sign out",
+    "signIn": "Sign in",
+    "becomeGuide": "Become a guide",
+    "menu": "Menu",
+    "language": "Language"
+  },
+  "home": {
+    "hero": {
+      "badge": "Running guide marketplace",
+      "titleLine1": "Every city has",
+      "titleHighlight": "its secrets.",
+      "titleLine2": "Find who knows them.",
+      "subtitle": "Connect with local guides and explore places maps don't show.",
+      "ctaFindGuide": "Find a guide",
+      "ctaBecomeGuide": "Become a guide →",
+      "valueVerified": "Verified guides",
+      "valueResponse": "Response within 24h",
+      "valueReviews": "Real reviews"
+    },
+    "featuredGuides": {
+      "eyebrow": "Meet the guides",
+      "title": "Ready to run with you",
+      "viewAll": "View all",
+      "viewAllMobile": "View all guides"
+    },
+    "howItWorks": {
+      "eyebrow": "How it works",
+      "title": "Your run in 3 steps",
+      "step1Title": "Find the right guide",
+      "step1Desc": "Search by city, modality and running style. See real reviews from other runners.",
+      "step2Title": "Request your run",
+      "step2Desc": "Choose a date, time and preferences. The guide receives your request and replies within 24 hours.",
+      "step3Title": "Run with confidence",
+      "step3Desc": "Get a confirmation email with all the details. Afterwards, rate your experience.",
+      "cta": "View available guides"
+    },
+    "services": {
+      "eyebrow": "What we offer",
+      "title": "Everything for your run",
+      "subtitle": "From a local guide to a running group, PaceHive connects you with the right community.",
+      "guidesTitle": "Running Guides",
+      "guidesDesc": "Local runners who know every street, trail and shortcut in the city. Run with confidence wherever you are.",
+      "guidesCta": "View guides",
+      "groupsTitle": "Running Groups",
+      "groupsDesc": "Find active groups in your city or your next destination. Train together, grow together.",
+      "groupsCta": "View groups",
+      "becomeGuideTitle": "Become a Guide",
+      "becomeGuideDesc": "Share your city by running with travelers from around the world. Turn your local knowledge into an experience.",
+      "becomeGuideCta": "Learn more"
+    },
+    "guideCta": {
+      "eyebrow": "For guides",
+      "title": "Do you know every corner of your city?",
+      "subtitle": "Join our network of guides and share your city with runners from around the world. You set your pace, your price and your availability.",
+      "cta": "I want to be a PaceHive guide"
+    },
+    "about": {
+      "quote": "Every run is a new way to <highlight>get to know a place</highlight>.",
+      "body": "The name <brand>PaceHive</brand> joins <pace>Pace</pace> — every runner's unique rhythm — and <hive>Hive</hive> — the hive, a living, collaborative community. Just like in a hive, every runner is part of something bigger."
+    },
+    "contact": {
+      "eyebrow": "Get in touch",
+      "title": "Any questions?",
+      "subtitle": "Send us a message — we reply fast.",
+      "formName": "Name",
+      "formNamePlaceholder": "Your name",
+      "formEmail": "Email",
+      "formEmailPlaceholder": "you@email.com",
+      "formMessage": "Message",
+      "formMessagePlaceholder": "Your message...",
+      "formSubmit": "Send message"
+    }
+  },
+  "footer": {
+    "tagline": "Connecting runners with new experiences around the world.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "madeWith": "Made with 🧡 for the running community.",
+    "rights": "Copyright © 2026 PaceHive. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms of use"
+  },
+  "guideCard": {
+    "verified": "Verified",
+    "modality": {
+      "presential": "In person",
+      "virtual": "Virtual"
+    },
+    "runType": {
+      "road": "Road",
+      "trail": "Trail",
+      "track": "Track",
+      "beach": "Beach",
+      "mountain": "Mountain",
+      "urban": "Urban"
+    },
+    "newGuide": "New guide",
+    "runsCount": "{count} runs",
+    "perRun": " / run",
+    "free": "Free"
+  },
+  "guideList": {
+    "searchPlaceholder": "Search by city or guide name...",
+    "filters": "Filters",
+    "filterGuides": "Filter guides",
+    "clearFilters": "Clear filters",
+    "city": "City",
+    "all": "All",
+    "modality": "Modality",
+    "presential": "In person",
+    "virtual": "Virtual",
+    "price": "Price",
+    "allPrices": "All",
+    "free": "Free",
+    "paid": "Paid",
+    "runType": "Run type",
+    "runTypes": {
+      "road": "Road",
+      "trail": "Trail",
+      "track": "Track",
+      "beach": "Beach",
+      "mountain": "Mountain",
+      "urban": "Urban"
+    },
+    "language": "Language",
+    "languages": {
+      "pt": "Portuguese",
+      "en": "English",
+      "es": "Spanish",
+      "fr": "French"
+    },
+    "minRating": "Minimum rating",
+    "any": "Any",
+    "guidesFound": "{count, plural, one {# guide found} other {# guides found}}",
+    "guidesAvailable": "{count, plural, one {# guide available} other {# guides available}}",
+    "noGuidesFound": "No guides found",
+    "tryRemovingFilters": "Try removing some filters to see more results.",
+    "beTheFirstGuide": "How about being the first guide in {place}?",
+    "thisCity": "this city",
+    "iWantToBeGuide": "I want to be a guide"
+  },
+  "guidesPage": {
+    "metaTitle": "Running Guides — PaceHive",
+    "metaDescription": "Find a running guide in any city in the world. Local runners who'll show you the best routes.",
+    "guidesAvailableBadge": "{count} guides available",
+    "localGuidesBadge": "Local running guides",
+    "titleLine1": "Find a guide to run in",
+    "titleHighlight": "anywhere in the world",
+    "subtitle": "Connect with local runners who know every street, trail and shortcut in the city."
+  },
+  "guideProfile": {
+    "notFoundTitle": "Guide not found — PaceHive",
+    "metaTitle": "{name} — Guide in {city} | PaceHive",
+    "metaDescription": "Run with {name} in {city}. Find local guides on PaceHive.",
+    "availability": "Availability",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "periods": {
+      "morning": "Morning (5am–12pm)",
+      "afternoon": "Afternoon (12pm–6pm)",
+      "evening": "Evening (6pm–10pm)"
+    },
+    "modality": {
+      "presential": "In person",
+      "virtual": "Virtual"
+    },
+    "pricePerRun": "R$ {price}/run",
+    "volunteer": "Volunteer",
+    "reviewsCount": "({count} reviews)",
+    "newGuide": "New guide",
+    "runsCompleted": "{count} runs completed",
+    "yearsOfExperience": "{years} of experience",
+    "languages": {
+      "pt": "Portuguese",
+      "en": "English",
+      "es": "Spanish",
+      "fr": "French",
+      "de": "German"
+    },
+    "stravaVerified": "Verified data · Strava",
+    "viewProfile": "View profile",
+    "kmThisYear": "km in {year}",
+    "avgPace": "avg pace",
+    "lastRun": "last run",
+    "requestRun": "Request a run with this guide",
+    "signInToRequest": "Sign in to request a run",
+    "about": "About",
+    "runType": "Run type",
+    "runTypes": {
+      "road": "Road",
+      "trail": "Trail",
+      "track": "Track",
+      "beach": "Beach",
+      "mountain": "Mountain",
+      "urban": "Urban"
+    },
+    "servicesIncluded": "Services included",
+    "services": {
+      "pace_guide": "Pace guiding",
+      "training_plan": "Training plan",
+      "race_prep": "Race preparation",
+      "route_planning": "Route planning",
+      "photography": "Photos during the run",
+      "group_run": "Group run"
+    },
+    "reviewsHeading": "Reviews ({count})"
+  },
+  "groupsPage": {
+    "metaTitle": "Running Groups — PaceHive",
+    "metaDescription": "Find running groups in your city and connect with the local community.",
+    "groupsRegistered": "{count} groups registered",
+    "runningCommunity": "Running community",
+    "titleLine1": "Find a running group",
+    "titleHighlight": "in your city",
+    "subtitle": "Connect with local groups and keep running even while traveling."
+  },
+  "groupList": {
+    "searchPlaceholder": "Search by city or group name...",
+    "modality": "Modality",
+    "modalityAsphalt": "Road",
+    "modalityTrail": "Trail",
+    "modalityTrack": "Track",
+    "modalityMountain": "Mountain",
+    "level": "Level",
+    "levelAll": "All levels",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "free": "Free",
+    "clear": "Clear ({count})",
+    "noGroupsFound": "No groups found",
+    "tryAdjustingFilters": "Try adjusting the filters or searching another city.",
+    "place": "Location:",
+    "schedule": "Schedule:",
+    "needsRegistration": "Requires registration in advance",
+    "price": "Price:",
+    "howToJoin": "How to join:",
+    "contact": "Contact:",
+    "viewOnInstagram": "View on Instagram",
+    "haveAGroup": "Have a running group?",
+    "registerNow": "Register now and get discovered by runners in your city — no approval needed.",
+    "registerMyGroup": "Register my group"
+  },
+  "groupForm": {
+    "modalityAsphalt": "Road",
+    "modalityTrail": "Trail",
+    "modalityTrack": "Track",
+    "modalityMountain": "Mountain",
+    "dayMon": "Mon",
+    "dayTue": "Tue",
+    "dayWed": "Wed",
+    "dayThu": "Thu",
+    "dayFri": "Fri",
+    "daySat": "Sat",
+    "daySun": "Sun",
+    "levelAll": "All levels",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "errorSaving": "Error saving group",
+    "basicInfo": "Basic information",
+    "groupName": "Group name",
+    "groupNamePlaceholder": "E.g. Early Birds Crew",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe the group in your own words...",
+    "city": "City",
+    "cityPlaceholder": "São Paulo",
+    "state": "State",
+    "statePlaceholder": "SP",
+    "modalityAndLevel": "Modality and level",
+    "modality": "Modality",
+    "level": "Level",
+    "avgPace": "Average pace",
+    "avgPacePlaceholder": "E.g. 5:30–7:00 min/km",
+    "typicalDistance": "Typical distance",
+    "typicalDistancePlaceholder": "E.g. 8–15km",
+    "scheduleAndLocation": "Schedule and location",
+    "daysOfWeek": "Days of the week",
+    "time": "Time",
+    "meetingPlace": "Meeting place",
+    "meetingPlacePlaceholder": "E.g. Ibirapuera Park — Gate 10",
+    "participation": "Participation",
+    "free": "Free",
+    "freeDescription": "The group doesn't charge any fee",
+    "priceInfo": "Price details",
+    "priceInfoPlaceholder": "E.g. R$30/month, includes coaching",
+    "needsRegistration": "Requires registration",
+    "needsRegistrationDescription": "Runners must notify before joining",
+    "howToJoin": "How to join",
+    "howToJoinPlaceholder": "E.g. Just show up! / Message us on Instagram first.",
+    "contactAndSocial": "Contact and social media",
+    "contact": "Contact (WhatsApp, email or phone)",
+    "contactPlaceholder": "E.g. (11) 99999-9999",
+    "groupActive": "Group active (visible to runners)",
+    "saving": "Saving...",
+    "save": "Save"
+  },
+  "groupNew": {
+    "myGroups": "My groups",
+    "title": "Register group",
+    "subtitle": "Your group will be immediately visible to all runners.",
+    "submitLabel": "Register group"
+  },
+  "groupEdit": {
+    "myGroups": "My groups",
+    "title": "Edit group",
+    "submitLabel": "Save changes"
+  },
+  "servicesPage": {
+    "metaTitle": "Services — PaceHive",
+    "metaDescription": "Discover all the services PaceHive offers for runners and guides.",
+    "badge": "For runners and guides",
+    "title": "Explore <brand>PaceHive</brand>'s services",
+    "subtitle": "Whether running in a new city or guiding runners where you live, we connect people through running.",
+    "modalities": "Modalities",
+    "howDoYouWantToRun": "How do you want to run?",
+    "presential": {
+      "badge": "In person",
+      "title": "In-Person Guide",
+      "description": "The local guide runs side by side with you through the city streets, showing the best routes, sights and local culture. The most complete and immersive experience for exploring a new destination with confidence.",
+      "items": [
+        "Route personalized to your pace",
+        "Privileged local knowledge",
+        "Safety on streets and shortcuts",
+        "Restaurant and sightseeing tips",
+        "Photo and video of the run (to arrange)",
+        "Conversation and cultural exchange"
+      ],
+      "cta": "Find an in-person guide"
+    },
+    "virtual": {
+      "badge": "Virtual",
+      "title": "Virtual Guide",
+      "description": "Get a detailed plan of routes, tips and recommendations before arriving in the city. The guide advises you remotely, via WhatsApp, call or email, so you can run with autonomy and safety.",
+      "items": [
+        "Pre-planned route with map",
+        "Neighborhood safety tips",
+        "Best times to run",
+        "Hydration and rest stop recommendations",
+        "WhatsApp support during the run",
+        "Local group recommendations"
+      ],
+      "cta": "Find a virtual guide"
+    },
+    "forGuides": "For guides",
+    "ctaTitle": "Want to be a PaceHive guide?",
+    "ctaSubtitle": "Share your knowledge of the city and help runners from around the world. Create your profile in under 5 minutes.",
+    "ctaButton": "I want to be a guide"
+  },
+  "becomeGuidePage": {
+    "metaTitle": "Become a Guide — PaceHive",
+    "metaDescription": "Share your city by running. Join the PaceHive guide network and connect with runners from around the world.",
+    "badge": "For running guides",
+    "titleLine1": "Share your path.",
+    "titleLine2": "Inspire others to run.",
+    "subtitle": "To be a guide, you need to know the city, have empathy for others, and be responsible to those who'll trust your lead.",
+    "ctaHero": "I want to be a guide now",
+    "profile": {
+      "eyebrow": "The ideal profile",
+      "title": "What does it mean to be a PaceHive guide?",
+      "cards": [
+        {
+          "title": "You know the city",
+          "desc": "You know the best routes, parks, safe sidewalks and the best times to run in your city."
+        },
+        {
+          "title": "You have empathy",
+          "desc": "You can adapt the pace and experience to the visiting runner, making it special and welcoming."
+        },
+        {
+          "title": "You're responsible",
+          "desc": "You commit to responding to requests within 24h and honoring scheduled commitments."
+        }
+      ]
+    },
+    "steps": {
+      "eyebrow": "Step by step",
+      "title": "How the matching works",
+      "items": [
+        {
+          "title": "You sign up and create your profile",
+          "desc": "Tell us your city, modality (in person/virtual), bio and availability."
+        },
+        {
+          "title": "A runner finds you and sends a request",
+          "desc": "A traveling runner sees your profile and requests a run with date, time and preferences."
+        },
+        {
+          "title": "You receive the request by email",
+          "desc": "An email with all the details arrives for you. You have 24h to respond."
+        },
+        {
+          "title": "You accept or decline",
+          "desc": "If you accept, you both receive each other's contact info to sort out the final details."
+        },
+        {
+          "title": "After the run, you both leave a review",
+          "desc": "The review is automatic. Your average rating shows on your profile and attracts more runners."
+        }
+      ]
+    },
+    "flexibility": "Flexibility",
+    "operatingModels": "Ways to operate",
+    "inPerson": {
+      "badge": "In person",
+      "title": "On-the-Ground Guide",
+      "description": "You run together with the visitor. Perfect for those who want to provide a human, immersive experience of the city.",
+      "items": [
+        "In-person meetup at the agreed spot",
+        "Route adapted to the runner's pace",
+        "Sharing local culture"
+      ]
+    },
+    "remote": {
+      "badge": "Virtual",
+      "title": "Remote Guide",
+      "description": "You advise the runner remotely before and during the visit, via WhatsApp, email or video call.",
+      "items": [
+        "Sending personalized routes and maps",
+        "Safety and logistics tips",
+        "Real-time support during the run"
+      ]
+    },
+    "yourChoice": "Your choice",
+    "volunteerOrPaid": {
+      "title": "Volunteer or paid?",
+      "paragraph1": "On PaceHive, you decide. Many guides volunteer because they love sharing their city and making genuine connections. Others choose to charge a fee for the service — and that's totally valid and transparent for the runner.",
+      "paragraph2": "Regardless of the model, the platform is <free>100% free</free> for guides in this version. Whether to charge or not is your choice."
+    },
+    "joinNetwork": "Join the network",
+    "ctaTitle": "Ready to be a guide?",
+    "ctaSubtitle": "It takes less than 5 minutes to create your profile and start getting requests.",
+    "ctaButton": "Create my guide profile"
+  },
+  "termsPage": {
+    "legal": "Legal",
+    "title": "Terms of Use",
+    "lastUpdated": "Last updated: May 2026",
+    "intro": "By using PaceHive, you agree to the terms below. Please read carefully before continuing.",
+    "sections": [
+      {
+        "title": "1. About PaceHive",
+        "text": "PaceHive is a digital platform that connects runners to local running guides. We act as intermediaries — we are not a travel agency, transportation company, or the employer of registered guides."
+      },
+      {
+        "title": "2. Use of the platform",
+        "text": "PaceHive may only be used by people 18 or older. By signing up, you agree to these terms and our Privacy Policy. Using the platform for illegal, fraudulent purposes, or purposes that harm third parties is prohibited."
+      },
+      {
+        "title": "3. Responsibility for payments",
+        "text": "When a guide charges for the service, payment is agreed upon and made directly between runner and guide, outside the platform. PaceHive does not process, mediate, guarantee, or hold any responsibility for financial transactions between its users."
+      },
+      {
+        "title": "4. Responsibility for activities",
+        "text": "PaceHive is not responsible for accidents, injuries, material losses, or any other damages occurring during or after runs. Each user is responsible for assessing their physical condition and surroundings before any activity."
+      },
+      {
+        "title": "5. Independent guides",
+        "text": "Registered guides are independent service providers. There is no employment, corporate, or any other relationship between guides and PaceHive. The platform does not guarantee the quality, safety, or accuracy of information provided by guides."
+      },
+      {
+        "title": "6. User conduct",
+        "text": "All users are expected to act with mutual respect, honesty, and good faith. PaceHive reserves the right to suspend or cancel accounts that show abusive, discriminatory, fraudulent behavior, or that violate these terms."
+      },
+      {
+        "title": "7. Service availability",
+        "text": "PaceHive strives to keep the platform available 24 hours a day but does not guarantee uninterrupted availability. We may perform maintenance, updates, or discontinue features without prior notice."
+      },
+      {
+        "title": "8. Changes to these terms",
+        "text": "These terms may be updated at any time. Material changes will be communicated by email. Continued use of the platform after changes implies acceptance of the new terms."
+      },
+      {
+        "title": "9. Jurisdiction and applicable law",
+        "text": "These terms are governed by the laws of the Federative Republic of Brazil. The courts of São Paulo/SP are elected to settle any disputes."
+      },
+      {
+        "title": "10. Contact",
+        "text": "For questions about these terms, contact us at contato@pacehive.com."
+      }
+    ]
+  },
+  "privacyPage": {
+    "legal": "Legal",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: May 2026",
+    "intro": "This policy describes how PaceHive collects, uses, and protects your personal data, in accordance with Brazil's General Data Protection Law (LGPD — Law 13.709/2018).",
+    "sections": [
+      {
+        "title": "1. What data we collect",
+        "text": "We collect the data you provide when signing up: name, email, phone (optional), and profile information (city, bio, etc.). We also collect platform usage data in aggregated, anonymous form to improve our services."
+      },
+      {
+        "title": "2. How we use your data",
+        "text": "Your data is used to: (a) create and manage your account; (b) connect runners to guides; (c) send transactional emails related to run requests; (d) improve the platform experience. We do not use your data for third-party advertising purposes."
+      },
+      {
+        "title": "3. Data sharing",
+        "text": "We do not sell your data to third parties. Your contact details (email and phone) are shared with the other party only after a run is confirmed, to make the meeting possible. We may share data with service providers necessary for the platform to function (hosting, sending emails), always under a confidentiality agreement."
+      },
+      {
+        "title": "4. Storage and security",
+        "text": "Your data is stored on secure servers (Supabase/AWS) with encryption in transit and at rest. We follow good security practices, but no system is 100% breach-proof."
+      },
+      {
+        "title": "5. Your rights (LGPD)",
+        "text": "Under Brazil's General Data Protection Law (Law 13.709/2018), you have the right to: access your data, correct inaccurate information, request deletion of your account and data, and withdraw consent at any time. To exercise these rights, contact us at contato@pacehive.com."
+      },
+      {
+        "title": "6. Cookies",
+        "text": "We use essential cookies for authentication and basic platform functioning. We do not use third-party tracking cookies for advertising purposes."
+      },
+      {
+        "title": "7. Data retention",
+        "text": "Your data is kept while your account is active. After account deletion, data is removed within 30 days, except where retention is required by legal obligation."
+      },
+      {
+        "title": "8. Minors",
+        "text": "PaceHive is not intended for people under 18 and does not knowingly collect data from minors. If we identify such a case, the data will be removed immediately."
+      },
+      {
+        "title": "9. Changes to this policy",
+        "text": "This policy may be updated periodically. We will communicate material changes by email. Continued use of the platform implies acceptance of the current version."
+      },
+      {
+        "title": "10. Contact",
+        "text": "Questions about privacy or requests related to your data: contato@pacehive.com."
+      }
+    ]
+  },
+  "accountSuspended": {
+    "title": "Account suspended",
+    "description": "Your account has been suspended by the PaceHive team. If you believe this was a mistake, contact us at <email>contato@pacehive.com</email>.",
+    "signOut": "Sign out"
+  },
+  "login": {
+    "invalidEmail": "Invalid email",
+    "minChars": "At least 6 characters",
+    "wrongCredentials": "Incorrect email or password.",
+    "welcomeBack": "Welcome back!",
+    "signInToYourAccount": "Sign in to your PaceHive account",
+    "email": "Email",
+    "emailPlaceholder": "you@email.com",
+    "password": "Password",
+    "signingIn": "Signing in...",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "signUpAsGuide": "Sign up as a guide",
+    "signUp": "Sign up"
+  },
+  "register": {
+    "nameTooShort": "Name too short",
+    "invalidEmail": "Invalid email",
+    "minChars": "At least 6 characters",
+    "errorCreatingAccount": "Error creating account",
+    "errorSavingProfile": "Error saving profile",
+    "title": "Create your account",
+    "subtitleGuideFlow": "First step to create your guide profile",
+    "subtitleDefault": "Join the PaceHive community",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "you@email.com",
+    "whatsapp": "WhatsApp (optional)",
+    "password": "Password",
+    "passwordPlaceholder": "At least 6 characters",
+    "alsoWantToBeGuide": "I also want to be a guide",
+    "alsoWantToBeGuideDescription": "You'll create your guide profile in the next step.",
+    "creatingAccount": "Creating account...",
+    "createAccountAndContinue": "Create account and continue →",
+    "createAccount": "Create account",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in"
+  },
+  "registerGuide": {
+    "provideCityError": "Please provide your city",
+    "selectRunTypeError": "Select at least one run type",
+    "selectServiceError": "Select at least one service",
+    "selectLanguageError": "Select at least one language",
+    "provideValueError": "Enter a value greater than zero",
+    "runTypes": {
+      "road": "Road",
+      "trail": "Trail",
+      "track": "Track",
+      "beach": "Beach",
+      "mountain": "Mountain",
+      "urban": "Urban"
+    },
+    "services": {
+      "pace_guide": "Pace guiding",
+      "route_planning": "Route planning",
+      "race_prep": "Race preparation",
+      "training_plan": "Training plan",
+      "photography": "Photos during the run",
+      "group_run": "Group run"
+    },
+    "languages": {
+      "pt": "Portuguese",
+      "en": "English",
+      "es": "Spanish",
+      "fr": "French",
+      "de": "German"
+    },
+    "experience": {
+      "lessThan1": "Less than 1 year",
+      "oneToTwo": "1 to 2 years",
+      "threeToFive": "3 to 5 years",
+      "fiveToTen": "5 to 10 years",
+      "tenPlus": "10+ years"
+    },
+    "errorCreatingProfile": "Error creating guide profile",
+    "title": "Complete your guide profile",
+    "subtitle": "This information will appear on your public profile",
+    "city": "City",
+    "cityPlaceholder": "E.g. São Paulo",
+    "country": "Country",
+    "modality": "Modality",
+    "presential": "In person",
+    "virtual": "Virtual",
+    "runType": "Run type",
+    "selectAllApplicable": "(select all that apply)",
+    "servicesOffered": "Services offered",
+    "languagesSpoken": "Languages spoken",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us a bit about yourself as a guide and runner...",
+    "runningExperience": "Running experience",
+    "select": "Select...",
+    "willCharge": "I'll charge for the service",
+    "pricePerRun": "Price per run (R$)",
+    "pricePlaceholder": "E.g. 150",
+    "stravaUrl": "Strava (URL)",
+    "instagramUrl": "Instagram (URL)",
+    "acceptTerms": "I have read and accept the Terms of Use for guides",
+    "viewTerms": "View terms",
+    "saving": "Saving...",
+    "createProfile": "Create my guide profile →"
+  },
+  "forgotPassword": {
+    "invalidEmail": "Invalid email",
+    "title": "Recover password",
+    "subtitle": "Enter your email and we'll send you a link to create a new password.",
+    "emailSent": "Email sent!",
+    "ifRegistered": "If {email} is registered, you'll receive a link shortly.",
+    "didntReceive": "Didn't receive it? Check your spam folder.",
+    "backToLogin": "Back to sign in",
+    "email": "Email",
+    "emailPlaceholder": "you@email.com",
+    "sending": "Sending...",
+    "sendResetLink": "Send reset link",
+    "rememberedPassword": "Remembered your password?",
+    "signIn": "Sign in"
+  },
+  "resetPassword": {
+    "minChars": "At least 6 characters",
+    "passwordsDontMatch": "Passwords don't match",
+    "resetFailed": "Couldn't reset the password. The link may have expired.",
+    "title": "New password",
+    "subtitle": "Create a strong password for your account.",
+    "newPassword": "New password",
+    "minCharsPlaceholder": "At least 6 characters",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat the new password",
+    "saving": "Saving...",
+    "saveNewPassword": "Save new password"
+  },
+  "dashboardHome": {
+    "title": "My bookings",
+    "subtitle": "Track your run requests",
+    "newRequest": "New request",
+    "active": "Active",
+    "history": "History",
+    "noBookingsYet": "No bookings yet",
+    "findAGuideAndRequest": "Find a guide and request your first run!",
+    "findAGuide": "Find a guide"
+  },
+  "runnerSidebar": {
+    "myBookings": "My bookings",
+    "newRequest": "New request",
+    "myGroups": "My groups",
+    "notifications": "Notifications",
+    "myProfile": "My profile",
+    "receivedBookings": "Received bookings",
+    "availability": "Availability",
+    "guideProfile": "Guide profile",
+    "reviews": "Reviews",
+    "runner": "Runner",
+    "guide": "Guide",
+    "becomeGuide": "Become a guide",
+    "signOut": "Sign out"
+  },
+  "bookingStatus": {
+    "pending": "Awaiting response",
+    "accepted": "Confirmed ✓",
+    "refused": "Declined",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "bookingCard": {
+    "guide": "Guide",
+    "runner": "Runner",
+    "chatAvailable": "Chat available — sort out the details"
+  },
+  "newBookingPage": {
+    "title": "New request",
+    "subtitle": "Choose a guide to request your run",
+    "tip": "Click a guide's profile to see details and request a run. Want to see more options?",
+    "viewFullCatalog": "View full catalog"
+  },
+  "bookingDetail": {
+    "details": "Details",
+    "chat": "Chat",
+    "bookingNotFound": "Booking not found.",
+    "loading": "Loading...",
+    "backToBookings": "Back to bookings",
+    "guide": "Guide",
+    "bookingDetails": "Booking details",
+    "date": "Date",
+    "time": "Time",
+    "city": "City",
+    "notes": "Notes",
+    "bookingConfirmed": "Run confirmed!",
+    "guideContactInfo": "Guide contact info",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "runCompleted": "Run completed?",
+    "registerCompletion": "Register completion to unlock reviews.",
+    "cancelBooking": "Cancel booking",
+    "guideHasNotResponded": "The guide hasn't responded yet.",
+    "bookingWasConfirmed": "The run was confirmed.",
+    "rateYourExperience": "Rate your experience",
+    "howWasRunningWith": "How was running with {name}?",
+    "theGuide": "the guide",
+    "reportProblem": "Report a problem",
+    "hadProblemWithGuide": "Had an issue with this guide? Let us know.",
+    "reportGuide": "Report guide"
+  },
+  "reportModal": {
+    "reasons": {
+      "inappropriateBehavior": "Inappropriate behavior",
+      "noShow": "Didn't show up (no-show)",
+      "fraud": "Fraud or false information",
+      "other": "Other"
+    },
+    "describeWhenOther": "Please describe the problem when selecting \"Other\".",
+    "errorSubmitting": "Error submitting report. Please try again.",
+    "title": "Report user",
+    "reportSubmitted": "Report submitted",
+    "receivedReport": "We received your report about {name} and will review it shortly.",
+    "close": "Close",
+    "youAreReporting": "You are reporting {name}. Select a reason:",
+    "description": "Description",
+    "optional": "(optional)",
+    "descriptionPlaceholder": "Describe what happened...",
+    "sending": "Sending...",
+    "sendReport": "Send report",
+    "cancel": "Cancel"
+  },
+  "notificationsPage": {
+    "metaTitle": "Notifications — PaceHive",
+    "title": "Notifications",
+    "unreadCount": "{count, plural, one {# unread} other {# unread}}",
+    "noNotifications": "No notifications",
+    "youWillBeNotifiedHere": "You'll be notified about bookings and messages here.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "older": "Older"
+  },
+  "runnerProfile": {
+    "nameTooShort": "Name too short",
+    "selectImageError": "Select an image (JPG, PNG or WebP).",
+    "imageTooLargeError": "Image too large. Maximum: 5 MB.",
+    "uploadError": "Error uploading image. Please try again.",
+    "saveError": "Error saving",
+    "loading": "Loading...",
+    "title": "My profile",
+    "subtitle": "Your personal information and preferences",
+    "profilePhoto": "Profile photo",
+    "clickToChangePhoto": "Click to change photo",
+    "photoRequirements": "JPG, PNG or WebP · Max 5 MB",
+    "profileUpdated": "Profile updated successfully!",
+    "name": "Name",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "preferredLanguage": "Preferred language",
+    "portuguese": "Portuguese",
+    "english": "English",
+    "spanish": "Spanish",
+    "saving": "Saving...",
+    "saveChanges": "Save changes"
+  },
+  "myGroupsPage": {
+    "title": "My groups",
+    "groupsRegistered": "{count, plural, one {# group registered} other {# groups registered}}",
+    "newGroup": "New group",
+    "noGroupsYet": "No groups yet",
+    "registerAndAppear": "Register your running group and get discovered by the community.",
+    "registerGroup": "Register group",
+    "active": "Active",
+    "inactive": "Inactive",
+    "free": "Free",
+    "deleteConfirm": "Delete group \"{name}\"? This action cannot be undone.",
+    "delete": "Delete"
+  },
+  "guideDashboard": {
+    "title": "Received bookings",
+    "subtitle": "Respond within 24 hours to keep your reputation",
+    "completeProfile": "Complete your profile to be found",
+    "itemsCompleted": "{done} of {total} items completed",
+    "complete": "Complete →",
+    "profileVisibleWhen": "Your profile will be visible to runners once you enable availability in <link>Availability</link>",
+    "awaitingResponse": "Awaiting response",
+    "confirmed": "Confirmed",
+    "history": "History",
+    "noBookingsYet": "No bookings yet",
+    "profileCompleteAndVisible": "Your profile is complete and visible to runners.",
+    "checklist": {
+      "addPhoto": {
+        "label": "Add a profile photo",
+        "hint": "Profiles with a photo get a lot more requests"
+      },
+      "selectRunTypes": {
+        "label": "Select run types",
+        "hint": "Road, trail, beach... help runners find you"
+      },
+      "addServices": {
+        "label": "Add services offered",
+        "hint": "Pace guiding, route planning, etc."
+      },
+      "writeBio": {
+        "label": "Write a bio",
+        "hint": "Tell your story as a guide and runner"
+      },
+      "connectStrava": {
+        "label": "Connect with Strava",
+        "hint": "Shows verified data and builds trust"
+      },
+      "setAvailability": {
+        "label": "Set your availability",
+        "hint": "Shows runners when you can run"
+      }
+    }
+  },
+  "availabilityPage": {
+    "saveError": "Error saving",
+    "title": "Availability",
+    "subtitle": "Let us know when you're available to receive requests",
+    "availabilityUpdated": "Availability updated!",
+    "availableForBookings": "I'm available to receive requests",
+    "deactivateHint": "Turn off to temporarily pause your visibility",
+    "availableDays": "Available days",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "periodsOfDay": "Time of day",
+    "periods": {
+      "morning": {
+        "label": "Morning",
+        "sub": "5am – 12pm"
+      },
+      "afternoon": {
+        "label": "Afternoon",
+        "sub": "12pm – 6pm"
+      },
+      "evening": {
+        "label": "Evening",
+        "sub": "6pm – 10pm"
+      }
+    },
+    "additionalNotes": "Additional notes",
+    "notesPlaceholder": "E.g. Only with 48h notice. Holidays by request.",
+    "saving": "Saving...",
+    "saveAvailability": "Save availability"
+  },
+  "guideProfileEdit": {
+    "provideCityError": "Please provide your city",
+    "selectLanguageError": "Select at least one language",
+    "provideValueError": "Enter a value greater than zero",
+    "runTypes": {
+      "road": "Road",
+      "trail": "Trail",
+      "track": "Track",
+      "beach": "Beach",
+      "mountain": "Mountain",
+      "urban": "Urban"
+    },
+    "services": {
+      "pace_guide": "Pace guiding",
+      "route_planning": "Route planning",
+      "race_prep": "Race preparation",
+      "training_plan": "Training plan",
+      "photography": "Photos during the run",
+      "group_run": "Group run"
+    },
+    "languages": {
+      "pt": "Portuguese",
+      "en": "English",
+      "es": "Spanish",
+      "fr": "French",
+      "de": "German"
+    },
+    "experience": {
+      "lessThan1": "Less than 1 year",
+      "oneToTwo": "1 to 2 years",
+      "threeToFive": "3 to 5 years",
+      "fiveToTen": "5 to 10 years",
+      "tenPlus": "10+ years"
+    },
+    "selectImageError": "Select an image (JPG, PNG or WebP).",
+    "imageTooLargeError": "Image too large. Maximum: 5 MB.",
+    "uploadError": "Error uploading image. Please try again.",
+    "saveError": "Error saving",
+    "loading": "Loading...",
+    "title": "My public profile",
+    "subtitle": "This information is shown to runners looking for guides",
+    "profilePhoto": "Profile photo",
+    "uploading": "Uploading...",
+    "changePhoto": "Change photo",
+    "addPhoto": "Add photo",
+    "photoRequirements": "JPG, PNG or WebP · max 5 MB",
+    "profileUpdated": "Profile updated successfully!",
+    "city": "City",
+    "country": "Country",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself as a guide and runner...",
+    "runningExperience": "Running experience",
+    "select": "Select...",
+    "runType": "Run type",
+    "servicesOffered": "Services offered",
+    "languagesSpoken": "Languages spoken",
+    "chargeForService": "I charge for the service",
+    "pricePerRun": "Price per run (R$)",
+    "saving": "Saving...",
+    "saveChanges": "Save changes"
+  },
+  "guideReviewsPage": {
+    "title": "My reviews",
+    "subtitle": "Reputation built one run at a time",
+    "reviewsCount": "{count, plural, one {# review} other {# reviews}}",
+    "runsCompleted": "runs completed",
+    "comments": "Comments"
+  },
+  "guiaSidebar": {
+    "receivedBookings": "Received bookings",
+    "notifications": "Notifications",
+    "myPublicProfile": "My public profile",
+    "availability": "Availability",
+    "reviews": "Reviews",
+    "guidePanel": "Guide Panel",
+    "runnerPanel": "Runner panel",
+    "signOut": "Sign out"
+  },
+  "bookingForm": {
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "periods": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    },
+    "provideCityError": "Please provide your city",
+    "provideDateError": "Please provide the date",
+    "provideTimeError": "Please provide the time",
+    "errorCreatingBooking": "Error creating booking",
+    "unexpectedError": "Unexpected error",
+    "requestRun": "Request a run",
+    "withGuide": "with {name}",
+    "guideCharges": "This guide charges R$ {price}/run",
+    "paymentDisclaimer": "Payment is arranged directly between you and the guide. PaceHive does not process or guarantee payments.",
+    "guideAvailability": "Guide availability",
+    "date": "Date",
+    "time": "Time",
+    "city": "City",
+    "cityPlaceholder": "E.g. São Paulo",
+    "modality": "Modality",
+    "presential": "In person",
+    "virtual": "Virtual",
+    "distance": "Distance (km)",
+    "optional": "optional",
+    "distancePlaceholder": "E.g. 10",
+    "distanceHint": "Total planned distance",
+    "currentPace": "Current pace",
+    "pacePlaceholder": "E.g. 6:30",
+    "paceHint": "Your average pace in min/km",
+    "preferredLanguage": "Preferred language",
+    "portuguese": "Portuguese",
+    "english": "English",
+    "spanish": "Spanish",
+    "french": "French",
+    "notes": "Notes",
+    "notesPlaceholder": "Special preferences, experience level, points of interest...",
+    "acceptTerms": "I have read and accept the Terms of Use",
+    "viewTerms": "View terms",
+    "sendingRequest": "Sending request...",
+    "requestRunCta": "Request run"
+  },
+  "bookingChat": {
+    "chatWith": "Chat with {name}",
+    "runCompletedReadOnly": "Run completed — read-only",
+    "noMessagesYet": "No messages yet.",
+    "startTheConversation": "Start the conversation!",
+    "historyPreserved": "Message history preserved",
+    "messagePlaceholder": "Type a message... (Enter to send)"
+  },
+  "completeButton": {
+    "errorCompleting": "Error registering completion. Please try again.",
+    "markAsCompleted": "Mark run as completed",
+    "confirmCompletion": "Confirm the run took place? Both of you will receive a review request by email.",
+    "registering": "Registering...",
+    "yesCompleted": "Yes, completed",
+    "cancel": "Cancel"
+  },
+  "cancelButton": {
+    "errorCancelling": "Error cancelling. Please try again.",
+    "cancelBooking": "Cancel booking",
+    "confirmCancel": "Are you sure? The other party will be notified by email.",
+    "cancelling": "Cancelling...",
+    "yesCancel": "Yes, cancel",
+    "back": "Back"
+  },
+  "acceptRefuseButtons": {
+    "errorProcessing": "Error processing. Please try again.",
+    "acceptedMessage": "✅ Run accepted! The runner has been notified by email.",
+    "refusedMessage": "❌ Request declined. The runner has been notified.",
+    "acceptRun": "Accept run",
+    "decline": "Decline"
+  },
+  "reportButton": {
+    "reportUser": "Report user"
+  },
+  "guideBookingDetail": {
+    "backToBookings": "Back to bookings",
+    "runner": "Runner",
+    "runRequest": "Run request",
+    "date": "Date",
+    "time": "Time",
+    "city": "City",
+    "distance": "Distance",
+    "pace": "Pace",
+    "runnerNotes": "Runner's notes",
+    "runConfirmed": "Run confirmed!",
+    "runnerContactInfo": "Runner contact info",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "respondToRequest": "Respond to request",
+    "respondWithin24h": "Accept or decline within 24 hours to keep your reputation.",
+    "runCompleted": "Run completed?",
+    "registerCompletion": "Register completion to unlock reviews.",
+    "rateTheRunner": "Rate the runner",
+    "howWasRunningWith": "How was running with {name}?",
+    "cancelRun": "Cancel run",
+    "cantMakeIt": "Can't make it anymore? The runner will be notified.",
+    "reportProblem": "Report a problem",
+    "hadProblemWithRunner": "Had an issue with this runner? Let us know.",
+    "reportRunner": "Report runner"
+  },
+  "termsModal": {
+    "runnerTitle": "Terms of Use — Runner",
+    "guideTitle": "Terms of Use — Guide",
+    "lastUpdated": "Last updated: May 2026",
+    "acceptTerms": "I have read and accept the Terms of Use",
+    "runnerTerms": [
+      {
+        "title": "1. About PaceHive",
+        "text": "PaceHive is a platform connecting runners with local guides. We are an intermediary — not a travel agency, transportation company, or employer of the registered guides."
+      },
+      {
+        "title": "2. Responsibility for payments",
+        "text": "When a guide charges for their service, payment is arranged and made directly between you and the guide, outside the platform. PaceHive does not process, mediate, guarantee, or bear any responsibility for financial transactions between runners and guides. Vet the guide and agree on terms before making any payment."
+      },
+      {
+        "title": "3. Responsibility during the run",
+        "text": "You are responsible for your own safety during the run. PaceHive is not responsible for accidents, injuries, property loss, or any other damage occurring during or after the activity. Assess your physical condition and the environment before running."
+      },
+      {
+        "title": "4. Conduct",
+        "text": "All users are expected to show mutual respect, punctuality, and honest communication. Abusive, discriminatory, or fraudulent behavior will result in account cancellation."
+      },
+      {
+        "title": "5. Cancellations",
+        "text": "Cancellations should be communicated to the guide as far in advance as possible. Cancellation policy and any refunds are defined directly between runner and guide."
+      },
+      {
+        "title": "6. Personal data",
+        "text": "Your data is used exclusively for the platform's operation. We do not sell information to third parties. See our Privacy Policy at pacehive.com/privacidade."
+      }
+    ],
+    "guideTerms": [
+      {
+        "title": "1. Nature of the relationship",
+        "text": "By registering as a guide, you act as an independent service provider. There is no employment, corporate, or any other relationship between you and PaceHive. You are responsible for your own tax and labor obligations."
+      },
+      {
+        "title": "2. Free platform use",
+        "text": "Using PaceHive is 100% free for guides in this version. We reserve the right to introduce paid plans in the future, with advance notice to registered guides."
+      },
+      {
+        "title": "3. Responsibility for payments",
+        "text": "When you charge for your service, payment is agreed upon and received directly from each runner, outside the platform. PaceHive does not process, guarantee, or bear any responsibility for payments received. Agree on payment terms before the run."
+      },
+      {
+        "title": "4. Safety and conduct",
+        "text": "You agree to provide a safe, honest, and respectful service. Do not promise conditions you cannot fulfill. In case of an emergency during the run, prioritize the runner's safety and contact emergency services if necessary."
+      },
+      {
+        "title": "5. Keeping information up to date",
+        "text": "Keep your profile (city, availability, price, modalities) always up to date. Outdated information that causes conflicts with runners may result in account suspension."
+      },
+      {
+        "title": "6. Response time",
+        "text": "Commit to responding to requests within 24 hours. Guides with a consistently high response time may have their profile temporarily hidden."
+      },
+      {
+        "title": "7. Personal data",
+        "text": "Your data is used exclusively for the platform's operation and to facilitate contact with confirmed runners. See our Privacy Policy at pacehive.com/privacidade."
+      }
+    ]
+  },
+  "reviewForm": {
+    "selectRating": "Please select a rating",
+    "errorSubmittingReview": "Error submitting review",
+    "unexpectedError": "Unexpected error",
+    "rateYourExperienceWith": "Rate your experience with",
+    "commentPlaceholder": "Tell us how the run went (optional)...",
+    "submitting": "Submitting...",
+    "submitReview": "Submit review"
+  },
+  "reviewList": {
+    "noReviewsYet": "No reviews yet",
+    "reviewsWillAppearHere": "Reviews will appear here after each run.",
+    "anonymous": "Anonymous"
+  },
+  "notificationItem": {
+    "minutesAgo": "{count}min ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago"
+  },
+  "stravaConnectCard": {
+    "connected": "Connected",
+    "connectedSuccess": "Strava connected successfully! Your data now appears on your profile.",
+    "connectionError": "Error connecting to Strava. Please try again.",
+    "connectionCancelled": "Connection cancelled.",
+    "accountLimitReached": "Temporary Strava account limit reached. Please try again soon.",
+    "kmRun": "km run",
+    "avgPace": "avg pace",
+    "lastRun": "last run",
+    "disconnectStrava": "Disconnect Strava",
+    "errorDisconnecting": "Error disconnecting. Please try again.",
+    "confirmDisconnect": "Disconnect Strava? Your data will be removed from your profile.",
+    "connectDescription": "Connect your Strava account to show your real running data on your profile and earn the verified runner badge.",
+    "integrationPendingApproval": "Integration pending approval",
+    "integrationPendingApprovalDetail": "While we await Strava's official approval, the number of accounts that can connect is limited. That limit has been reached — new connections will open up once approval comes through.",
+    "connectWithStrava": "Connect with Strava"
+  },
+  "stravaFormat": {
+    "thousandKm": "thousand km",
+    "today": "today",
+    "yesterday": "yesterday",
+    "daysAgo": "{count} days ago",
+    "weeksAgo": "{count, plural, one {# week} other {# weeks}} ago",
+    "monthsAgo": "{count, plural, one {# month} other {# months}} ago"
+  },
+  "groupActions": {
+    "unauthorized": "Unauthorized",
+    "nameAndCityRequired": "Name and city are required",
+    "errorCreatingGroup": "Error creating group: {message}",
+    "errorUpdatingGroup": "Error updating group: {message}",
+    "errorDeletingGroup": "Error deleting group: {message}"
+  },
+  "bookingsApi": {
+    "notAuthenticated": "Not authenticated",
+    "missingRequiredFields": "Missing required fields",
+    "internalError": "Internal error"
+  },
+  "reviewsApi": {
+    "notAuthenticated": "Not authenticated",
+    "missingRequiredFields": "Missing required fields",
+    "ratingRange": "Rating must be between 1 and 5",
+    "alreadyReviewed": "You have already reviewed this run",
+    "internalError": "Internal error"
+  },
+  "emails": {
+    "footerCopyright": "Copyright &copy; {year} PaceHive. All rights reserved.",
+    "bookingDetails": {
+      "date": "Date",
+      "time": "Time",
+      "city": "City",
+      "modality": "Modality",
+      "presential": "In person",
+      "virtual": "Virtual",
+      "distance": "Distance",
+      "pace": "Pace",
+      "notes": "Notes"
+    },
+    "newBookingToGuide": {
+      "subject": "You've received a new run request!",
+      "previewText": "New run request",
+      "heading": "You've received a new run request!",
+      "greeting": "Hi {guideName}! Runner {runnerName} wants to run with you.",
+      "respondAsap": "Respond as soon as possible to secure the runner's experience:",
+      "acceptButton": "Accept request",
+      "refuseButton": "Decline request",
+      "timeLimitNote": "You have 24 hours to respond before a reminder is sent."
+    },
+    "bookingAcceptedToRunner": {
+      "subject": "Your run is confirmed!",
+      "previewText": "Run confirmed",
+      "heading": "Your run is confirmed!",
+      "greeting": "Hi {runnerName}! Good news — {guideName} accepted your request.",
+      "guideDetailsTitle": "Your guide's details:",
+      "name": "Name",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "contactMessage": "Reach out to sort out the final details. Have a great run!"
+    },
+    "bookingAcceptedToGuide": {
+      "subject": "You confirmed a run!",
+      "previewText": "Run confirmed",
+      "heading": "You confirmed a run!",
+      "greeting": "Hi {guideName}! You accepted {runnerName}'s request.",
+      "runnerDetailsTitle": "Runner's details:",
+      "name": "Name",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "contactMessage": "Reach out to sort out the details. Have a great run!",
+      "viewDashboardButton": "View my dashboard"
+    },
+    "bookingRefusedToRunner": {
+      "subject": "The guide isn't available on that date",
+      "previewText": "Request declined",
+      "heading": "The guide isn't available on that date",
+      "greeting": "Hi {runnerName}! Unfortunately {guideName} isn't available for the run below.",
+      "dontGiveUp": "Don't give up — there are many other great guides available for you!",
+      "viewOtherGuidesButton": "View other guides"
+    },
+    "reminderToGuide": {
+      "subject": "You have a request awaiting your response",
+      "previewText": "Reminder: request awaiting response",
+      "heading": "You have a request awaiting your response",
+      "greeting": "Hi {guideName}! Reminder: {runnerName} is still awaiting your response.",
+      "respondAsap": "Please respond as soon as possible:",
+      "acceptButton": "Accept request",
+      "refuseButton": "Decline request",
+      "noResponseNote": "If there's no response within 48h, the runner will be notified."
+    },
+    "reviewRequest": {
+      "subject": "How was the run? Leave your review!",
+      "previewTextRunner": "Rate your run",
+      "previewTextGuide": "Rate the runner",
+      "heading": "How was the run? Leave your review!",
+      "greetingRunner": "Hi {runnerName}! We hope your run with {guideName} was amazing.",
+      "bodyRunner": "Your review helps other runners find the best guides. It takes less than a minute!",
+      "buttonRunner": "Rate my run",
+      "greetingGuide": "Hi {guideName}! We hope your run with {runnerName} was great.",
+      "bodyGuide": "Rate the runner to help the PaceHive community grow!",
+      "buttonGuide": "Rate the runner"
+    },
+    "bookingCancelledToGuide": {
+      "subject": "Run request cancelled by the runner",
+      "previewText": "Request cancelled",
+      "heading": "Run request cancelled",
+      "greeting": "Hi {guideName}! Runner {runnerName} cancelled the request below.",
+      "supportNote": "If you have any questions, contact the PaceHive team."
+    },
+    "bookingCancelledToRunner": {
+      "subject": "Run cancelled by the guide",
+      "previewText": "Run cancelled",
+      "heading": "Run cancelled by the guide",
+      "greeting": "Hi {runnerName}! Unfortunately {guideName} had to cancel the run below.",
+      "dontGiveUp": "Don't give up — there are other great guides available for you!",
+      "viewOtherGuidesButton": "View other guides"
+    },
+    "welcomeToGuide": {
+      "subject": "Welcome to the PaceHive community!",
+      "previewText": "Welcome to PaceHive",
+      "heading": "Welcome to the PaceHive community!",
+      "greeting": "Hi {name}! We're so glad to have you as a PaceHive guide.",
+      "introText": "Now runners from all over the world can find you and run with you. Here are the next steps:",
+      "step1": "Complete your public profile",
+      "step2": "Set up your availability",
+      "step3": "Add your bio and photos",
+      "step4": "Connect your Strava or Instagram",
+      "completeProfileButton": "Complete my profile",
+      "helpNote": "Any questions, reach out to us at contato@pacehive.com"
+    }
+  }
+}

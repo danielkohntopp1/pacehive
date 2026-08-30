@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import GuideCard from './GuideCard'
 import type { Guide, Profile } from '@/types'
@@ -10,21 +11,8 @@ interface Props {
   guides: (Guide & { profile: Profile })[]
 }
 
-const RUN_TYPE_OPTIONS = [
-  { value: 'road', label: 'Asfalto' },
-  { value: 'trail', label: 'Trilha' },
-  { value: 'track', label: 'Pista' },
-  { value: 'beach', label: 'Praia' },
-  { value: 'mountain', label: 'Montanha' },
-  { value: 'urban', label: 'Urbano' },
-]
-
-const LANGUAGE_OPTIONS = [
-  { value: 'pt', label: 'Português' },
-  { value: 'en', label: 'Inglês' },
-  { value: 'es', label: 'Espanhol' },
-  { value: 'fr', label: 'Francês' },
-]
+const RUN_TYPE_VALUES = ['road', 'trail', 'track', 'beach', 'mountain', 'urban'] as const
+const LANGUAGE_VALUES = ['pt', 'en', 'es', 'fr'] as const
 
 type PriceFilter = 'all' | 'free' | 'paid'
 type ModalityFilter = 'all' | 'presential' | 'virtual'
@@ -59,6 +47,7 @@ function countActiveFilters(f: Filters) {
 }
 
 export default function GuideList({ guides }: Props) {
+  const t = useTranslations('guideList')
   const [search, setSearch] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState<Filters>(defaultFilters())
@@ -118,7 +107,7 @@ export default function GuideList({ guides }: Props) {
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B6B6B]" />
           <input
             type="text"
-            placeholder="Buscar por cidade ou nome do guia..."
+            placeholder={t('searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-11 pr-4 py-3.5 bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 text-sm transition-all shadow-sm"
@@ -129,7 +118,7 @@ export default function GuideList({ guides }: Props) {
           className={`flex items-center gap-2 px-4 py-3.5 rounded-xl border text-sm font-medium transition-colors shadow-sm ${showFilters || activeFilterCount > 0 ? 'bg-[#F5A623] border-[#F5A623] text-black' : 'bg-white border-[#E5E5E5] text-[#6B6B6B] hover:border-[#F5A623]'}`}
         >
           <SlidersHorizontal size={16} />
-          Filtros
+          {t('filters')}
           {activeFilterCount > 0 && (
             <span className="bg-black text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
               {activeFilterCount}
@@ -142,10 +131,10 @@ export default function GuideList({ guides }: Props) {
       {showFilters && (
         <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 mb-6 max-w-2xl mx-auto shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-semibold text-[#1A1A1A]">Filtrar guias</span>
+            <span className="text-sm font-semibold text-[#1A1A1A]">{t('filterGuides')}</span>
             {activeFilterCount > 0 && (
               <button onClick={resetFilters} className="flex items-center gap-1 text-xs text-[#6B6B6B] hover:text-[#F5A623] transition-colors">
-                <X size={13} /> Limpar filtros
+                <X size={13} /> {t('clearFilters')}
               </button>
             )}
           </div>
@@ -153,10 +142,10 @@ export default function GuideList({ guides }: Props) {
           {/* Cidade */}
           {cities.length > 1 && (
             <div className="mb-4">
-              <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">Cidade</p>
+              <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">{t('city')}</p>
               <div className="flex gap-2 flex-wrap">
                 <button onClick={() => setFilters((f) => ({ ...f, city: '' }))} className={chipClass(filters.city === '')}>
-                  Todas
+                  {t('all')}
                 </button>
                 {cities.map((city) => (
                   <button key={city} onClick={() => setFilters((f) => ({ ...f, city }))} className={chipClass(filters.city === city)}>
@@ -169,9 +158,9 @@ export default function GuideList({ guides }: Props) {
 
           {/* Modalidade */}
           <div className="mb-4">
-            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">Modalidade</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">{t('modality')}</p>
             <div className="flex gap-2 flex-wrap">
-              {([['all', 'Todas'], ['presential', 'Presencial'], ['virtual', 'Virtual']] as [ModalityFilter, string][]).map(([v, l]) => (
+              {([['all', t('all')], ['presential', t('presential')], ['virtual', t('virtual')]] as [ModalityFilter, string][]).map(([v, l]) => (
                 <button key={v} onClick={() => setFilters((f) => ({ ...f, modality: v }))} className={chipClass(filters.modality === v)}>
                   {l}
                 </button>
@@ -181,9 +170,9 @@ export default function GuideList({ guides }: Props) {
 
           {/* Preço */}
           <div className="mb-4">
-            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">Preço</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">{t('price')}</p>
             <div className="flex gap-2 flex-wrap">
-              {([['all', 'Todos'], ['free', 'Gratuito'], ['paid', 'Pago']] as [PriceFilter, string][]).map(([v, l]) => (
+              {([['all', t('allPrices')], ['free', t('free')], ['paid', t('paid')]] as [PriceFilter, string][]).map(([v, l]) => (
                 <button key={v} onClick={() => setFilters((f) => ({ ...f, price: v }))} className={chipClass(filters.price === v)}>
                   {l}
                 </button>
@@ -193,11 +182,11 @@ export default function GuideList({ guides }: Props) {
 
           {/* Tipo de corrida */}
           <div className="mb-4">
-            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">Tipo de corrida</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">{t('runType')}</p>
             <div className="flex gap-2 flex-wrap">
-              {RUN_TYPE_OPTIONS.map((opt) => (
-                <button key={opt.value} onClick={() => toggleRunType(opt.value)} className={chipClass(filters.runTypes.includes(opt.value))}>
-                  {opt.label}
+              {RUN_TYPE_VALUES.map((value) => (
+                <button key={value} onClick={() => toggleRunType(value)} className={chipClass(filters.runTypes.includes(value))}>
+                  {t(`runTypes.${value}`)}
                 </button>
               ))}
             </div>
@@ -205,11 +194,11 @@ export default function GuideList({ guides }: Props) {
 
           {/* Idioma */}
           <div className="mb-4">
-            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">Idioma</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">{t('language')}</p>
             <div className="flex gap-2 flex-wrap">
-              {LANGUAGE_OPTIONS.map((opt) => (
-                <button key={opt.value} onClick={() => toggleLanguage(opt.value)} className={chipClass(filters.languages.includes(opt.value))}>
-                  {opt.label}
+              {LANGUAGE_VALUES.map((value) => (
+                <button key={value} onClick={() => toggleLanguage(value)} className={chipClass(filters.languages.includes(value))}>
+                  {t(`languages.${value}`)}
                 </button>
               ))}
             </div>
@@ -217,11 +206,11 @@ export default function GuideList({ guides }: Props) {
 
           {/* Nota mínima */}
           <div>
-            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">Nota mínima</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">{t('minRating')}</p>
             <div className="flex gap-2 flex-wrap">
               {[0, 4, 4.5, 5].map((v) => (
                 <button key={v} onClick={() => setFilters((f) => ({ ...f, minRating: v }))} className={chipClass(filters.minRating === v)}>
-                  {v === 0 ? 'Qualquer' : `★ ${v}+`}
+                  {v === 0 ? t('any') : `★ ${v}+`}
                 </button>
               ))}
             </div>
@@ -232,8 +221,8 @@ export default function GuideList({ guides }: Props) {
       {filtered.length > 0 && (
         <p className="text-sm text-[#6B6B6B] text-center mb-8">
           {search.trim() || activeFilterCount > 0
-            ? `${filtered.length} guia${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`
-            : `${filtered.length} guia${filtered.length !== 1 ? 's' : ''} disponíve${filtered.length !== 1 ? 'is' : 'l'}`}
+            ? t('guidesFound', { count: filtered.length })
+            : t('guidesAvailable', { count: filtered.length })}
         </p>
       )}
 
@@ -242,19 +231,19 @@ export default function GuideList({ guides }: Props) {
           <div className="w-16 h-16 bg-[#E5E5E5] rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Search size={24} className="text-[#6B6B6B]" />
           </div>
-          <p className="text-[#1A1A1A] font-semibold mb-1">Nenhum guia encontrado</p>
+          <p className="text-[#1A1A1A] font-semibold mb-1">{t('noGuidesFound')}</p>
           <p className="text-[#6B6B6B] text-sm mb-4">
             {activeFilterCount > 0
-              ? 'Tente remover alguns filtros para ver mais resultados.'
-              : `Que tal ser o primeiro guia em ${search || 'essa cidade'}?`}
+              ? t('tryRemovingFilters')
+              : t('beTheFirstGuide', { place: search || t('thisCity') })}
           </p>
           {activeFilterCount > 0 ? (
             <button onClick={resetFilters} className="inline-block px-6 py-3 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors">
-              Limpar filtros
+              {t('clearFilters')}
             </button>
           ) : (
             <Link href="/seja-um-guia" className="inline-block px-6 py-3 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors">
-              Quero ser guia
+              {t('iWantToBeGuide')}
             </Link>
           )}
         </div>

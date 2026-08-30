@@ -117,22 +117,23 @@ export function formatPace(secsPerKm: number): string {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-export function formatDistance(meters: number): string {
+export function formatDistance(meters: number, t: (key: string) => string, locale: 'pt' | 'en' = 'pt'): string {
   const km = meters / 1000
+  const intlLocale = locale === 'en' ? 'en-US' : 'pt-BR'
   return km >= 1000
-    ? `${(km / 1000).toFixed(1).replace('.', ',')} mil km`
-    : `${Math.round(km).toLocaleString('pt-BR')} km`
+    ? `${(km / 1000).toLocaleString(intlLocale, { maximumFractionDigits: 1 })} ${t('thousandKm')}`
+    : `${Math.round(km).toLocaleString(intlLocale)} km`
 }
 
-export function formatLastActivity(dateStr: string): string {
+export function formatLastActivity(dateStr: string, t: (key: string, values?: Record<string, number>) => string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const days = Math.floor(diff / 86400000)
-  if (days === 0) return 'hoje'
-  if (days === 1) return 'ontem'
-  if (days < 7) return `há ${days} dias`
-  if (days < 30) return `há ${Math.floor(days / 7)} semana${Math.floor(days / 7) > 1 ? 's' : ''}`
+  if (days === 0) return t('today')
+  if (days === 1) return t('yesterday')
+  if (days < 7) return t('daysAgo', { count: days })
+  if (days < 30) return t('weeksAgo', { count: Math.floor(days / 7) })
   const months = Math.floor(days / 30)
-  return `há ${months} ${months === 1 ? 'mês' : 'meses'}`
+  return t('monthsAgo', { count: months })
 }
 
 export function buildStravaAuthUrl(redirectUri: string): string {

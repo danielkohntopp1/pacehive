@@ -4,38 +4,35 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 import { X, Loader2, CreditCard, Calendar } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { Guide, Profile, GuideAvailability } from '@/types'
 import TermsModal from './TermsModal'
 
-const DAY_LABELS: Record<string, string> = {
-  mon: 'Seg', tue: 'Ter', wed: 'Qua', thu: 'Qui', fri: 'Sex', sat: 'Sáb', sun: 'Dom',
-}
 const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
-const PERIOD_LABELS: Record<string, string> = {
-  morning: 'Manhã', afternoon: 'Tarde', evening: 'Noite',
-}
 
-function formatAvailability(av: GuideAvailability): string {
-  const days = DAY_ORDER.filter((d) => av.days.includes(d)).map((d) => DAY_LABELS[d]).join(', ')
-  const periods = av.periods.map((p) => PERIOD_LABELS[p]).join(', ')
+function formatAvailability(av: GuideAvailability, t: ReturnType<typeof useTranslations>): string {
+  const days = DAY_ORDER.filter((d) => av.days.includes(d)).map((d) => t(`days.${d}`)).join(', ')
+  const periods = av.periods.map((p) => t(`periods.${p}`)).join(', ')
   const parts = [days, periods].filter(Boolean)
   return parts.join(' · ')
 }
 
-const schema = z.object({
-  city: z.string().min(2, 'Informe a cidade'),
-  run_date: z.string().min(1, 'Informe a data'),
-  run_time: z.string().min(1, 'Informe o horário'),
-  modality: z.enum(['presential', 'virtual']),
-  distance_km: z.string().optional(),
-  pace: z.string().optional(),
-  language: z.string().min(1),
-  notes: z.string().optional(),
-})
+function buildSchema(t: ReturnType<typeof useTranslations>) {
+  return z.object({
+    city: z.string().min(2, t('provideCityError')),
+    run_date: z.string().min(1, t('provideDateError')),
+    run_time: z.string().min(1, t('provideTimeError')),
+    modality: z.enum(['presential', 'virtual']),
+    distance_km: z.string().optional(),
+    pace: z.string().optional(),
+    language: z.string().min(1),
+    notes: z.string().optional(),
+  })
+}
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<ReturnType<typeof buildSchema>>
 
 interface Props {
   guide: Guide & { profile: Profile }
@@ -43,12 +40,14 @@ interface Props {
 }
 
 export default function BookingForm({ guide, onClose }: Props) {
+  const t = useTranslations('bookingForm')
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showTerms, setShowTerms] = useState(false)
   const [termsAccepted, setTermsAccepted] = useState(false)
 
+  const schema = buildSchema(t)
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -73,13 +72,13 @@ export default function BookingForm({ guide, onClose }: Props) {
       })
       if (!res.ok) {
         const body = await res.json()
-        throw new Error(body.error || 'Erro ao criar pedido')
+        throw new Error(body.error || t('errorCreatingBooking'))
       }
       const booking = await res.json()
       onClose()
       router.push(`/dashboard/pedidos/${booking.id}`)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro inesperado')
+      setError(err instanceof Error ? err.message : t('unexpectedError'))
     } finally {
       setLoading(false)
     }
@@ -99,8 +98,8 @@ export default function BookingForm({ guide, onClose }: Props) {
       <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="flex items-center justify-between p-6 border-b border-[#E5E5E5]">
           <div>
-            <h2 className="text-xl font-bold text-[#1A1A1A]">Solicitar corrida</h2>
-            <p className="text-sm text-[#6B6B6B]">com {guide.profile.name}</p>
+            <h2 className="text-xl font-bold text-[#1A1A1A]">{t('requestRun')}</h2>
+            <p className="text-sm text-[#6B6B6B]">{t('withGuide', { name: guide.profile.name })}</p>
           </div>
           <button onClick={onClose} className="p-2 rounded-full hover:bg-[#F9F5EE] transition-colors">
             <X size={20} />
@@ -113,10 +112,10 @@ export default function BookingForm({ guide, onClose }: Props) {
               <CreditCard size={16} className="text-amber-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-semibold text-amber-800">
-                  Este guia cobra R$ {guide.price_brl.toFixed(0)}/corrida
+                  {t('guideCharges', { price: guide.price_brl.toFixed(0) })}
                 </p>
                 <p className="text-xs text-amber-700 mt-0.5 leading-relaxed">
-                  O pagamento é combinado diretamente entre você e o guia. A PaceHive não processa nem garante pagamentos.
+                  {t('paymentDisclaimer')}
                 </p>
               </div>
             </div>
@@ -133,8 +132,8 @@ export default function BookingForm({ guide, onClose }: Props) {
             <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
               <Calendar size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-semibold text-blue-800">Disponibilidade do guia</p>
-                <p className="text-xs text-blue-700 mt-0.5">{formatAvailability(guide.availability)}</p>
+                <p className="text-sm font-semibold text-blue-800">{t('guideAvailability')}</p>
+                <p className="text-xs text-blue-700 mt-0.5">{formatAvailability(guide.availability, t)}</p>
                 {guide.availability.notes && (
                   <p className="text-xs text-blue-600 mt-1 leading-relaxed">{guide.availability.notes}</p>
                 )}
@@ -144,7 +143,7 @@ export default function BookingForm({ guide, onClose }: Props) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Data *</label>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('date')} *</label>
               <input
                 type="date"
                 {...register('run_date')}
@@ -154,7 +153,7 @@ export default function BookingForm({ guide, onClose }: Props) {
               {errors.run_date && <p className="text-xs text-red-500 mt-1">{errors.run_date.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Horário *</label>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('time')} *</label>
               <input
                 type="time"
                 {...register('run_time')}
@@ -165,22 +164,22 @@ export default function BookingForm({ guide, onClose }: Props) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Cidade *</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('city')} *</label>
             <input
               type="text"
               {...register('city')}
-              placeholder="Ex: São Paulo"
+              placeholder={t('cityPlaceholder')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
             />
             {errors.city && <p className="text-xs text-red-500 mt-1">{errors.city.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Modalidade *</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-2">{t('modality')} *</label>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { value: 'presential', label: 'Presencial' },
-                { value: 'virtual', label: 'Virtual' },
+                { value: 'presential', label: t('presential') },
+                { value: 'virtual', label: t('virtual') },
               ].map((opt) => (
                 <label key={opt.value}
                   className="flex items-center gap-2 p-3 border border-[#E5E5E5] rounded-xl cursor-pointer hover:border-[#F5A623] transition-colors has-[:checked]:border-[#F5A623] has-[:checked]:bg-[#FEF3DC]">
@@ -194,53 +193,53 @@ export default function BookingForm({ guide, onClose }: Props) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
-                Distância (km)
-                <span className="text-[#6B6B6B] font-normal ml-1">opcional</span>
+                {t('distance')}
+                <span className="text-[#6B6B6B] font-normal ml-1">{t('optional')}</span>
               </label>
               <input
                 type="number"
                 step="0.1"
                 min="0"
                 {...register('distance_km')}
-                placeholder="Ex: 10"
+                placeholder={t('distancePlaceholder')}
                 className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
               />
-              <p className="text-xs text-[#6B6B6B] mt-1">Distância total planejada</p>
+              <p className="text-xs text-[#6B6B6B] mt-1">{t('distanceHint')}</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">
-                Ritmo atual
-                <span className="text-[#6B6B6B] font-normal ml-1">opcional</span>
+                {t('currentPace')}
+                <span className="text-[#6B6B6B] font-normal ml-1">{t('optional')}</span>
               </label>
               <input
                 type="text"
                 {...register('pace')}
-                placeholder="Ex: 6:30"
+                placeholder={t('pacePlaceholder')}
                 className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
               />
-              <p className="text-xs text-[#6B6B6B] mt-1">Seu ritmo médio em min/km</p>
+              <p className="text-xs text-[#6B6B6B] mt-1">{t('paceHint')}</p>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Idioma preferido</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('preferredLanguage')}</label>
             <select
               {...register('language')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all bg-white"
             >
-              <option value="pt">Português</option>
-              <option value="en">Inglês</option>
-              <option value="es">Espanhol</option>
-              <option value="fr">Francês</option>
+              <option value="pt">{t('portuguese')}</option>
+              <option value="en">{t('english')}</option>
+              <option value="es">{t('spanish')}</option>
+              <option value="fr">{t('french')}</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Observações</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('notes')}</label>
             <textarea
               {...register('notes')}
               rows={3}
-              placeholder="Preferências especiais, nível de experiência, pontos de interesse..."
+              placeholder={t('notesPlaceholder')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all resize-none"
             />
           </div>
@@ -253,14 +252,14 @@ export default function BookingForm({ guide, onClose }: Props) {
                 onChange={(e) => setTermsAccepted(e.target.checked)}
                 className="accent-[#F5A623] w-4 h-4"
               />
-              <span className="text-sm text-[#6B6B6B]">Li e aceito os Termos de Uso</span>
+              <span className="text-sm text-[#6B6B6B]">{t('acceptTerms')}</span>
             </label>
             <button
               type="button"
               onClick={() => setShowTerms(true)}
               className="text-sm text-[#F5A623] font-semibold hover:underline flex-shrink-0"
             >
-              Ver termos
+              {t('viewTerms')}
             </button>
           </div>
 
@@ -270,7 +269,7 @@ export default function BookingForm({ guide, onClose }: Props) {
             className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading && <Loader2 size={16} className="animate-spin" />}
-            {loading ? 'Enviando pedido...' : 'Solicitar corrida'}
+            {loading ? t('sendingRequest') : t('requestRunCta')}
           </button>
         </form>
       </div>

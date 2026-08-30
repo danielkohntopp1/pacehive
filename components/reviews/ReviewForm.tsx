@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Star, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function ReviewForm({ bookingId, reviewedId, reviewedName, onSuccess }: Props) {
+  const t = useTranslations('reviewForm')
   const router = useRouter()
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
@@ -21,7 +23,7 @@ export default function ReviewForm({ bookingId, reviewedId, reviewedName, onSucc
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (rating === 0) { setError('Selecione uma nota'); return }
+    if (rating === 0) { setError(t('selectRating')); return }
     setLoading(true)
     setError(null)
     try {
@@ -32,12 +34,12 @@ export default function ReviewForm({ bookingId, reviewedId, reviewedName, onSucc
       })
       if (!res.ok) {
         const body = await res.json()
-        throw new Error(body.error || 'Erro ao enviar avaliação')
+        throw new Error(body.error || t('errorSubmittingReview'))
       }
       onSuccess?.()
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro inesperado')
+      setError(err instanceof Error ? err.message : t('unexpectedError'))
     } finally {
       setLoading(false)
     }
@@ -45,7 +47,7 @@ export default function ReviewForm({ bookingId, reviewedId, reviewedName, onSucc
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <p className="text-sm text-[#6B6B6B]">Avalie sua experiência com <strong>{reviewedName}</strong></p>
+      <p className="text-sm text-[#6B6B6B]">{t('rateYourExperienceWith')} <strong>{reviewedName}</strong></p>
 
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700">{error}</div>
@@ -72,7 +74,7 @@ export default function ReviewForm({ bookingId, reviewedId, reviewedName, onSucc
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         rows={3}
-        placeholder="Conta como foi a corrida (opcional)..."
+        placeholder={t('commentPlaceholder')}
         className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all resize-none"
       />
 
@@ -82,7 +84,7 @@ export default function ReviewForm({ bookingId, reviewedId, reviewedName, onSucc
         className="w-full py-3 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {loading && <Loader2 size={16} className="animate-spin" />}
-        {loading ? 'Enviando...' : 'Enviar avaliação'}
+        {loading ? t('submitting') : t('submitReview')}
       </button>
     </form>
   )

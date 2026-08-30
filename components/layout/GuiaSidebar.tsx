@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Bell, LayoutDashboard, User, Calendar, Star, LogOut, Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
@@ -19,14 +20,6 @@ interface Props {
   unreadCount?: number
 }
 
-const navItems = [
-  { href: '/guia/dashboard', icon: LayoutDashboard, label: 'Pedidos recebidos', exact: true },
-  { href: '/guia/notificacoes', icon: Bell, label: 'Notificações', exact: false },
-  { href: '/guia/perfil', icon: User, label: 'Meu perfil público', exact: false },
-  { href: '/guia/disponibilidade', icon: Calendar, label: 'Disponibilidade', exact: false },
-  { href: '/guia/avaliacoes', icon: Star, label: 'Avaliações', exact: false },
-]
-
 function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: {
   profile: Profile | null
   pathname: string
@@ -34,13 +27,23 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
   onClose?: () => void
   unreadCount?: number
 }) {
+  const t = useTranslations('guiaSidebar')
+
+  const navItems = [
+    { href: '/guia/dashboard', icon: LayoutDashboard, label: t('receivedBookings'), exact: true },
+    { href: '/guia/notificacoes', icon: Bell, label: t('notifications'), exact: false },
+    { href: '/guia/perfil', icon: User, label: t('myPublicProfile'), exact: false },
+    { href: '/guia/disponibilidade', icon: Calendar, label: t('availability'), exact: false },
+    { href: '/guia/avaliacoes', icon: Star, label: t('reviews'), exact: false },
+  ]
+
   return (
     <>
       <div className="p-5 border-b border-white/10">
         <Link href="/" onClick={onClose}>
           <Image src="/images/logo/pacehive-horizontal-white.svg" alt="PaceHive" width={120} height={32} />
         </Link>
-        <p className="text-xs text-white/40 mt-1">Painel do Guia</p>
+        <p className="text-xs text-white/40 mt-1">{t('guidePanel')}</p>
       </div>
 
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -66,7 +69,7 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
         <Link href="/dashboard" onClick={onClose}
           className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:bg-white/10 hover:text-white transition-colors">
           <LayoutDashboard size={17} />
-          Painel do corredor
+          {t('runnerPanel')}
         </Link>
       </nav>
 
@@ -84,7 +87,7 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
           <button type="submit"
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-[#EF4444] hover:bg-red-900/20 transition-colors">
             <LogOut size={16} />
-            Sair
+            {t('signOut')}
           </button>
         </form>
       </div>

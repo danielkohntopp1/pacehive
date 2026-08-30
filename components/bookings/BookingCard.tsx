@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Calendar, Clock, MapPin, ChevronRight, MessageCircle } from 'lucide-react'
+import { getTranslations, getLocale } from 'next-intl/server'
 import type { Booking } from '@/types'
 import BookingStatus from './BookingStatus'
 import { formatDate } from '@/lib/utils'
@@ -9,16 +10,18 @@ interface Props {
   variant: 'runner' | 'guide'
 }
 
-export default function BookingCard({ booking, variant }: Props) {
+export default async function BookingCard({ booking, variant }: Props) {
+  const t = await getTranslations('bookingCard')
+  const locale = await getLocale()
   const href = variant === 'runner'
     ? `/dashboard/pedidos/${booking.id}`
     : `/guia/pedidos/${booking.id}`
 
   const counterpart = variant === 'runner'
-    ? booking.guide?.profile?.name ?? 'Guia'
-    : booking.runner?.name ?? 'Corredor'
+    ? booking.guide?.profile?.name ?? t('guide')
+    : booking.runner?.name ?? t('runner')
 
-  const counterpartLabel = variant === 'runner' ? 'Guia' : 'Corredor'
+  const counterpartLabel = variant === 'runner' ? t('guide') : t('runner')
 
   const isAccepted = booking.status === 'accepted'
 
@@ -48,7 +51,7 @@ export default function BookingCard({ booking, variant }: Props) {
             <div className="grid grid-cols-3 gap-2 text-xs text-[#6B6B6B]">
               <div className="flex items-center gap-1">
                 <Calendar size={11} className="text-[#F5A623] flex-shrink-0" />
-                <span className="truncate">{formatDate(booking.run_date)}</span>
+                <span className="truncate">{formatDate(booking.run_date, locale as 'pt' | 'en')}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock size={11} className="text-[#F5A623] flex-shrink-0" />
@@ -63,7 +66,7 @@ export default function BookingCard({ booking, variant }: Props) {
             {isAccepted && (
               <div className="mt-2.5 flex items-center gap-1.5 text-[#F5A623]">
                 <MessageCircle size={13} className="fill-[#F5A623]/20" />
-                <span className="text-xs font-semibold">Chat disponível — combine os detalhes</span>
+                <span className="text-xs font-semibold">{t('chatAvailable')}</span>
               </div>
             )}
           </div>

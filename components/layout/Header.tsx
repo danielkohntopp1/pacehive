@@ -4,20 +4,23 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import LanguageSwitcher from './LanguageSwitcher'
 import type { Profile } from '@/types'
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/servicos', label: 'Serviços' },
-  { href: '/grupos', label: 'Grupos' },
-  { href: '/guias', label: 'Guias' },
-]
-
 export default function Header() {
+  const t = useTranslations('header')
   const pathname = usePathname()
   const router = useRouter()
+
+  const navLinks = [
+    { href: '/', label: t('nav.home') },
+    { href: '/servicos', label: t('nav.services') },
+    { href: '/grupos', label: t('nav.groups') },
+    { href: '/guias', label: t('nav.guides') },
+  ]
   const [isOpen, setIsOpen] = useState(false)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -112,7 +115,7 @@ export default function Header() {
                       onClick={() => setDropdownOpen(false)}
                     >
                       <LayoutDashboard size={15} />
-                      Meu painel
+                      {t('myPanel')}
                     </Link>
                     <Link
                       href="/dashboard/perfil"
@@ -120,7 +123,7 @@ export default function Header() {
                       onClick={() => setDropdownOpen(false)}
                     >
                       <User size={15} />
-                      Meu perfil
+                      {t('myProfile')}
                     </Link>
                     <hr className="my-1 border-[#E5E5E5]" />
                     <button
@@ -128,7 +131,7 @@ export default function Header() {
                       className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[#EF4444] hover:bg-red-50 transition-colors"
                     >
                       <LogOut size={15} />
-                      Sair
+                      {t('signOut')}
                     </button>
                   </div>
                 )}
@@ -139,23 +142,26 @@ export default function Header() {
                   href="/login"
                   className="px-4 py-2 text-sm font-medium text-[#1A1A1A] hover:text-[#F5A623] transition-colors"
                 >
-                  Entrar
+                  {t('signIn')}
                 </Link>
                 <Link
                   href="/seja-um-guia"
                   className="px-5 py-2.5 bg-[#F5A623] text-black text-sm font-semibold rounded-full hover:bg-[#E09510] transition-colors"
                 >
-                  Seja um guia
+                  {t('becomeGuide')}
                 </Link>
               </>
             )}
+            <div className="pl-3 ml-1 border-l border-[#E5E5E5]">
+              <LanguageSwitcher />
+            </div>
           </div>
 
           {/* Mobile menu button */}
           <button
             className="md:hidden p-2 rounded-lg hover:bg-[#F9F5EE] transition-colors"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Menu"
+            aria-label={t('menu')}
           >
             {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -188,13 +194,13 @@ export default function Header() {
                   className="block px-4 py-3 rounded-xl text-sm font-medium text-[#1A1A1A] hover:bg-[#F9F5EE]"
                   onClick={() => setIsOpen(false)}
                 >
-                  Meu painel
+                  {t('myPanel')}
                 </Link>
                 <button
                   onClick={() => { handleSignOut(); setIsOpen(false) }}
                   className="block w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-[#EF4444] hover:bg-red-50"
                 >
-                  Sair
+                  {t('signOut')}
                 </button>
               </>
             ) : (
@@ -204,17 +210,20 @@ export default function Header() {
                   className="block px-4 py-3 rounded-xl text-sm font-medium text-[#1A1A1A] hover:bg-[#F9F5EE]"
                   onClick={() => setIsOpen(false)}
                 >
-                  Entrar
+                  {t('signIn')}
                 </Link>
                 <Link
                   href="/seja-um-guia"
                   className="block px-4 py-3 bg-[#F5A623] text-black text-sm font-semibold rounded-full text-center hover:bg-[#E09510] transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
-                  Seja um guia
+                  {t('becomeGuide')}
                 </Link>
               </>
             )}
+            <div className="pt-2 mt-2 border-t border-[#E5E5E5] px-4">
+              <LanguageSwitcher />
+            </div>
           </nav>
         </div>
       )}

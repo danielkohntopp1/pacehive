@@ -23,6 +23,7 @@ export interface Profile {
   role: UserRole
   avatar_url?: string
   language: string
+  ui_locale?: 'pt' | 'en'
   is_banned: boolean
   strava_stats?: StravaStats | null
   created_at: string

@@ -4,20 +4,24 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 import { Camera, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import type { Profile } from '@/types'
 
-const schema = z.object({
-  name: z.string().min(2, 'Nome muito curto'),
-  phone: z.string().optional(),
-  language: z.string().min(1),
-})
+function buildSchema(t: ReturnType<typeof useTranslations>) {
+  return z.object({
+    name: z.string().min(2, t('nameTooShort')),
+    phone: z.string().optional(),
+    language: z.string().min(1),
+  })
+}
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<ReturnType<typeof buildSchema>>
 
 export default function RunnerProfilePage() {
+  const t = useTranslations('runnerProfile')
   const [profile, setProfile] = useState<Profile | null>(null)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -26,6 +30,7 @@ export default function RunnerProfilePage() {
   const [avatarError, setAvatarError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const schema = buildSchema(t)
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
@@ -53,11 +58,11 @@ export default function RunnerProfilePage() {
     setAvatarError(null)
 
     if (!file.type.startsWith('image/')) {
-      setAvatarError('Selecione uma imagem (JPG, PNG ou WebP).')
+      setAvatarError(t('selectImageError'))
       return
     }
     if (file.size > 5 * 1024 * 1024) {
-      setAvatarError('Imagem muito grande. Máximo: 5 MB.')
+      setAvatarError(t('imageTooLargeError'))
       return
     }
 
@@ -74,7 +79,7 @@ export default function RunnerProfilePage() {
       .upload(path, file, { upsert: true, contentType: file.type })
 
     if (uploadError) {
-      setAvatarError('Erro ao enviar imagem. Tente novamente.')
+      setAvatarError(t('uploadError'))
       setAvatarUploading(false)
       return
     }
@@ -100,22 +105,22 @@ export default function RunnerProfilePage() {
       .update({ ...data, updated_at: new Date().toISOString() })
       .eq('id', user.id)
 
-    if (updateError) { setError('Erro ao salvar'); return }
+    if (updateError) { setError(t('saveError')); return }
     setSuccess(true)
   }
 
-  if (!profile) return <div className="text-[#6B6B6B] text-sm">Carregando...</div>
+  if (!profile) return <div className="text-[#6B6B6B] text-sm">{t('loading')}</div>
 
   return (
     <div className="max-w-xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Meu perfil</h1>
-        <p className="text-[#6B6B6B] text-sm mt-1">Suas informações pessoais e preferências</p>
+        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">{t('title')}</h1>
+        <p className="text-[#6B6B6B] text-sm mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Avatar */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
-        <p className="text-sm font-semibold text-[#1A1A1A] mb-4">Foto de perfil</p>
+        <p className="text-sm font-semibold text-[#1A1A1A] mb-4">{t('profilePhoto')}</p>
         <div className="flex items-center gap-5">
           <button
             type="button"
@@ -127,7 +132,7 @@ export default function RunnerProfilePage() {
               {avatarUrl ? (
                 <Image
                   src={avatarUrl}
-                  alt="Foto de perfil"
+                  alt={t('profilePhoto')}
                   width={96}
                   height={96}
                   className="w-full h-full object-cover"
@@ -148,8 +153,8 @@ export default function RunnerProfilePage() {
             </div>
           </button>
           <div>
-            <p className="text-sm font-medium text-[#1A1A1A]">Clique para alterar a foto</p>
-            <p className="text-xs text-[#6B6B6B] mt-0.5">JPG, PNG ou WebP · Máximo 5 MB</p>
+            <p className="text-sm font-medium text-[#1A1A1A]">{t('clickToChangePhoto')}</p>
+            <p className="text-xs text-[#6B6B6B] mt-0.5">{t('photoRequirements')}</p>
             {avatarError && <p className="text-xs text-red-500 mt-1">{avatarError}</p>}
           </div>
         </div>
@@ -167,7 +172,7 @@ export default function RunnerProfilePage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {success && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-sm text-green-700">
-              Perfil atualizado com sucesso!
+              {t('profileUpdated')}
             </div>
           )}
           {error && (
@@ -175,38 +180,38 @@ export default function RunnerProfilePage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Nome</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('name')}</label>
             <input type="text" {...register('name')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all" />
             {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">E-mail</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('email')}</label>
             <input type="email" value={profile.email} disabled
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm bg-[#F9F5EE] text-[#6B6B6B]" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">WhatsApp</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('whatsapp')}</label>
             <input type="tel" {...register('phone')} placeholder="+55 11 99999-9999"
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Idioma preferido</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('preferredLanguage')}</label>
             <select {...register('language')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all bg-white">
-              <option value="pt">Português</option>
-              <option value="en">Inglês</option>
-              <option value="es">Espanhol</option>
+              <option value="pt">{t('portuguese')}</option>
+              <option value="en">{t('english')}</option>
+              <option value="es">{t('spanish')}</option>
             </select>
           </div>
 
           <button type="submit" disabled={isSubmitting}
             className="w-full py-3 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
             {isSubmitting && <Loader2 size={16} className="animate-spin" />}
-            {isSubmitting ? 'Salvando...' : 'Salvar alterações'}
+            {isSubmitting ? t('saving') : t('saveChanges')}
           </button>
         </form>
       </div>

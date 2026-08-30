@@ -1,27 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Star, Users, DollarSign } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import type { Guide, Profile } from '@/types'
 
 interface Props {
   guide: Guide & { profile: Profile }
 }
 
-const modalityLabels: Record<string, string> = {
-  presential: 'Presencial',
-  virtual: 'Virtual',
-}
-
-const runTypeLabels: Record<string, string> = {
-  road: 'Asfalto',
-  trail: 'Trilha',
-  track: 'Pista',
-  beach: 'Praia',
-  mountain: 'Montanha',
-  urban: 'Urbano',
-}
-
-export default function GuideCard({ guide }: Props) {
+export default async function GuideCard({ guide }: Props) {
+  const t = await getTranslations('guideCard')
   const visibleRunTypes = guide.run_types.slice(0, 3)
   const extraRunTypes = guide.run_types.length - 3
 
@@ -57,7 +45,7 @@ export default function GuideCard({ guide }: Props) {
             <div className="absolute top-3 left-3">
               <span className="flex items-center gap-1 bg-[#FC4C02]/90 backdrop-blur-sm text-white text-xs font-bold rounded-full px-2 py-0.5">
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.599h4.172L10.463 0l-7 13.828h4.169" /></svg>
-                Verificado
+                {t('verified')}
               </span>
             </div>
           )}
@@ -82,7 +70,7 @@ export default function GuideCard({ guide }: Props) {
                 key={m}
                 className="bg-[#FEF3DC] text-[#1A1A1A] text-xs font-semibold rounded-full px-2.5 py-0.5"
               >
-                {modalityLabels[m] ?? m}
+                {t.has(`modality.${m}`) ? t(`modality.${m}`) : m}
               </span>
             ))}
           </div>
@@ -92,7 +80,7 @@ export default function GuideCard({ guide }: Props) {
             <div className="flex flex-wrap gap-1 mb-3">
               {visibleRunTypes.map((rt) => (
                 <span key={rt} className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2 py-0.5">
-                  {runTypeLabels[rt] ?? rt}
+                  {t.has(`runType.${rt}`) ? t(`runType.${rt}`) : rt}
                 </span>
               ))}
               {extraRunTypes > 0 && (
@@ -112,12 +100,12 @@ export default function GuideCard({ guide }: Props) {
                 <span className="text-xs">({guide.rating_count})</span>
               </div>
             ) : (
-              <span className="text-xs text-[#6B6B6B]/60">Novo guia</span>
+              <span className="text-xs text-[#6B6B6B]/60">{t('newGuide')}</span>
             )}
             {guide.total_runs > 0 && (
               <div className="flex items-center gap-1">
                 <Users size={12} />
-                <span className="text-xs">{guide.total_runs} corridas</span>
+                <span className="text-xs">{t('runsCount', { count: guide.total_runs })}</span>
               </div>
             )}
           </div>
@@ -128,10 +116,10 @@ export default function GuideCard({ guide }: Props) {
             {guide.is_paid && guide.price_brl ? (
               <span className="text-sm font-bold text-[#1A1A1A]">
                 R$ {guide.price_brl.toFixed(0)}
-                <span className="text-xs font-normal text-[#6B6B6B] ml-1">/ corrida</span>
+                <span className="text-xs font-normal text-[#6B6B6B] ml-1">{t('perRun')}</span>
               </span>
             ) : (
-              <span className="text-sm font-bold text-green-600">Gratuito</span>
+              <span className="text-sm font-bold text-green-600">{t('free')}</span>
             )}
           </div>
         </div>

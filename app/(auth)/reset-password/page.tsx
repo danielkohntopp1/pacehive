@@ -4,24 +4,29 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 import { Loader2, Eye, EyeOff, Lock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-const schema = z.object({
-  password: z.string().min(6, 'Mínimo 6 caracteres'),
-  confirm: z.string(),
-}).refine(d => d.password === d.confirm, {
-  message: 'As senhas não coincidem',
-  path: ['confirm'],
-})
-type FormData = z.infer<typeof schema>
+function buildSchema(t: ReturnType<typeof useTranslations>) {
+  return z.object({
+    password: z.string().min(6, t('minChars')),
+    confirm: z.string(),
+  }).refine(d => d.password === d.confirm, {
+    message: t('passwordsDontMatch'),
+    path: ['confirm'],
+  })
+}
+type FormData = z.infer<ReturnType<typeof buildSchema>>
 
 export default function ResetPasswordPage() {
+  const t = useTranslations('resetPassword')
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const schema = buildSchema(t)
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
@@ -31,7 +36,7 @@ export default function ResetPasswordPage() {
     const supabase = createClient()
     const { error: updateError } = await supabase.auth.updateUser({ password })
     if (updateError) {
-      setError('Não foi possível redefinir a senha. O link pode ter expirado.')
+      setError(t('resetFailed'))
       return
     }
     router.push('/dashboard?reset=true')
@@ -43,8 +48,8 @@ export default function ResetPasswordPage() {
         <div className="w-14 h-14 bg-[#FEF3DC] rounded-2xl flex items-center justify-center mx-auto mb-4">
           <Lock size={24} className="text-[#F5A623]" />
         </div>
-        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Nova senha</h1>
-        <p className="text-[#6B6B6B] text-sm mt-1">Crie uma senha forte para sua conta.</p>
+        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">{t('title')}</h1>
+        <p className="text-[#6B6B6B] text-sm mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm p-8">
@@ -56,12 +61,12 @@ export default function ResetPasswordPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Nova senha</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('newPassword')}</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 {...register('password')}
-                placeholder="Mínimo 6 caracteres"
+                placeholder={t('minCharsPlaceholder')}
                 className="w-full px-4 py-3 pr-11 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}
@@ -73,11 +78,11 @@ export default function ResetPasswordPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Confirmar senha</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('confirmPassword')}</label>
             <input
               type={showPassword ? 'text' : 'password'}
               {...register('confirm')}
-              placeholder="Repita a nova senha"
+              placeholder={t('confirmPasswordPlaceholder')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
             />
             {errors.confirm && <p className="text-xs text-red-500 mt-1">{errors.confirm.message}</p>}
@@ -89,7 +94,7 @@ export default function ResetPasswordPage() {
             className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-60 flex items-center justify-center gap-2 mt-2"
           >
             {isSubmitting && <Loader2 size={16} className="animate-spin" />}
-            {isSubmitting ? 'Salvando...' : 'Salvar nova senha'}
+            {isSubmitting ? t('saving') : t('saveNewPassword')}
           </button>
         </form>
       </div>

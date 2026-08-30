@@ -2,11 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 export default async function ContaSuspensaPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+  const t = await getTranslations('accountSuspended')
 
   const handleSignOut = async () => {
     'use server'
@@ -36,14 +38,15 @@ export default async function ContaSuspensaPage() {
             </svg>
           </div>
 
-          <h1 className="text-xl font-extrabold text-[#1A1A1A] mb-3">Conta suspensa</h1>
+          <h1 className="text-xl font-extrabold text-[#1A1A1A] mb-3">{t('title')}</h1>
           <p className="text-sm text-[#6B6B6B] leading-relaxed mb-8">
-            Sua conta foi suspensa pela equipe PaceHive. Se acredita que isso foi um engano,
-            entre em contato pelo e-mail{' '}
-            <a href="mailto:contato@pacehive.com" className="text-[#F5A623] font-semibold hover:underline">
-              contato@pacehive.com
-            </a>
-            .
+            {t.rich('description', {
+              email: (chunks) => (
+                <a href="mailto:contato@pacehive.com" className="text-[#F5A623] font-semibold hover:underline">
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
 
           <form action={handleSignOut}>
@@ -51,7 +54,7 @@ export default async function ContaSuspensaPage() {
               type="submit"
               className="w-full py-3 bg-[#1A1A1A] text-white font-semibold rounded-full hover:bg-black transition-colors text-sm"
             >
-              Sair da conta
+              {t('signOut')}
             </button>
           </form>
         </div>

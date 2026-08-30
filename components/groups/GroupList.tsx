@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { Search, ChevronDown, ChevronUp, ExternalLink, Clock, MapPin, Users, Calendar, Zap, Route } from 'lucide-react'
 import Link from 'next/link'
 import type { Group } from '@/types'
 
+// Valores armazenados no banco (não traduzir — são os valores reais salvos pelo GroupForm).
 const MODALITY_OPTS = ['Asfalto', 'Trail', 'Pista', 'Montanha']
 const LEVEL_OPTS = ['Todos os níveis', 'Iniciante', 'Intermediário', 'Avançado']
 
@@ -14,11 +16,26 @@ function formatTime(time?: string) {
 }
 
 export default function GroupList({ groups, userLoggedIn = false }: { groups: Group[]; userLoggedIn?: boolean }) {
+  const t = useTranslations('groupList')
   const [search, setSearch] = useState('')
   const [filterModality, setFilterModality] = useState('')
   const [filterLevel, setFilterLevel] = useState('')
   const [filterFree, setFilterFree] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
+
+  // Rótulos exibidos são traduzidos, mas os valores comparados/salvos permanecem em português.
+  const modalityLabel: Record<string, string> = {
+    'Asfalto': t('modalityAsphalt'),
+    'Trail': t('modalityTrail'),
+    'Pista': t('modalityTrack'),
+    'Montanha': t('modalityMountain'),
+  }
+  const levelLabel: Record<string, string> = {
+    'Todos os níveis': t('levelAll'),
+    'Iniciante': t('levelBeginner'),
+    'Intermediário': t('levelIntermediate'),
+    'Avançado': t('levelAdvanced'),
+  }
 
   const filtered = useMemo(() => {
     return groups.filter(g => {
@@ -40,29 +57,29 @@ export default function GroupList({ groups, userLoggedIn = false }: { groups: Gr
       <div className="space-y-3 mb-8">
         <div className="relative">
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B6B6B]" />
-          <input type="text" placeholder="Buscar por cidade ou nome do grupo..."
+          <input type="text" placeholder={t('searchPlaceholder')}
             value={search} onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-11 pr-4 py-3.5 bg-white border border-[#E5E5E5] rounded-xl focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 text-sm transition-all shadow-sm" />
         </div>
         <div className="flex flex-wrap gap-2 items-center">
           <select value={filterModality} onChange={e => setFilterModality(e.target.value)}
             className="text-sm border border-[#E5E5E5] rounded-xl px-3 py-2 bg-white text-[#6B6B6B] focus:outline-none focus:border-[#F5A623]">
-            <option value="">Modalidade</option>
-            {MODALITY_OPTS.map(m => <option key={m} value={m}>{m}</option>)}
+            <option value="">{t('modality')}</option>
+            {MODALITY_OPTS.map(m => <option key={m} value={m}>{modalityLabel[m]}</option>)}
           </select>
           <select value={filterLevel} onChange={e => setFilterLevel(e.target.value)}
             className="text-sm border border-[#E5E5E5] rounded-xl px-3 py-2 bg-white text-[#6B6B6B] focus:outline-none focus:border-[#F5A623]">
-            <option value="">Nível</option>
-            {LEVEL_OPTS.map(l => <option key={l} value={l}>{l}</option>)}
+            <option value="">{t('level')}</option>
+            {LEVEL_OPTS.map(l => <option key={l} value={l}>{levelLabel[l]}</option>)}
           </select>
           <button type="button" onClick={() => setFilterFree(!filterFree)}
             className={`text-sm px-3 py-2 rounded-xl border transition-colors ${filterFree ? 'bg-[#F5A623] border-[#F5A623] text-black font-semibold' : 'border-[#E5E5E5] bg-white text-[#6B6B6B] hover:border-[#F5A623]'}`}>
-            Gratuito
+            {t('free')}
           </button>
           {activeFilters > 0 && (
             <button onClick={() => { setFilterModality(''); setFilterLevel(''); setFilterFree(false) }}
               className="text-sm text-[#6B6B6B] hover:text-[#1A1A1A] underline">
-              Limpar ({activeFilters})
+              {t('clear', { count: activeFilters })}
             </button>
           )}
         </div>
@@ -73,8 +90,8 @@ export default function GroupList({ groups, userLoggedIn = false }: { groups: Gr
           <div className="w-16 h-16 bg-[#E5E5E5] rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Users size={24} className="text-[#6B6B6B]" />
           </div>
-          <p className="text-[#1A1A1A] font-semibold mb-1">Nenhum grupo encontrado</p>
-          <p className="text-[#6B6B6B] text-sm">Tente ajustar os filtros ou buscar por outra cidade.</p>
+          <p className="text-[#1A1A1A] font-semibold mb-1">{t('noGroupsFound')}</p>
+          <p className="text-[#6B6B6B] text-sm">{t('tryAdjustingFilters')}</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -86,12 +103,12 @@ export default function GroupList({ groups, userLoggedIn = false }: { groups: Gr
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <h3 className="font-bold text-[#1A1A1A]">{group.name}</h3>
-                    {group.is_free && <span className="bg-green-100 text-green-700 text-xs font-semibold rounded-full px-2.5 py-0.5">Gratuito</span>}
+                    {group.is_free && <span className="bg-green-100 text-green-700 text-xs font-semibold rounded-full px-2.5 py-0.5">{t('free')}</span>}
                     {group.level && group.level !== 'Todos os níveis' && (
-                      <span className="bg-[#FEF3DC] text-[#E09510] text-xs font-semibold rounded-full px-2.5 py-0.5">{group.level}</span>
+                      <span className="bg-[#FEF3DC] text-[#E09510] text-xs font-semibold rounded-full px-2.5 py-0.5">{levelLabel[group.level] ?? group.level}</span>
                     )}
                     {(group.modality ?? []).slice(0, 2).map(m => (
-                      <span key={m} className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2.5 py-0.5">{m}</span>
+                      <span key={m} className="bg-[#F9F5EE] text-[#6B6B6B] text-xs font-medium rounded-full px-2.5 py-0.5">{modalityLabel[m] ?? m}</span>
                     ))}
                   </div>
                   <div className="flex items-center gap-3 text-sm text-[#6B6B6B]">
@@ -116,14 +133,14 @@ export default function GroupList({ groups, userLoggedIn = false }: { groups: Gr
                   {group.meeting_place && (
                     <div className="flex items-start gap-2 text-sm">
                       <MapPin size={15} className="text-[#F5A623] flex-shrink-0 mt-0.5" />
-                      <div><span className="font-medium text-[#1A1A1A]">Local: </span><span className="text-[#6B6B6B]">{group.meeting_place}</span></div>
+                      <div><span className="font-medium text-[#1A1A1A]">{t('place')} </span><span className="text-[#6B6B6B]">{group.meeting_place}</span></div>
                     </div>
                   )}
                   {(group.meeting_days.length > 0 || group.meeting_time) && (
                     <div className="flex items-center gap-2 text-sm">
                       <Clock size={15} className="text-[#F5A623]" />
                       <div>
-                        <span className="font-medium text-[#1A1A1A]">Horário: </span>
+                        <span className="font-medium text-[#1A1A1A]">{t('schedule')} </span>
                         <span className="text-[#6B6B6B]">
                           {group.meeting_days.join(', ')}
                           {group.meeting_time && ` — ${formatTime(group.meeting_time)}`}
@@ -150,30 +167,30 @@ export default function GroupList({ groups, userLoggedIn = false }: { groups: Gr
                   {group.needs_registration && (
                     <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2">
                       <Calendar size={14} />
-                      Precisa de agendamento prévio
+                      {t('needsRegistration')}
                     </div>
                   )}
                   {!group.is_free && group.price_info && (
                     <p className="text-sm text-[#6B6B6B]">
-                      <span className="font-medium text-[#1A1A1A]">Valor: </span>{group.price_info}
+                      <span className="font-medium text-[#1A1A1A]">{t('price')} </span>{group.price_info}
                     </p>
                   )}
                   {group.how_to_join && (
                     <div className="flex items-start gap-2 text-sm">
                       <Users size={15} className="text-[#F5A623] flex-shrink-0 mt-0.5" />
-                      <div><span className="font-medium text-[#1A1A1A]">Como participar: </span><span className="text-[#6B6B6B]">{group.how_to_join}</span></div>
+                      <div><span className="font-medium text-[#1A1A1A]">{t('howToJoin')} </span><span className="text-[#6B6B6B]">{group.how_to_join}</span></div>
                     </div>
                   )}
                   {group.contact && (
                     <p className="text-sm text-[#6B6B6B]">
-                      <span className="font-medium text-[#1A1A1A]">Contato: </span>{group.contact}
+                      <span className="font-medium text-[#1A1A1A]">{t('contact')} </span>{group.contact}
                     </p>
                   )}
                   {group.instagram_url && (
                     <a href={group.instagram_url} target="_blank" rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-sm text-[#F5A623] hover:underline font-medium">
                       <ExternalLink size={14} />
-                      Ver no Instagram
+                      {t('viewOnInstagram')}
                     </a>
                   )}
                 </div>
@@ -184,14 +201,14 @@ export default function GroupList({ groups, userLoggedIn = false }: { groups: Gr
       )}
 
       <div className="mt-10 bg-white rounded-2xl border border-[#E5E5E5] p-8 text-center">
-        <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">Tem um grupo de corrida?</h3>
+        <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">{t('haveAGroup')}</h3>
         <p className="text-[#6B6B6B] text-sm mb-5">
-          Cadastre agora e apareça para corredores da sua cidade — sem aprovação necessária.
+          {t('registerNow')}
         </p>
         <Link
           href={userLoggedIn ? '/dashboard/grupos/novo' : '/login?redirect=/dashboard/grupos/novo'}
           className="inline-flex items-center gap-2 px-6 py-3 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors text-sm">
-          Cadastrar meu grupo
+          {t('registerMyGroup')}
         </Link>
       </div>
     </>

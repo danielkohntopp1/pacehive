@@ -1,20 +1,27 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendNewBookingToGuide } from '@/lib/resend/emails'
 import { notifyNewBooking } from '@/lib/supabase/notifications'
+import { localeCookieName, defaultLocale, type Locale } from '@/i18n/config'
 import type { Profile } from '@/types'
 
 export async function POST(req: Request) {
+  const cookieStore = await cookies()
+  const locale = (cookieStore.get(localeCookieName)?.value as Locale) || defaultLocale
+  const t = await getTranslations({ locale, namespace: 'bookingsApi' })
+
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: t('notAuthenticated') }, { status: 401 })
 
     const body = await req.json()
     const { guide_id, city, run_date, run_time, modality, distance_km, pace, language, notes } = body
 
     if (!guide_id || !city || !run_date || !run_time || !modality) {
-      return NextResponse.json({ error: 'Campos obrigatórios ausentes' }, { status: 400 })
+      return NextResponse.json({ error: t('missingRequiredFields') }, { status: 400 })
     }
 
     const { data: booking, error } = await supabase
@@ -55,6 +62,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(booking, { status: 201 })
   } catch (err) {
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return NextResponse.json({ error: t('internalError') }, { status: 500 })
   }
 }

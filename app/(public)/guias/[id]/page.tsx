@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import GuideProfile from '@/components/guides/GuideProfile'
 import { fetchStravaStats } from '@/lib/strava/client'
+import { getTranslations } from 'next-intl/server'
 import type { Guide, Profile, Review, StravaStats } from '@/types'
 import type { Metadata } from 'next'
 
@@ -18,10 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .eq('id', id)
     .single()
 
-  if (!data) return { title: 'Guia não encontrado — PaceHive' }
+  const t = await getTranslations('guideProfile')
+  if (!data) return { title: t('notFoundTitle') }
 
-  const title = `${data.profile?.name} — Guia em ${data.city} | PaceHive`
-  const description = data.bio ?? `Corra com ${data.profile?.name} em ${data.city}. Encontre guias locais na PaceHive.`
+  const title = t('metaTitle', { name: data.profile?.name, city: data.city })
+  const description = data.bio ?? t('metaDescription', { name: data.profile?.name, city: data.city })
   const image = data.profile?.avatar_url ?? '/images/og-default.png'
 
   return {

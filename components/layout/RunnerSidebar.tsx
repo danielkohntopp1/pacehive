@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Bell, LayoutDashboard, User, PlusCircle, LogOut, Menu, X, Compass, ShieldCheck, Users, Calendar, Star } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
@@ -20,14 +21,6 @@ interface Props {
   unreadCount?: number
 }
 
-const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Meus pedidos', exact: true },
-  { href: '/dashboard/novo-pedido', icon: PlusCircle, label: 'Nova solicitação', exact: false },
-  { href: '/dashboard/grupos', icon: Users, label: 'Meus grupos', exact: false },
-  { href: '/dashboard/notificacoes', icon: Bell, label: 'Notificações', exact: false },
-  { href: '/dashboard/perfil', icon: User, label: 'Meu perfil', exact: false },
-]
-
 function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: {
   profile: Profile | null
   pathname: string
@@ -35,6 +28,23 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
   onClose?: () => void
   unreadCount?: number
 }) {
+  const t = useTranslations('runnerSidebar')
+
+  const navItems = [
+    { href: '/dashboard', icon: LayoutDashboard, label: t('myBookings'), exact: true },
+    { href: '/dashboard/novo-pedido', icon: PlusCircle, label: t('newRequest'), exact: false },
+    { href: '/dashboard/grupos', icon: Users, label: t('myGroups'), exact: false },
+    { href: '/dashboard/notificacoes', icon: Bell, label: t('notifications'), exact: false },
+    { href: '/dashboard/perfil', icon: User, label: t('myProfile'), exact: false },
+  ]
+
+  const guideNavItems = [
+    { href: '/guia/dashboard', icon: LayoutDashboard, label: t('receivedBookings') },
+    { href: '/guia/disponibilidade', icon: Calendar, label: t('availability') },
+    { href: '/guia/perfil', icon: User, label: t('guideProfile') },
+    { href: '/guia/avaliacoes', icon: Star, label: t('reviews') },
+  ]
+
   return (
     <>
       <div className="p-5 border-b border-[#E5E5E5]">
@@ -47,7 +57,7 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
 
         {/* ── Área do corredor ── */}
         <p className="px-3 pt-1 pb-1 text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">
-          Corredor
+          {t('runner')}
         </p>
         {navItems.map(({ href, icon: Icon, label, exact }) => {
           const active = exact ? pathname === href : pathname.startsWith(href)
@@ -72,14 +82,9 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
         {(profile?.role === 'guide' || profile?.role === 'both') && (
           <div className="pt-3 mt-2 border-t border-[#E5E5E5] space-y-1">
             <p className="px-3 pt-1 pb-1 text-[10px] font-bold text-[#F5A623] uppercase tracking-widest">
-              Guia
+              {t('guide')}
             </p>
-            {[
-              { href: '/guia/dashboard', icon: LayoutDashboard, label: 'Pedidos recebidos' },
-              { href: '/guia/disponibilidade', icon: Calendar, label: 'Disponibilidade' },
-              { href: '/guia/perfil', icon: User, label: 'Perfil de guia' },
-              { href: '/guia/avaliacoes', icon: Star, label: 'Avaliações' },
-            ].map(({ href, icon: Icon, label }) => {
+            {guideNavItems.map(({ href, icon: Icon, label }) => {
               const active = pathname.startsWith(href)
               return (
                 <Link key={href} href={href} onClick={onClose}
@@ -100,7 +105,7 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
             <Link href="/cadastro/guia" onClick={onClose}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#F5A623] hover:bg-[#FEF3DC] transition-colors">
               <Compass size={17} className="text-[#F5A623]" />
-              Seja um guia
+              {t('becomeGuide')}
             </Link>
           </div>
         )}
@@ -131,7 +136,7 @@ function NavContent({ profile, pathname, signOutAction, onClose, unreadCount }: 
           <button type="submit"
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-[#EF4444] hover:bg-red-50 transition-colors">
             <LogOut size={16} />
-            Sair
+            {t('signOut')}
           </button>
         </form>
       </div>

@@ -1,0 +1,1328 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar"
+  },
+  "rootMeta": {
+    "title": "PaceHive — Conectando corredores com novas experiências",
+    "description": "Marketplace de guias de corrida. Encontre um corredor local para guiar você em qualquer cidade do mundo."
+  },
+  "header": {
+    "nav": {
+      "home": "Home",
+      "services": "Serviços",
+      "groups": "Grupos",
+      "guides": "Guias"
+    },
+    "myPanel": "Meu painel",
+    "myProfile": "Meu perfil",
+    "signOut": "Sair",
+    "signIn": "Entrar",
+    "becomeGuide": "Seja um guia",
+    "menu": "Menu",
+    "language": "Idioma"
+  },
+  "home": {
+    "hero": {
+      "badge": "Marketplace de guias de corrida",
+      "titleLine1": "Cada cidade tem",
+      "titleHighlight": "seus segredos.",
+      "titleLine2": "Encontre quem os conhece.",
+      "subtitle": "Conecte-se com guias locais e explore lugares que mapas não mostram.",
+      "ctaFindGuide": "Encontrar um guia",
+      "ctaBecomeGuide": "Seja um guia →",
+      "valueVerified": "Guias verificados",
+      "valueResponse": "Resposta em até 24h",
+      "valueReviews": "Avaliações reais"
+    },
+    "featuredGuides": {
+      "eyebrow": "Conheça os guias",
+      "title": "Prontos para correr com você",
+      "viewAll": "Ver todos",
+      "viewAllMobile": "Ver todos os guias"
+    },
+    "howItWorks": {
+      "eyebrow": "Como funciona",
+      "title": "Sua corrida em 3 passos",
+      "step1Title": "Encontre o guia ideal",
+      "step1Desc": "Busque por cidade, modalidade e estilo de corrida. Veja avaliações reais de outros corredores.",
+      "step2Title": "Solicite sua corrida",
+      "step2Desc": "Escolha data, horário e preferências. O guia recebe sua solicitação e responde em até 24 horas.",
+      "step3Title": "Corra com confiança",
+      "step3Desc": "Receba a confirmação por e-mail com todos os detalhes. Depois, avalie sua experiência.",
+      "cta": "Ver guias disponíveis"
+    },
+    "services": {
+      "eyebrow": "O que oferecemos",
+      "title": "Tudo para a sua corrida",
+      "subtitle": "Do guia local ao grupo de corrida, a PaceHive conecta você com a comunidade certa.",
+      "guidesTitle": "Guias de Corrida",
+      "guidesDesc": "Corredores locais que conhecem cada rua, trilha e atalho da cidade. Corra com confiança onde quer que esteja.",
+      "guidesCta": "Ver guias",
+      "groupsTitle": "Grupos de Corrida",
+      "groupsDesc": "Encontre grupos ativos na sua cidade ou no seu próximo destino. Treine junto, evolua junto.",
+      "groupsCta": "Ver grupos",
+      "becomeGuideTitle": "Seja um Guia",
+      "becomeGuideDesc": "Compartilhe sua cidade correndo com viajantes do mundo todo. Transforme seu conhecimento local em experiência.",
+      "becomeGuideCta": "Saiba mais"
+    },
+    "guideCta": {
+      "eyebrow": "Para guias",
+      "title": "Você conhece cada canto da sua cidade?",
+      "subtitle": "Faça parte da nossa rede de guias e compartilhe sua cidade com corredores do mundo todo. Você define seu ritmo, seu preço e sua disponibilidade.",
+      "cta": "Quero ser um guia PaceHive"
+    },
+    "about": {
+      "quote": "Cada corrida é uma nova forma de <highlight>conhecer um lugar</highlight>.",
+      "body": "O nome <brand>PaceHive</brand> une <pace>Pace</pace> — o ritmo único de cada corredor — e <hive>Hive</hive> — a colmeia, uma comunidade viva e colaborativa. Assim como numa colmeia, cada corredor faz parte de algo maior."
+    },
+    "contact": {
+      "eyebrow": "Fale com a gente",
+      "title": "Alguma dúvida?",
+      "subtitle": "Manda uma mensagem — respondemos rapidinho.",
+      "formName": "Nome",
+      "formNamePlaceholder": "Seu nome",
+      "formEmail": "E-mail",
+      "formEmailPlaceholder": "seu@email.com",
+      "formMessage": "Mensagem",
+      "formMessagePlaceholder": "Sua mensagem...",
+      "formSubmit": "Enviar mensagem"
+    }
+  },
+  "footer": {
+    "tagline": "Conectando corredores com novas experiências ao redor do mundo.",
+    "navigation": "Navegação",
+    "contact": "Contato",
+    "madeWith": "Feito com 🧡 para a comunidade de corredores.",
+    "rights": "Copyright © 2026 PaceHive. All rights reserved.",
+    "privacy": "Privacidade",
+    "terms": "Termos de uso"
+  },
+  "guideCard": {
+    "verified": "Verificado",
+    "modality": {
+      "presential": "Presencial",
+      "virtual": "Virtual"
+    },
+    "runType": {
+      "road": "Asfalto",
+      "trail": "Trilha",
+      "track": "Pista",
+      "beach": "Praia",
+      "mountain": "Montanha",
+      "urban": "Urbano"
+    },
+    "newGuide": "Novo guia",
+    "runsCount": "{count} corridas",
+    "perRun": " / corrida",
+    "free": "Gratuito"
+  },
+  "guideList": {
+    "searchPlaceholder": "Buscar por cidade ou nome do guia...",
+    "filters": "Filtros",
+    "filterGuides": "Filtrar guias",
+    "clearFilters": "Limpar filtros",
+    "city": "Cidade",
+    "all": "Todas",
+    "modality": "Modalidade",
+    "presential": "Presencial",
+    "virtual": "Virtual",
+    "price": "Preço",
+    "allPrices": "Todos",
+    "free": "Gratuito",
+    "paid": "Pago",
+    "runType": "Tipo de corrida",
+    "runTypes": {
+      "road": "Asfalto",
+      "trail": "Trilha",
+      "track": "Pista",
+      "beach": "Praia",
+      "mountain": "Montanha",
+      "urban": "Urbano"
+    },
+    "language": "Idioma",
+    "languages": {
+      "pt": "Português",
+      "en": "Inglês",
+      "es": "Espanhol",
+      "fr": "Francês"
+    },
+    "minRating": "Nota mínima",
+    "any": "Qualquer",
+    "guidesFound": "{count, plural, one {# guia encontrado} other {# guias encontrados}}",
+    "guidesAvailable": "{count, plural, one {# guia disponível} other {# guias disponíveis}}",
+    "noGuidesFound": "Nenhum guia encontrado",
+    "tryRemovingFilters": "Tente remover alguns filtros para ver mais resultados.",
+    "beTheFirstGuide": "Que tal ser o primeiro guia em {place}?",
+    "thisCity": "essa cidade",
+    "iWantToBeGuide": "Quero ser guia"
+  },
+  "guidesPage": {
+    "metaTitle": "Guias de Corrida — PaceHive",
+    "metaDescription": "Encontre um guia de corrida em qualquer cidade do mundo. Corredores locais que vão te mostrar as melhores rotas.",
+    "guidesAvailableBadge": "{count} guias disponíveis",
+    "localGuidesBadge": "Guias de corrida locais",
+    "titleLine1": "Encontre um guia para correr em",
+    "titleHighlight": "qualquer lugar do mundo",
+    "subtitle": "Conecte-se com corredores locais que conhecem cada rua, trilha e atalho da cidade."
+  },
+  "guideProfile": {
+    "notFoundTitle": "Guia não encontrado — PaceHive",
+    "metaTitle": "{name} — Guia em {city} | PaceHive",
+    "metaDescription": "Corra com {name} em {city}. Encontre guias locais na PaceHive.",
+    "availability": "Disponibilidade",
+    "days": {
+      "mon": "Seg",
+      "tue": "Ter",
+      "wed": "Qua",
+      "thu": "Qui",
+      "fri": "Sex",
+      "sat": "Sáb",
+      "sun": "Dom"
+    },
+    "periods": {
+      "morning": "Manhã (5h–12h)",
+      "afternoon": "Tarde (12h–18h)",
+      "evening": "Noite (18h–22h)"
+    },
+    "modality": {
+      "presential": "Presencial",
+      "virtual": "Virtual"
+    },
+    "pricePerRun": "R$ {price}/corrida",
+    "volunteer": "Voluntário",
+    "reviewsCount": "({count} avaliações)",
+    "newGuide": "Novo guia",
+    "runsCompleted": "{count} corridas realizadas",
+    "yearsOfExperience": "{years} de experiência",
+    "languages": {
+      "pt": "Português",
+      "en": "Inglês",
+      "es": "Espanhol",
+      "fr": "Francês",
+      "de": "Alemão"
+    },
+    "stravaVerified": "Dados verificados · Strava",
+    "viewProfile": "Ver perfil",
+    "kmThisYear": "km em {year}",
+    "avgPace": "ritmo médio",
+    "lastRun": "última corrida",
+    "requestRun": "Solicitar corrida com este guia",
+    "signInToRequest": "Entrar para solicitar corrida",
+    "about": "Sobre",
+    "runType": "Tipo de corrida",
+    "runTypes": {
+      "road": "Asfalto / Rua",
+      "trail": "Trilha",
+      "track": "Pista",
+      "beach": "Praia / Areia",
+      "mountain": "Montanha",
+      "urban": "Urbano"
+    },
+    "servicesIncluded": "Serviços incluídos",
+    "services": {
+      "pace_guide": "Guia de ritmo",
+      "training_plan": "Plano de treino",
+      "race_prep": "Preparação para prova",
+      "route_planning": "Planejamento de rota",
+      "photography": "Fotos durante a corrida",
+      "group_run": "Corrida em grupo"
+    },
+    "reviewsHeading": "Avaliações ({count})"
+  },
+  "groupsPage": {
+    "metaTitle": "Grupos de Corrida — PaceHive",
+    "metaDescription": "Encontre grupos de corrida na sua cidade e conecte-se com a comunidade local.",
+    "groupsRegistered": "{count} grupos cadastrados",
+    "runningCommunity": "Comunidade de corrida",
+    "titleLine1": "Encontre um grupo de corrida",
+    "titleHighlight": "na sua cidade",
+    "subtitle": "Conecte-se com grupos locais e continue correndo mesmo durante viagens."
+  },
+  "groupList": {
+    "searchPlaceholder": "Buscar por cidade ou nome do grupo...",
+    "modality": "Modalidade",
+    "modalityAsphalt": "Asfalto",
+    "modalityTrail": "Trail",
+    "modalityTrack": "Pista",
+    "modalityMountain": "Montanha",
+    "level": "Nível",
+    "levelAll": "Todos os níveis",
+    "levelBeginner": "Iniciante",
+    "levelIntermediate": "Intermediário",
+    "levelAdvanced": "Avançado",
+    "free": "Gratuito",
+    "clear": "Limpar ({count})",
+    "noGroupsFound": "Nenhum grupo encontrado",
+    "tryAdjustingFilters": "Tente ajustar os filtros ou buscar por outra cidade.",
+    "place": "Local:",
+    "schedule": "Horário:",
+    "needsRegistration": "Precisa de agendamento prévio",
+    "price": "Valor:",
+    "howToJoin": "Como participar:",
+    "contact": "Contato:",
+    "viewOnInstagram": "Ver no Instagram",
+    "haveAGroup": "Tem um grupo de corrida?",
+    "registerNow": "Cadastre agora e apareça para corredores da sua cidade — sem aprovação necessária.",
+    "registerMyGroup": "Cadastrar meu grupo"
+  },
+  "groupForm": {
+    "modalityAsphalt": "Asfalto",
+    "modalityTrail": "Trail",
+    "modalityTrack": "Pista",
+    "modalityMountain": "Montanha",
+    "dayMon": "Seg",
+    "dayTue": "Ter",
+    "dayWed": "Qua",
+    "dayThu": "Qui",
+    "dayFri": "Sex",
+    "daySat": "Sáb",
+    "daySun": "Dom",
+    "levelAll": "Todos os níveis",
+    "levelBeginner": "Iniciante",
+    "levelIntermediate": "Intermediário",
+    "levelAdvanced": "Avançado",
+    "errorSaving": "Erro ao salvar grupo",
+    "basicInfo": "Informações básicas",
+    "groupName": "Nome do grupo",
+    "groupNamePlaceholder": "Ex: Turma da Madrugada",
+    "description": "Descrição",
+    "descriptionPlaceholder": "Apresente o grupo em suas próprias palavras...",
+    "city": "Cidade",
+    "cityPlaceholder": "São Paulo",
+    "state": "Estado",
+    "statePlaceholder": "SP",
+    "modalityAndLevel": "Modalidade e nível",
+    "modality": "Modalidade",
+    "level": "Nível",
+    "avgPace": "Ritmo médio",
+    "avgPacePlaceholder": "Ex: 5:30–7:00 min/km",
+    "typicalDistance": "Distância típica",
+    "typicalDistancePlaceholder": "Ex: 8–15km",
+    "scheduleAndLocation": "Horários e local",
+    "daysOfWeek": "Dias da semana",
+    "time": "Horário",
+    "meetingPlace": "Local de encontro",
+    "meetingPlacePlaceholder": "Ex: Parque Ibirapuera — Portão 10",
+    "participation": "Participação",
+    "free": "Gratuito",
+    "freeDescription": "O grupo não cobra nenhuma taxa",
+    "priceInfo": "Informações sobre o valor",
+    "priceInfoPlaceholder": "Ex: R$30/mês, inclui assessoria",
+    "needsRegistration": "Precisa de agendamento",
+    "needsRegistrationDescription": "O corredor deve avisar antes de participar",
+    "howToJoin": "Como participar",
+    "howToJoinPlaceholder": "Ex: Só aparecer! / Entre em contato pelo Instagram antes.",
+    "contactAndSocial": "Contato e redes sociais",
+    "contact": "Contato (WhatsApp, email ou telefone)",
+    "contactPlaceholder": "Ex: (11) 99999-9999",
+    "groupActive": "Grupo ativo (visível para corredores)",
+    "saving": "Salvando...",
+    "save": "Salvar"
+  },
+  "groupNew": {
+    "myGroups": "Meus grupos",
+    "title": "Cadastrar grupo",
+    "subtitle": "Seu grupo ficará visível imediatamente para todos os corredores.",
+    "submitLabel": "Cadastrar grupo"
+  },
+  "groupEdit": {
+    "myGroups": "Meus grupos",
+    "title": "Editar grupo",
+    "submitLabel": "Salvar alterações"
+  },
+  "servicesPage": {
+    "metaTitle": "Serviços — PaceHive",
+    "metaDescription": "Conheça todos os serviços oferecidos pela PaceHive para corredores e guias.",
+    "badge": "Para corredores e guias",
+    "title": "Explore os serviços da <brand>PaceHive</brand>",
+    "subtitle": "Correndo em uma nova cidade ou guiando corredores por onde você vive, a gente conecta pessoas através da corrida.",
+    "modalities": "Modalidades",
+    "howDoYouWantToRun": "Como você quer correr?",
+    "presential": {
+      "badge": "Presencial",
+      "title": "Guia Presencial",
+      "description": "O guia local vai correr lado a lado com você pelas ruas da cidade, apresentando os melhores percursos, pontos turísticos e a cultura local. A experiência mais completa e imersiva para quem quer explorar um novo destino com confiança.",
+      "items": [
+        "Rota personalizada ao seu ritmo",
+        "Conhecimento local privilegiado",
+        "Segurança nas ruas e atalhos",
+        "Dicas de restaurantes e pontos turísticos",
+        "Foto e vídeo da corrida (a combinar)",
+        "Conversa e troca cultural"
+      ],
+      "cta": "Encontrar guia presencial"
+    },
+    "virtual": {
+      "badge": "Virtual",
+      "title": "Guia Virtual",
+      "description": "Receba um plano detalhado de rotas, dicas e recomendações antes de chegar à cidade. O guia orienta você remotamente, via WhatsApp, call ou e-mail, para que você possa correr com autonomia e segurança.",
+      "items": [
+        "Rota pré-planejada com mapa",
+        "Dicas de segurança por bairro",
+        "Horários ideais para correr",
+        "Recomendações de hidratação e pontos de parada",
+        "Suporte via WhatsApp durante a corrida",
+        "Indicações de grupos locais"
+      ],
+      "cta": "Encontrar guia virtual"
+    },
+    "forGuides": "Para guias",
+    "ctaTitle": "Quer ser um guia PaceHive?",
+    "ctaSubtitle": "Compartilhe seu conhecimento da cidade e ajude corredores de todo o mundo. Crie seu perfil em menos de 5 minutos.",
+    "ctaButton": "Quero ser guia"
+  },
+  "becomeGuidePage": {
+    "metaTitle": "Seja um Guia — PaceHive",
+    "metaDescription": "Compartilhe sua cidade correndo. Faça parte da rede de guias PaceHive e conecte-se com corredores de todo o mundo.",
+    "badge": "Para guias de corrida",
+    "titleLine1": "Compartilhe seu caminho.",
+    "titleLine2": "Inspire outros a correr.",
+    "subtitle": "Para ser guia, você precisa conhecer a cidade, ter empatia com o próximo e responsabilidade com quem vai confiar na sua liderança.",
+    "ctaHero": "Quero ser guia agora",
+    "profile": {
+      "eyebrow": "O perfil ideal",
+      "title": "O que é ser um guia PaceHive?",
+      "cards": [
+        {
+          "title": "Conhece a cidade",
+          "desc": "Você sabe os melhores percursos, parques, calçadas seguras e horários ideais para correr na sua cidade."
+        },
+        {
+          "title": "Tem empatia",
+          "desc": "Você consegue adaptar o ritmo e a experiência ao corredor visitante, tornando-a especial e acolhedora."
+        },
+        {
+          "title": "Tem responsabilidade",
+          "desc": "Você se compromete a responder pedidos em até 24h e a honrar o compromisso agendado."
+        }
+      ]
+    },
+    "steps": {
+      "eyebrow": "Passo a passo",
+      "title": "Como funciona a intermediação",
+      "items": [
+        {
+          "title": "Você se cadastra e cria seu perfil",
+          "desc": "Informe sua cidade, modalidade (presencial/virtual), bio e disponibilidade."
+        },
+        {
+          "title": "Corredor te encontra e faz um pedido",
+          "desc": "Um corredor viajante vê seu perfil e solicita uma corrida com data, hora e preferências."
+        },
+        {
+          "title": "Você recebe o pedido por e-mail",
+          "desc": "Um e-mail com todos os detalhes chega para você. Você tem 24h para responder."
+        },
+        {
+          "title": "Você aceita ou recusa",
+          "desc": "Se aceitar, ambos recebem os dados de contato um do outro para acertar os detalhes finais."
+        },
+        {
+          "title": "Após a corrida, ambos avaliam",
+          "desc": "A avaliação é automática. Sua nota média aparece no seu perfil e atrai mais corredores."
+        }
+      ]
+    },
+    "flexibility": "Flexibilidade",
+    "operatingModels": "Modelos de atuação",
+    "inPerson": {
+      "badge": "Presencial",
+      "title": "Guia no Terreno",
+      "description": "Você corre junto com o visitante. Perfeito para quem quer proporcionar uma experiência humana e imersiva da cidade.",
+      "items": [
+        "Encontro presencial no ponto combinado",
+        "Rota adaptada ao ritmo do corredor",
+        "Compartilhamento de cultura local"
+      ]
+    },
+    "remote": {
+      "badge": "Virtual",
+      "title": "Guia Remoto",
+      "description": "Você orienta o corredor remotamente antes e durante a visita, via WhatsApp, e-mail ou chamada de vídeo.",
+      "items": [
+        "Envio de rotas e mapas personalizados",
+        "Dicas de segurança e logística",
+        "Suporte em tempo real durante a corrida"
+      ]
+    },
+    "yourChoice": "Sua escolha",
+    "volunteerOrPaid": {
+      "title": "Voluntário ou remunerado?",
+      "paragraph1": "Na PaceHive, você decide. Muitos guias atuam como voluntários porque amam compartilhar sua cidade e fazer conexões genuínas. Outros optam por cobrar uma taxa pelo serviço — e isso é totalmente válido e transparente para o corredor.",
+      "paragraph2": "Independente do modelo, a plataforma é <free>100% gratuita</free> para guias nesta versão. Cobrar ou não é sua escolha."
+    },
+    "joinNetwork": "Junte-se à rede",
+    "ctaTitle": "Pronto para ser guia?",
+    "ctaSubtitle": "Leva menos de 5 minutos para criar seu perfil e começar a receber pedidos.",
+    "ctaButton": "Criar meu perfil de guia"
+  },
+  "termsPage": {
+    "legal": "Legal",
+    "title": "Termos de Uso",
+    "lastUpdated": "Última atualização: maio de 2026",
+    "intro": "Ao usar a PaceHive, você concorda com os termos abaixo. Leia com atenção antes de continuar.",
+    "sections": [
+      {
+        "title": "1. Sobre a PaceHive",
+        "text": "A PaceHive é uma plataforma digital que conecta corredores a guias locais de corrida. Atuamos como intermediadores — não somos agência de turismo, empresa de transporte nem empregadora dos guias cadastrados."
+      },
+      {
+        "title": "2. Uso da plataforma",
+        "text": "O uso da PaceHive é permitido a maiores de 18 anos. Ao se cadastrar, você concorda com estes termos e com nossa Política de Privacidade. É proibido usar a plataforma para fins ilícitos, fraudulentos ou que causem dano a terceiros."
+      },
+      {
+        "title": "3. Responsabilidade sobre pagamentos",
+        "text": "Quando um guia cobra pelo serviço, o pagamento é acordado e realizado diretamente entre corredor e guia, fora da plataforma. A PaceHive não processa, intermedia, garante nem tem qualquer responsabilidade sobre transações financeiras entre seus usuários."
+      },
+      {
+        "title": "4. Responsabilidade sobre as atividades",
+        "text": "A PaceHive não se responsabiliza por acidentes, lesões, perdas materiais ou quaisquer outros danos ocorridos durante ou após as corridas. Cada usuário é responsável por avaliar suas condições físicas e o ambiente antes de realizar qualquer atividade."
+      },
+      {
+        "title": "5. Guias independentes",
+        "text": "Os guias cadastrados são prestadores de serviço independentes. Não há vínculo empregatício, societário ou de qualquer natureza entre os guias e a PaceHive. A plataforma não garante a qualidade, segurança ou veracidade das informações fornecidas pelos guias."
+      },
+      {
+        "title": "6. Conduta dos usuários",
+        "text": "Espera-se de todos os usuários respeito mútuo, honestidade e boa-fé. A PaceHive se reserva o direito de suspender ou cancelar contas que apresentem comportamento abusivo, discriminatório, fraudulento ou que violem estes termos."
+      },
+      {
+        "title": "7. Disponibilidade do serviço",
+        "text": "A PaceHive se esforça para manter a plataforma disponível 24 horas por dia, mas não garante disponibilidade ininterrupta. Podemos realizar manutenções, atualizações ou encerrar funcionalidades sem aviso prévio."
+      },
+      {
+        "title": "8. Modificações dos termos",
+        "text": "Estes termos podem ser atualizados a qualquer momento. Alterações relevantes serão comunicadas por e-mail. O uso continuado da plataforma após alterações implica aceitação dos novos termos."
+      },
+      {
+        "title": "9. Foro e lei aplicável",
+        "text": "Estes termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro da Comarca de São Paulo/SP para dirimir quaisquer controvérsias."
+      },
+      {
+        "title": "10. Contato",
+        "text": "Para dúvidas sobre estes termos, entre em contato pelo e-mail contato@pacehive.com."
+      }
+    ]
+  },
+  "privacyPage": {
+    "legal": "Legal",
+    "title": "Política de Privacidade",
+    "lastUpdated": "Última atualização: maio de 2026",
+    "intro": "Esta política descreve como a PaceHive coleta, usa e protege seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018).",
+    "sections": [
+      {
+        "title": "1. Quais dados coletamos",
+        "text": "Coletamos os dados que você fornece ao se cadastrar: nome, e-mail, telefone (opcional), e informações de perfil (cidade, bio, etc.). Também coletamos dados de uso da plataforma de forma agregada e anônima para melhorar nossos serviços."
+      },
+      {
+        "title": "2. Como usamos seus dados",
+        "text": "Seus dados são usados para: (a) criar e gerenciar sua conta; (b) conectar corredores a guias; (c) enviar e-mails transacionais relacionados a pedidos de corrida; (d) melhorar a experiência na plataforma. Não usamos seus dados para fins publicitários de terceiros."
+      },
+      {
+        "title": "3. Compartilhamento de dados",
+        "text": "Não vendemos seus dados a terceiros. Seus dados de contato (e-mail e telefone) são compartilhados com a outra parte somente após a confirmação de uma corrida, para viabilizar o encontro. Podemos compartilhar dados com prestadores de serviço necessários ao funcionamento da plataforma (hospedagem, envio de e-mails), sempre sob acordo de confidencialidade."
+      },
+      {
+        "title": "4. Armazenamento e segurança",
+        "text": "Seus dados são armazenados em servidores seguros (Supabase/AWS) com criptografia em trânsito e em repouso. Adotamos boas práticas de segurança, mas nenhum sistema é 100% inviolável."
+      },
+      {
+        "title": "5. Seus direitos (LGPD)",
+        "text": "Conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018), você tem direito a: acessar seus dados, corrigir informações incorretas, solicitar a exclusão da sua conta e dos seus dados, e revogar consentimentos a qualquer momento. Para exercer esses direitos, entre em contato pelo e-mail contato@pacehive.com."
+      },
+      {
+        "title": "6. Cookies",
+        "text": "Usamos cookies essenciais para autenticação e funcionamento básico da plataforma. Não usamos cookies de rastreamento de terceiros para fins publicitários."
+      },
+      {
+        "title": "7. Retenção de dados",
+        "text": "Seus dados são mantidos enquanto sua conta estiver ativa. Após a exclusão da conta, os dados são removidos em até 30 dias, exceto quando sua retenção for exigida por obrigação legal."
+      },
+      {
+        "title": "8. Menores de idade",
+        "text": "A PaceHive não é destinada a menores de 18 anos e não coleta conscientemente dados de menores. Se identificarmos tal situação, os dados serão removidos imediatamente."
+      },
+      {
+        "title": "9. Alterações nesta política",
+        "text": "Esta política pode ser atualizada periodicamente. Comunicaremos alterações relevantes por e-mail. O uso continuado da plataforma implica aceitação da versão vigente."
+      },
+      {
+        "title": "10. Contato",
+        "text": "Dúvidas sobre privacidade ou solicitações relacionadas aos seus dados: contato@pacehive.com."
+      }
+    ]
+  },
+  "accountSuspended": {
+    "title": "Conta suspensa",
+    "description": "Sua conta foi suspensa pela equipe PaceHive. Se acredita que isso foi um engano, entre em contato pelo e-mail <email>contato@pacehive.com</email>.",
+    "signOut": "Sair da conta"
+  },
+  "login": {
+    "invalidEmail": "E-mail inválido",
+    "minChars": "Mínimo 6 caracteres",
+    "wrongCredentials": "E-mail ou senha incorretos.",
+    "welcomeBack": "Bem-vindo de volta!",
+    "signInToYourAccount": "Entre na sua conta PaceHive",
+    "email": "E-mail",
+    "emailPlaceholder": "seu@email.com",
+    "password": "Senha",
+    "signingIn": "Entrando...",
+    "signIn": "Entrar",
+    "forgotPassword": "Esqueceu a senha?",
+    "noAccount": "Não tem conta?",
+    "signUpAsGuide": "Cadastre-se como guia",
+    "signUp": "Cadastre-se"
+  },
+  "register": {
+    "nameTooShort": "Nome muito curto",
+    "invalidEmail": "E-mail inválido",
+    "minChars": "Mínimo 6 caracteres",
+    "errorCreatingAccount": "Erro ao criar conta",
+    "errorSavingProfile": "Erro ao salvar perfil",
+    "title": "Crie sua conta",
+    "subtitleGuideFlow": "Primeiro passo para criar seu perfil de guia",
+    "subtitleDefault": "Junte-se à comunidade PaceHive",
+    "fullName": "Nome completo",
+    "fullNamePlaceholder": "Seu nome",
+    "email": "E-mail",
+    "emailPlaceholder": "seu@email.com",
+    "whatsapp": "WhatsApp (opcional)",
+    "password": "Senha",
+    "passwordPlaceholder": "Mínimo 6 caracteres",
+    "alsoWantToBeGuide": "Quero ser guia também",
+    "alsoWantToBeGuideDescription": "Você vai criar seu perfil de guia no próximo passo.",
+    "creatingAccount": "Criando conta...",
+    "createAccountAndContinue": "Criar conta e continuar →",
+    "createAccount": "Criar conta",
+    "alreadyHaveAccount": "Já tem conta?",
+    "signIn": "Entrar"
+  },
+  "registerGuide": {
+    "provideCityError": "Informe a cidade",
+    "selectRunTypeError": "Selecione pelo menos um tipo de corrida",
+    "selectServiceError": "Selecione pelo menos um serviço",
+    "selectLanguageError": "Selecione pelo menos um idioma",
+    "provideValueError": "Informe um valor maior que zero",
+    "runTypes": {
+      "road": "Asfalto / Rua",
+      "trail": "Trilha",
+      "track": "Pista",
+      "beach": "Praia / Areia",
+      "mountain": "Montanha",
+      "urban": "Urbano"
+    },
+    "services": {
+      "pace_guide": "Guia de ritmo",
+      "route_planning": "Planejamento de rota",
+      "race_prep": "Preparação para prova",
+      "training_plan": "Plano de treino",
+      "photography": "Fotos durante a corrida",
+      "group_run": "Corrida em grupo"
+    },
+    "languages": {
+      "pt": "Português",
+      "en": "Inglês",
+      "es": "Espanhol",
+      "fr": "Francês",
+      "de": "Alemão"
+    },
+    "experience": {
+      "lessThan1": "Menos de 1 ano",
+      "oneToTwo": "1 a 2 anos",
+      "threeToFive": "3 a 5 anos",
+      "fiveToTen": "5 a 10 anos",
+      "tenPlus": "10 anos ou mais"
+    },
+    "errorCreatingProfile": "Erro ao criar perfil de guia",
+    "title": "Complete seu perfil de guia",
+    "subtitle": "Estas informações aparecerão no seu perfil público",
+    "city": "Cidade",
+    "cityPlaceholder": "Ex: São Paulo",
+    "country": "País",
+    "modality": "Modalidade",
+    "presential": "Presencial",
+    "virtual": "Virtual",
+    "runType": "Tipo de corrida",
+    "selectAllApplicable": "(selecione todos que se aplicam)",
+    "servicesOffered": "Serviços oferecidos",
+    "languagesSpoken": "Idiomas falados",
+    "bio": "Bio",
+    "bioPlaceholder": "Conte um pouco sobre você como guia e corredor...",
+    "runningExperience": "Experiência correndo",
+    "select": "Selecione...",
+    "willCharge": "Vou cobrar pelo serviço",
+    "pricePerRun": "Valor por corrida (R$)",
+    "pricePlaceholder": "Ex: 150",
+    "stravaUrl": "Strava (URL)",
+    "instagramUrl": "Instagram (URL)",
+    "acceptTerms": "Li e aceito os Termos de Uso para guias",
+    "viewTerms": "Ver termos",
+    "saving": "Salvando...",
+    "createProfile": "Criar meu perfil de guia →"
+  },
+  "forgotPassword": {
+    "invalidEmail": "E-mail inválido",
+    "title": "Recuperar senha",
+    "subtitle": "Insira seu e-mail e enviaremos um link para criar uma nova senha.",
+    "emailSent": "E-mail enviado!",
+    "ifRegistered": "Se {email} estiver cadastrado, você receberá um link em breve.",
+    "didntReceive": "Não recebeu? Verifique a pasta de spam.",
+    "backToLogin": "Voltar para o login",
+    "email": "E-mail",
+    "emailPlaceholder": "seu@email.com",
+    "sending": "Enviando...",
+    "sendResetLink": "Enviar link de recuperação",
+    "rememberedPassword": "Lembrou a senha?",
+    "signIn": "Entrar"
+  },
+  "resetPassword": {
+    "minChars": "Mínimo 6 caracteres",
+    "passwordsDontMatch": "As senhas não coincidem",
+    "resetFailed": "Não foi possível redefinir a senha. O link pode ter expirado.",
+    "title": "Nova senha",
+    "subtitle": "Crie uma senha forte para sua conta.",
+    "newPassword": "Nova senha",
+    "minCharsPlaceholder": "Mínimo 6 caracteres",
+    "confirmPassword": "Confirmar senha",
+    "confirmPasswordPlaceholder": "Repita a nova senha",
+    "saving": "Salvando...",
+    "saveNewPassword": "Salvar nova senha"
+  },
+  "dashboardHome": {
+    "title": "Meus pedidos",
+    "subtitle": "Acompanhe suas solicitações de corrida",
+    "newRequest": "Nova solicitação",
+    "active": "Ativos",
+    "history": "Histórico",
+    "noBookingsYet": "Nenhum pedido ainda",
+    "findAGuideAndRequest": "Encontre um guia e solicite sua primeira corrida!",
+    "findAGuide": "Encontrar um guia"
+  },
+  "runnerSidebar": {
+    "myBookings": "Meus pedidos",
+    "newRequest": "Nova solicitação",
+    "myGroups": "Meus grupos",
+    "notifications": "Notificações",
+    "myProfile": "Meu perfil",
+    "receivedBookings": "Pedidos recebidos",
+    "availability": "Disponibilidade",
+    "guideProfile": "Perfil de guia",
+    "reviews": "Avaliações",
+    "runner": "Corredor",
+    "guide": "Guia",
+    "becomeGuide": "Seja um guia",
+    "signOut": "Sair"
+  },
+  "bookingStatus": {
+    "pending": "Aguardando resposta",
+    "accepted": "Confirmada ✓",
+    "refused": "Recusada",
+    "completed": "Concluída",
+    "cancelled": "Cancelada"
+  },
+  "bookingCard": {
+    "guide": "Guia",
+    "runner": "Corredor",
+    "chatAvailable": "Chat disponível — combine os detalhes"
+  },
+  "newBookingPage": {
+    "title": "Nova solicitação",
+    "subtitle": "Escolha um guia para solicitar sua corrida",
+    "tip": "Clique no perfil de um guia para ver detalhes e solicitar uma corrida. Quer ver mais opções?",
+    "viewFullCatalog": "Ver catálogo completo"
+  },
+  "bookingDetail": {
+    "details": "Detalhes",
+    "chat": "Chat",
+    "bookingNotFound": "Pedido não encontrado.",
+    "loading": "Carregando...",
+    "backToBookings": "Voltar para pedidos",
+    "guide": "Guia",
+    "bookingDetails": "Detalhes do pedido",
+    "date": "Data",
+    "time": "Horário",
+    "city": "Cidade",
+    "notes": "Observações",
+    "bookingConfirmed": "Corrida confirmada!",
+    "guideContactInfo": "Dados de contato do guia",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp",
+    "runCompleted": "Corrida realizada?",
+    "registerCompletion": "Registre a conclusão para liberar as avaliações.",
+    "cancelBooking": "Cancelar pedido",
+    "guideHasNotResponded": "O guia ainda não respondeu.",
+    "bookingWasConfirmed": "A corrida estava confirmada.",
+    "rateYourExperience": "Avalie sua experiência",
+    "howWasRunningWith": "Como foi correr com {name}?",
+    "theGuide": "o guia",
+    "reportProblem": "Reportar problema",
+    "hadProblemWithGuide": "Teve algum problema com este guia? Nos informe.",
+    "reportGuide": "Denunciar guia"
+  },
+  "reportModal": {
+    "reasons": {
+      "inappropriateBehavior": "Comportamento inadequado",
+      "noShow": "Não compareceu (no-show)",
+      "fraud": "Fraude ou informações falsas",
+      "other": "Outro"
+    },
+    "describeWhenOther": "Descreva o problema quando selecionar \"Outro\".",
+    "errorSubmitting": "Erro ao enviar denúncia. Tente novamente.",
+    "title": "Denunciar usuário",
+    "reportSubmitted": "Denúncia enviada",
+    "receivedReport": "Recebemos seu relato sobre {name} e vamos analisá-lo em breve.",
+    "close": "Fechar",
+    "youAreReporting": "Você está denunciando {name}. Selecione o motivo:",
+    "description": "Descrição",
+    "optional": "(opcional)",
+    "descriptionPlaceholder": "Descreva o que aconteceu...",
+    "sending": "Enviando...",
+    "sendReport": "Enviar denúncia",
+    "cancel": "Cancelar"
+  },
+  "notificationsPage": {
+    "metaTitle": "Notificações — PaceHive",
+    "title": "Notificações",
+    "unreadCount": "{count, plural, one {# não lida} other {# não lidas}}",
+    "noNotifications": "Nenhuma notificação",
+    "youWillBeNotifiedHere": "Você será notificado sobre pedidos e mensagens aqui.",
+    "today": "Hoje",
+    "yesterday": "Ontem",
+    "older": "Mais antigas"
+  },
+  "runnerProfile": {
+    "nameTooShort": "Nome muito curto",
+    "selectImageError": "Selecione uma imagem (JPG, PNG ou WebP).",
+    "imageTooLargeError": "Imagem muito grande. Máximo: 5 MB.",
+    "uploadError": "Erro ao enviar imagem. Tente novamente.",
+    "saveError": "Erro ao salvar",
+    "loading": "Carregando...",
+    "title": "Meu perfil",
+    "subtitle": "Suas informações pessoais e preferências",
+    "profilePhoto": "Foto de perfil",
+    "clickToChangePhoto": "Clique para alterar a foto",
+    "photoRequirements": "JPG, PNG ou WebP · Máximo 5 MB",
+    "profileUpdated": "Perfil atualizado com sucesso!",
+    "name": "Nome",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp",
+    "preferredLanguage": "Idioma preferido",
+    "portuguese": "Português",
+    "english": "Inglês",
+    "spanish": "Espanhol",
+    "saving": "Salvando...",
+    "saveChanges": "Salvar alterações"
+  },
+  "myGroupsPage": {
+    "title": "Meus grupos",
+    "groupsRegistered": "{count, plural, one {# grupo cadastrado} other {# grupos cadastrados}}",
+    "newGroup": "Novo grupo",
+    "noGroupsYet": "Nenhum grupo ainda",
+    "registerAndAppear": "Cadastre seu grupo de corrida e apareça para a comunidade.",
+    "registerGroup": "Cadastrar grupo",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "free": "Gratuito",
+    "deleteConfirm": "Excluir o grupo \"{name}\"? Esta ação não pode ser desfeita.",
+    "delete": "Excluir"
+  },
+  "guideDashboard": {
+    "title": "Pedidos recebidos",
+    "subtitle": "Responda dentro de 24 horas para manter sua reputação",
+    "completeProfile": "Complete seu perfil para ser encontrado",
+    "itemsCompleted": "{done} de {total} itens concluídos",
+    "complete": "Completar →",
+    "profileVisibleWhen": "Seu perfil ficará visível para corredores assim que você ativar a disponibilidade em <link>Disponibilidade</link>",
+    "awaitingResponse": "Aguardando resposta",
+    "confirmed": "Confirmados",
+    "history": "Histórico",
+    "noBookingsYet": "Nenhum pedido ainda",
+    "profileCompleteAndVisible": "Seu perfil está completo e visível para corredores.",
+    "checklist": {
+      "addPhoto": {
+        "label": "Adicionar foto de perfil",
+        "hint": "Perfis com foto recebem muito mais pedidos"
+      },
+      "selectRunTypes": {
+        "label": "Selecionar tipos de corrida",
+        "hint": "Asfalto, trilha, praia... ajude o runner a te encontrar"
+      },
+      "addServices": {
+        "label": "Adicionar serviços oferecidos",
+        "hint": "Guia de ritmo, planejamento de rota, etc."
+      },
+      "writeBio": {
+        "label": "Escrever uma bio",
+        "hint": "Conte sua história como guia e corredor"
+      },
+      "connectStrava": {
+        "label": "Conectar com Strava",
+        "hint": "Exibe dados verificados e aumenta a confiança"
+      },
+      "setAvailability": {
+        "label": "Configurar disponibilidade",
+        "hint": "Mostra ao runner quando você pode correr"
+      }
+    }
+  },
+  "availabilityPage": {
+    "saveError": "Erro ao salvar",
+    "title": "Disponibilidade",
+    "subtitle": "Informe quando você está disponível para receber pedidos",
+    "availabilityUpdated": "Disponibilidade atualizada!",
+    "availableForBookings": "Estou disponível para receber pedidos",
+    "deactivateHint": "Desative para pausar temporariamente sua visibilidade",
+    "availableDays": "Dias disponíveis",
+    "days": {
+      "mon": "Seg",
+      "tue": "Ter",
+      "wed": "Qua",
+      "thu": "Qui",
+      "fri": "Sex",
+      "sat": "Sáb",
+      "sun": "Dom"
+    },
+    "periodsOfDay": "Períodos do dia",
+    "periods": {
+      "morning": {
+        "label": "Manhã",
+        "sub": "5h – 12h"
+      },
+      "afternoon": {
+        "label": "Tarde",
+        "sub": "12h – 18h"
+      },
+      "evening": {
+        "label": "Noite",
+        "sub": "18h – 22h"
+      }
+    },
+    "additionalNotes": "Observações adicionais",
+    "notesPlaceholder": "Ex: Apenas sob agendamento antecipado de 48h. Feriados mediante consulta.",
+    "saving": "Salvando...",
+    "saveAvailability": "Salvar disponibilidade"
+  },
+  "guideProfileEdit": {
+    "provideCityError": "Informe a cidade",
+    "selectLanguageError": "Selecione pelo menos um idioma",
+    "provideValueError": "Informe um valor maior que zero",
+    "runTypes": {
+      "road": "Asfalto / Rua",
+      "trail": "Trilha",
+      "track": "Pista",
+      "beach": "Praia / Areia",
+      "mountain": "Montanha",
+      "urban": "Urbano"
+    },
+    "services": {
+      "pace_guide": "Guia de ritmo",
+      "route_planning": "Planejamento de rota",
+      "race_prep": "Preparação para prova",
+      "training_plan": "Plano de treino",
+      "photography": "Fotos durante a corrida",
+      "group_run": "Corrida em grupo"
+    },
+    "languages": {
+      "pt": "Português",
+      "en": "Inglês",
+      "es": "Espanhol",
+      "fr": "Francês",
+      "de": "Alemão"
+    },
+    "experience": {
+      "lessThan1": "Menos de 1 ano",
+      "oneToTwo": "1 a 2 anos",
+      "threeToFive": "3 a 5 anos",
+      "fiveToTen": "5 a 10 anos",
+      "tenPlus": "10 anos ou mais"
+    },
+    "selectImageError": "Selecione uma imagem (JPG, PNG ou WebP).",
+    "imageTooLargeError": "Imagem muito grande. Máximo: 5 MB.",
+    "uploadError": "Erro ao enviar imagem. Tente novamente.",
+    "saveError": "Erro ao salvar",
+    "loading": "Carregando...",
+    "title": "Meu perfil público",
+    "subtitle": "Estas informações são exibidas para corredores que buscam guias",
+    "profilePhoto": "Foto de perfil",
+    "uploading": "Enviando...",
+    "changePhoto": "Trocar foto",
+    "addPhoto": "Adicionar foto",
+    "photoRequirements": "JPG, PNG ou WebP · máx. 5 MB",
+    "profileUpdated": "Perfil atualizado com sucesso!",
+    "city": "Cidade",
+    "country": "País",
+    "bio": "Bio",
+    "bioPlaceholder": "Conte sobre você como guia e corredor...",
+    "runningExperience": "Experiência correndo",
+    "select": "Selecione...",
+    "runType": "Tipo de corrida",
+    "servicesOffered": "Serviços oferecidos",
+    "languagesSpoken": "Idiomas falados",
+    "chargeForService": "Cobro pelo serviço",
+    "pricePerRun": "Valor por corrida (R$)",
+    "saving": "Salvando...",
+    "saveChanges": "Salvar alterações"
+  },
+  "guideReviewsPage": {
+    "title": "Minhas avaliações",
+    "subtitle": "Reputação construída corrida a corrida",
+    "reviewsCount": "{count, plural, one {# avaliação} other {# avaliações}}",
+    "runsCompleted": "corridas realizadas",
+    "comments": "Comentários"
+  },
+  "guiaSidebar": {
+    "receivedBookings": "Pedidos recebidos",
+    "notifications": "Notificações",
+    "myPublicProfile": "Meu perfil público",
+    "availability": "Disponibilidade",
+    "reviews": "Avaliações",
+    "guidePanel": "Painel do Guia",
+    "runnerPanel": "Painel do corredor",
+    "signOut": "Sair"
+  },
+  "bookingForm": {
+    "days": {
+      "mon": "Seg",
+      "tue": "Ter",
+      "wed": "Qua",
+      "thu": "Qui",
+      "fri": "Sex",
+      "sat": "Sáb",
+      "sun": "Dom"
+    },
+    "periods": {
+      "morning": "Manhã",
+      "afternoon": "Tarde",
+      "evening": "Noite"
+    },
+    "provideCityError": "Informe a cidade",
+    "provideDateError": "Informe a data",
+    "provideTimeError": "Informe o horário",
+    "errorCreatingBooking": "Erro ao criar pedido",
+    "unexpectedError": "Erro inesperado",
+    "requestRun": "Solicitar corrida",
+    "withGuide": "com {name}",
+    "guideCharges": "Este guia cobra R$ {price}/corrida",
+    "paymentDisclaimer": "O pagamento é combinado diretamente entre você e o guia. A PaceHive não processa nem garante pagamentos.",
+    "guideAvailability": "Disponibilidade do guia",
+    "date": "Data",
+    "time": "Horário",
+    "city": "Cidade",
+    "cityPlaceholder": "Ex: São Paulo",
+    "modality": "Modalidade",
+    "presential": "Presencial",
+    "virtual": "Virtual",
+    "distance": "Distância (km)",
+    "optional": "opcional",
+    "distancePlaceholder": "Ex: 10",
+    "distanceHint": "Distância total planejada",
+    "currentPace": "Ritmo atual",
+    "pacePlaceholder": "Ex: 6:30",
+    "paceHint": "Seu ritmo médio em min/km",
+    "preferredLanguage": "Idioma preferido",
+    "portuguese": "Português",
+    "english": "Inglês",
+    "spanish": "Espanhol",
+    "french": "Francês",
+    "notes": "Observações",
+    "notesPlaceholder": "Preferências especiais, nível de experiência, pontos de interesse...",
+    "acceptTerms": "Li e aceito os Termos de Uso",
+    "viewTerms": "Ver termos",
+    "sendingRequest": "Enviando pedido...",
+    "requestRunCta": "Solicitar corrida"
+  },
+  "bookingChat": {
+    "chatWith": "Chat com {name}",
+    "runCompletedReadOnly": "Corrida concluída — somente leitura",
+    "noMessagesYet": "Nenhuma mensagem ainda.",
+    "startTheConversation": "Comece a conversa!",
+    "historyPreserved": "Histórico de mensagens preservado",
+    "messagePlaceholder": "Digite uma mensagem... (Enter para enviar)"
+  },
+  "completeButton": {
+    "errorCompleting": "Erro ao registrar conclusão. Tente novamente.",
+    "markAsCompleted": "Marcar corrida como concluída",
+    "confirmCompletion": "Confirma que a corrida foi realizada? Ambos receberão um pedido de avaliação por e-mail.",
+    "registering": "Registrando...",
+    "yesCompleted": "Sim, concluída",
+    "cancel": "Cancelar"
+  },
+  "cancelButton": {
+    "errorCancelling": "Erro ao cancelar. Tente novamente.",
+    "cancelBooking": "Cancelar pedido",
+    "confirmCancel": "Tem certeza? A outra parte será notificada por e-mail.",
+    "cancelling": "Cancelando...",
+    "yesCancel": "Sim, cancelar",
+    "back": "Voltar"
+  },
+  "acceptRefuseButtons": {
+    "errorProcessing": "Erro ao processar. Tente novamente.",
+    "acceptedMessage": "✅ Corrida aceita! O corredor foi notificado por e-mail.",
+    "refusedMessage": "❌ Pedido recusado. O corredor foi notificado.",
+    "acceptRun": "Aceitar corrida",
+    "decline": "Recusar"
+  },
+  "reportButton": {
+    "reportUser": "Denunciar usuário"
+  },
+  "guideBookingDetail": {
+    "backToBookings": "Voltar para pedidos",
+    "runner": "Corredor",
+    "runRequest": "Pedido de corrida",
+    "date": "Data",
+    "time": "Horário",
+    "city": "Cidade",
+    "distance": "Distância",
+    "pace": "Ritmo",
+    "runnerNotes": "Observações do corredor",
+    "runConfirmed": "Corrida confirmada!",
+    "runnerContactInfo": "Dados de contato do corredor",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp",
+    "respondToRequest": "Responder pedido",
+    "respondWithin24h": "Aceite ou recuse dentro de 24 horas para manter sua reputação.",
+    "runCompleted": "Corrida realizada?",
+    "registerCompletion": "Registre a conclusão para liberar as avaliações.",
+    "rateTheRunner": "Avalie o corredor",
+    "howWasRunningWith": "Como foi correr com {name}?",
+    "cancelRun": "Cancelar corrida",
+    "cantMakeIt": "Não consegue mais comparecer? O corredor será notificado.",
+    "reportProblem": "Reportar problema",
+    "hadProblemWithRunner": "Teve algum problema com este corredor? Nos informe.",
+    "reportRunner": "Denunciar corredor"
+  },
+  "termsModal": {
+    "runnerTitle": "Termos de Uso — Corredor",
+    "guideTitle": "Termos de Uso — Guia",
+    "lastUpdated": "Última atualização: maio de 2026",
+    "acceptTerms": "Li e aceito os Termos de Uso",
+    "runnerTerms": [
+      {
+        "title": "1. Sobre a PaceHive",
+        "text": "A PaceHive é uma plataforma de conexão entre corredores e guias locais. Somos intermediadores — não somos uma agência de turismo, empresa de transporte ou empregadora dos guias cadastrados."
+      },
+      {
+        "title": "2. Responsabilidade sobre pagamentos",
+        "text": "Quando um guia cobra pelo serviço, o pagamento é combinado e realizado diretamente entre você e o guia, fora da plataforma. A PaceHive não processa, intermedia, garante nem tem qualquer responsabilidade sobre transações financeiras entre corredores e guias. Avalie o guia e combine as condições antes de efetuar qualquer pagamento."
+      },
+      {
+        "title": "3. Responsabilidade sobre a corrida",
+        "text": "Você é responsável pela sua própria segurança durante a corrida. A PaceHive não se responsabiliza por acidentes, lesões, perdas materiais ou qualquer outro dano ocorrido durante ou após a atividade. Avalie suas condições físicas e o ambiente antes de correr."
+      },
+      {
+        "title": "4. Conduta",
+        "text": "Espera-se de todos os usuários respeito mútuo, pontualidade e comunicação honesta. Comportamentos abusivos, discriminatórios ou fraudulentos resultarão no cancelamento da conta."
+      },
+      {
+        "title": "5. Cancelamentos",
+        "text": "Cancelamentos devem ser comunicados ao guia com a maior antecedência possível. A política de cancelamento e eventuais reembolsos são definidos diretamente entre corredor e guia."
+      },
+      {
+        "title": "6. Dados pessoais",
+        "text": "Seus dados são usados exclusivamente para o funcionamento da plataforma. Não vendemos informações a terceiros. Consulte nossa Política de Privacidade em pacehive.com/privacidade."
+      }
+    ],
+    "guideTerms": [
+      {
+        "title": "1. Natureza do vínculo",
+        "text": "Ao se cadastrar como guia, você atua como prestador de serviço independente. Não há vínculo empregatício, societário ou de qualquer natureza entre você e a PaceHive. Você é responsável pelas suas próprias obrigações fiscais e trabalhistas."
+      },
+      {
+        "title": "2. Gratuidade da plataforma",
+        "text": "O uso da PaceHive é 100% gratuito para guias nesta versão. Reservamo-nos o direito de introduzir planos pagos no futuro, com aviso prévio aos guias cadastrados."
+      },
+      {
+        "title": "3. Responsabilidade sobre pagamentos",
+        "text": "Quando você cobra pelo serviço, o pagamento é acordado e recebido diretamente de cada corredor, fora da plataforma. A PaceHive não processa, garante nem tem qualquer responsabilidade sobre recebimentos. Combine as condições de pagamento antes da corrida."
+      },
+      {
+        "title": "4. Segurança e conduta",
+        "text": "Você se compromete a oferecer um serviço seguro, honesto e respeitoso. Não prometa condições que não possa cumprir. Em caso de emergência durante a corrida, priorize a segurança do corredor e acione os serviços de emergência se necessário."
+      },
+      {
+        "title": "5. Atualização de informações",
+        "text": "Mantenha seu perfil (cidade, disponibilidade, preço, modalidades) sempre atualizado. Informações desatualizadas que gerem conflitos com corredores podem resultar em suspensão da conta."
+      },
+      {
+        "title": "6. Tempo de resposta",
+        "text": "Comprometa-se a responder pedidos em até 24 horas. Guias com tempo de resposta consistentemente alto poderão ter o perfil ocultado temporariamente."
+      },
+      {
+        "title": "7. Dados pessoais",
+        "text": "Seus dados são usados exclusivamente para o funcionamento da plataforma e para facilitar o contato com corredores confirmados. Consulte nossa Política de Privacidade em pacehive.com/privacidade."
+      }
+    ]
+  },
+  "reviewForm": {
+    "selectRating": "Selecione uma nota",
+    "errorSubmittingReview": "Erro ao enviar avaliação",
+    "unexpectedError": "Erro inesperado",
+    "rateYourExperienceWith": "Avalie sua experiência com",
+    "commentPlaceholder": "Conta como foi a corrida (opcional)...",
+    "submitting": "Enviando...",
+    "submitReview": "Enviar avaliação"
+  },
+  "reviewList": {
+    "noReviewsYet": "Nenhuma avaliação ainda",
+    "reviewsWillAppearHere": "As avaliações aparecerão aqui após cada corrida.",
+    "anonymous": "Anônimo"
+  },
+  "notificationItem": {
+    "minutesAgo": "{count}min atrás",
+    "hoursAgo": "{count}h atrás",
+    "daysAgo": "{count}d atrás"
+  },
+  "stravaConnectCard": {
+    "connected": "Conectado",
+    "connectedSuccess": "Strava conectado com sucesso! Seus dados já aparecem no seu perfil.",
+    "connectionError": "Erro ao conectar o Strava. Tente novamente.",
+    "connectionCancelled": "Conexão cancelada.",
+    "accountLimitReached": "Limite temporário de contas do Strava atingido. Tente novamente em breve.",
+    "kmRun": "km rodados",
+    "avgPace": "ritmo médio",
+    "lastRun": "última corrida",
+    "disconnectStrava": "Desconectar Strava",
+    "errorDisconnecting": "Erro ao desconectar. Tente novamente.",
+    "confirmDisconnect": "Desconectar o Strava? Seus dados serão removidos do perfil.",
+    "connectDescription": "Conecte sua conta do Strava para exibir seus dados reais de corrida no perfil e ganhar o badge de corredor verificado.",
+    "integrationPendingApproval": "Integração em processo de aprovação",
+    "integrationPendingApprovalDetail": "Enquanto aguardamos a aprovação oficial do Strava, o número de contas que podem se conectar é limitado. Esse limite foi atingido — novas conexões serão liberadas assim que a aprovação sair.",
+    "connectWithStrava": "Conectar com Strava"
+  },
+  "stravaFormat": {
+    "thousandKm": "mil km",
+    "today": "hoje",
+    "yesterday": "ontem",
+    "daysAgo": "há {count} dias",
+    "weeksAgo": "há {count, plural, one {# semana} other {# semanas}}",
+    "monthsAgo": "há {count, plural, one {# mês} other {# meses}}"
+  },
+  "groupActions": {
+    "unauthorized": "Não autorizado",
+    "nameAndCityRequired": "Nome e cidade são obrigatórios",
+    "errorCreatingGroup": "Erro ao criar grupo: {message}",
+    "errorUpdatingGroup": "Erro ao atualizar grupo: {message}",
+    "errorDeletingGroup": "Erro ao excluir grupo: {message}"
+  },
+  "bookingsApi": {
+    "notAuthenticated": "Não autenticado",
+    "missingRequiredFields": "Campos obrigatórios ausentes",
+    "internalError": "Erro interno"
+  },
+  "reviewsApi": {
+    "notAuthenticated": "Não autenticado",
+    "missingRequiredFields": "Campos obrigatórios ausentes",
+    "ratingRange": "Nota deve ser entre 1 e 5",
+    "alreadyReviewed": "Você já avaliou esta corrida",
+    "internalError": "Erro interno"
+  },
+  "emails": {
+    "footerCopyright": "Copyright &copy; {year} PaceHive. All rights reserved.",
+    "bookingDetails": {
+      "date": "Data",
+      "time": "Horário",
+      "city": "Cidade",
+      "modality": "Modalidade",
+      "presential": "Presencial",
+      "virtual": "Virtual",
+      "distance": "Distância",
+      "pace": "Ritmo",
+      "notes": "Observações"
+    },
+    "newBookingToGuide": {
+      "subject": "Você recebeu um novo pedido de corrida!",
+      "previewText": "Novo pedido de corrida",
+      "heading": "Você recebeu um novo pedido de corrida!",
+      "greeting": "Olá, {guideName}! O corredor {runnerName} quer correr com você.",
+      "respondAsap": "Responda o quanto antes para garantir a experiência do corredor:",
+      "acceptButton": "Aceitar pedido",
+      "refuseButton": "Recusar pedido",
+      "timeLimitNote": "Você tem 24 horas para responder antes que um lembrete seja enviado."
+    },
+    "bookingAcceptedToRunner": {
+      "subject": "Sua corrida foi confirmada!",
+      "previewText": "Corrida confirmada",
+      "heading": "Sua corrida foi confirmada!",
+      "greeting": "Olá, {runnerName}! Boa notícia — {guideName} aceitou o seu pedido.",
+      "guideDetailsTitle": "Dados do seu guia:",
+      "name": "Nome",
+      "email": "E-mail",
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "contactMessage": "Entre em contato para acertar os detalhes finais. Boa corrida!"
+    },
+    "bookingAcceptedToGuide": {
+      "subject": "Você confirmou uma corrida!",
+      "previewText": "Corrida confirmada",
+      "heading": "Você confirmou uma corrida!",
+      "greeting": "Olá, {guideName}! Você aceitou o pedido de {runnerName}.",
+      "runnerDetailsTitle": "Dados do corredor:",
+      "name": "Nome",
+      "email": "E-mail",
+      "whatsapp": "WhatsApp",
+      "contactMessage": "Entre em contato para acertar os detalhes. Boa corrida!",
+      "viewDashboardButton": "Ver meu painel"
+    },
+    "bookingRefusedToRunner": {
+      "subject": "O guia não está disponível nessa data",
+      "previewText": "Pedido recusado",
+      "heading": "O guia não está disponível nessa data",
+      "greeting": "Olá, {runnerName}! Infelizmente {guideName} não está disponível para a corrida abaixo.",
+      "dontGiveUp": "Não desanime — há muitos outros guias incríveis disponíveis para você!",
+      "viewOtherGuidesButton": "Ver outros guias"
+    },
+    "reminderToGuide": {
+      "subject": "Você tem um pedido aguardando sua resposta",
+      "previewText": "Lembrete: pedido aguardando resposta",
+      "heading": "Você tem um pedido aguardando sua resposta",
+      "greeting": "Olá, {guideName}! Lembrete: {runnerName} ainda aguarda sua resposta.",
+      "respondAsap": "Por favor, responda o quanto antes:",
+      "acceptButton": "Aceitar pedido",
+      "refuseButton": "Recusar pedido",
+      "noResponseNote": "Se não houver resposta em 48h, o corredor será notificado."
+    },
+    "reviewRequest": {
+      "subject": "Como foi a corrida? Deixe sua avaliação!",
+      "previewTextRunner": "Avalie sua corrida",
+      "previewTextGuide": "Avalie o corredor",
+      "heading": "Como foi a corrida? Deixe sua avaliação!",
+      "greetingRunner": "Olá, {runnerName}! Esperamos que sua corrida com {guideName} tenha sido incrível.",
+      "bodyRunner": "Sua avaliação ajuda outros corredores a encontrar os melhores guias. Leva menos de 1 minuto!",
+      "buttonRunner": "Avaliar minha corrida",
+      "greetingGuide": "Olá, {guideName}! Esperamos que sua corrida com {runnerName} tenha sido ótima.",
+      "bodyGuide": "Avalie o corredor para ajudar a comunidade PaceHive a crescer!",
+      "buttonGuide": "Avaliar o corredor"
+    },
+    "bookingCancelledToGuide": {
+      "subject": "Pedido de corrida cancelado pelo corredor",
+      "previewText": "Pedido cancelado",
+      "heading": "Pedido de corrida cancelado",
+      "greeting": "Olá, {guideName}! O corredor {runnerName} cancelou o pedido abaixo.",
+      "supportNote": "Se tiver dúvidas, entre em contato com a equipe PaceHive."
+    },
+    "bookingCancelledToRunner": {
+      "subject": "Corrida cancelada pelo guia",
+      "previewText": "Corrida cancelada",
+      "heading": "Corrida cancelada pelo guia",
+      "greeting": "Olá, {runnerName}! Infelizmente {guideName} precisou cancelar a corrida abaixo.",
+      "dontGiveUp": "Não desanime — há outros guias incríveis disponíveis para você!",
+      "viewOtherGuidesButton": "Ver outros guias"
+    },
+    "welcomeToGuide": {
+      "subject": "Bem-vindo à comunidade PaceHive!",
+      "previewText": "Bem-vindo ao PaceHive",
+      "heading": "Bem-vindo à comunidade PaceHive!",
+      "greeting": "Olá, {name}! É muito bom ter você como guia PaceHive.",
+      "introText": "Agora corredores de todo o mundo podem te encontrar e correr com você. Aqui estão os próximos passos:",
+      "step1": "Complete seu perfil público",
+      "step2": "Configure sua disponibilidade",
+      "step3": "Adicione sua bio e fotos",
+      "step4": "Conecte seu Strava ou Instagram",
+      "completeProfileButton": "Completar meu perfil",
+      "helpNote": "Qualquer dúvida, fale com a gente em contato@pacehive.com"
+    }
+  }
+}

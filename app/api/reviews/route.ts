@@ -1,21 +1,28 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { notifyNewReview } from '@/lib/supabase/notifications'
+import { localeCookieName, defaultLocale, type Locale } from '@/i18n/config'
 
 export async function POST(req: Request) {
+  const cookieStore = await cookies()
+  const locale = (cookieStore.get(localeCookieName)?.value as Locale) || defaultLocale
+  const t = await getTranslations({ locale, namespace: 'reviewsApi' })
+
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: t('notAuthenticated') }, { status: 401 })
 
     const { booking_id, reviewed_id, rating, comment } = await req.json()
 
     if (!booking_id || !reviewed_id || !rating) {
-      return NextResponse.json({ error: 'Campos obrigatórios ausentes' }, { status: 400 })
+      return NextResponse.json({ error: t('missingRequiredFields') }, { status: 400 })
     }
 
     if (rating < 1 || rating > 5) {
-      return NextResponse.json({ error: 'Nota deve ser entre 1 e 5' }, { status: 400 })
+      return NextResponse.json({ error: t('ratingRange') }, { status: 400 })
     }
 
     const { data: review, error } = await supabase
@@ -32,7 +39,7 @@ export async function POST(req: Request) {
 
     if (error) {
       if (error.code === '23505') {
-        return NextResponse.json({ error: 'Você já avaliou esta corrida' }, { status: 409 })
+        return NextResponse.json({ error: t('alreadyReviewed') }, { status: 409 })
       }
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
@@ -63,6 +70,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(review, { status: 201 })
   } catch {
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 })
+    return NextResponse.json({ error: t('internalError') }, { status: 500 })
   }
 }

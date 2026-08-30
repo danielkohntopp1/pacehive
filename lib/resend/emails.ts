@@ -1,4 +1,7 @@
 import { Resend } from 'resend'
+import { createTranslator } from 'next-intl'
+import ptMessages from '@/messages/pt.json'
+import enMessages from '@/messages/en.json'
 import type { Booking, Profile } from '@/types'
 
 function getResend() {
@@ -8,9 +11,23 @@ function getResend() {
 const FROM = process.env.RESEND_FROM_EMAIL || 'noreply@pacehive.com'
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://pacehive.com'
 
-function emailWrapper(content: string, previewText: string): string {
+type EmailLocale = 'pt' | 'en'
+
+function getEmailTranslator(locale: EmailLocale) {
+  const messages = locale === 'en' ? enMessages : ptMessages
+  return createTranslator({ locale, messages, namespace: 'emails' })
+}
+
+type EmailTranslator = ReturnType<typeof getEmailTranslator>
+
+function resolveLocale(profile: Profile): EmailLocale {
+  return profile.ui_locale === 'en' ? 'en' : 'pt'
+}
+
+function emailWrapper(locale: EmailLocale, t: EmailTranslator, content: string, previewText: string): string {
+  const year = new Date().getFullYear()
   return `<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="${locale === 'en' ? 'en-US' : 'pt-BR'}">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -42,7 +59,7 @@ function emailWrapper(content: string, previewText: string): string {
   </div>
   <div class="body">${content}</div>
   <div class="footer">
-    Copyright &copy; 2026 PaceHive. All rights reserved.<br/>
+    ${t('footerCopyright', { year })}<br/>
     <a href="${APP_URL}" style="color:#F5A623;text-decoration:none;">pacehive.com</a>
   </div>
 </div>
@@ -50,209 +67,230 @@ function emailWrapper(content: string, previewText: string): string {
 </html>`
 }
 
-function bookingDetails(booking: Booking): string {
-  const modalityLabel = booking.modality === 'presential' ? 'Presencial' : 'Virtual'
+function bookingDetails(t: EmailTranslator, booking: Booking): string {
+  const modalityLabel = booking.modality === 'presential' ? t('bookingDetails.presential') : t('bookingDetails.virtual')
   return `<div class="detail-box">
-    <div class="detail-row"><span class="detail-label">Data</span><span class="detail-value">${booking.run_date}</span></div>
-    <div class="detail-row"><span class="detail-label">Horario</span><span class="detail-value">${booking.run_time.slice(0, 5)}</span></div>
-    <div class="detail-row"><span class="detail-label">Cidade</span><span class="detail-value">${booking.city}</span></div>
-    <div class="detail-row"><span class="detail-label">Modalidade</span><span class="detail-value">${modalityLabel}</span></div>
-    ${booking.distance_km ? `<div class="detail-row"><span class="detail-label">Distancia</span><span class="detail-value">${booking.distance_km} km</span></div>` : ''}
-    ${booking.pace ? `<div class="detail-row"><span class="detail-label">Ritmo</span><span class="detail-value">${booking.pace} min/km</span></div>` : ''}
-    ${booking.notes ? `<div class="detail-row"><span class="detail-label">Observacoes</span><span class="detail-value">${booking.notes}</span></div>` : ''}
+    <div class="detail-row"><span class="detail-label">${t('bookingDetails.date')}</span><span class="detail-value">${booking.run_date}</span></div>
+    <div class="detail-row"><span class="detail-label">${t('bookingDetails.time')}</span><span class="detail-value">${booking.run_time.slice(0, 5)}</span></div>
+    <div class="detail-row"><span class="detail-label">${t('bookingDetails.city')}</span><span class="detail-value">${booking.city}</span></div>
+    <div class="detail-row"><span class="detail-label">${t('bookingDetails.modality')}</span><span class="detail-value">${modalityLabel}</span></div>
+    ${booking.distance_km ? `<div class="detail-row"><span class="detail-label">${t('bookingDetails.distance')}</span><span class="detail-value">${booking.distance_km} km</span></div>` : ''}
+    ${booking.pace ? `<div class="detail-row"><span class="detail-label">${t('bookingDetails.pace')}</span><span class="detail-value">${booking.pace} min/km</span></div>` : ''}
+    ${booking.notes ? `<div class="detail-row"><span class="detail-label">${t('bookingDetails.notes')}</span><span class="detail-value">${booking.notes}</span></div>` : ''}
   </div>`
 }
 
 export async function sendNewBookingToGuide(booking: Booking, runner: Profile, guide: Profile) {
+  const locale = resolveLocale(guide)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>Voce recebeu um novo pedido de corrida!</h1>
-    <p>Ola, <strong>${guide.name}</strong>! O corredor <strong>${runner.name}</strong> quer correr com voce.</p>
-    ${bookingDetails(booking)}
-    <p>Responda o quanto antes para garantir a experiencia do corredor:</p>
+    <h1>${t('newBookingToGuide.heading')}</h1>
+    <p>${t('newBookingToGuide.greeting', { guideName: `<strong>${guide.name}</strong>`, runnerName: `<strong>${runner.name}</strong>` })}</p>
+    ${bookingDetails(t, booking)}
+    <p>${t('newBookingToGuide.respondAsap')}</p>
     <div style="text-align:center;margin:32px 0;">
-      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=accept" class="btn btn-primary">Aceitar pedido</a>
-      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=refuse" class="btn btn-outline">Recusar pedido</a>
+      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=accept" class="btn btn-primary">${t('newBookingToGuide.acceptButton')}</a>
+      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=refuse" class="btn btn-outline">${t('newBookingToGuide.refuseButton')}</a>
     </div>
-    <p style="color:#6B6B6B;font-size:13px;">Voce tem 24 horas para responder antes que um lembrete seja enviado.</p>
+    <p style="color:#6B6B6B;font-size:13px;">${t('newBookingToGuide.timeLimitNote')}</p>
   `
   return getResend().emails.send({
     from: FROM,
     to: guide.email,
-    subject: 'Voce recebeu um novo pedido de corrida!',
-    html: emailWrapper(content, 'Novo pedido de corrida'),
+    subject: t('newBookingToGuide.subject'),
+    html: emailWrapper(locale, t, content, t('newBookingToGuide.previewText')),
   })
 }
 
 export async function sendBookingAcceptedToRunner(booking: Booking, runner: Profile, guide: Profile & { instagram_url?: string; phone?: string }) {
+  const locale = resolveLocale(runner)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>Sua corrida foi confirmada!</h1>
-    <p>Ola, <strong>${runner.name}</strong>! Boa noticia - <strong>${guide.name}</strong> aceitou o seu pedido.</p>
-    ${bookingDetails(booking)}
+    <h1>${t('bookingAcceptedToRunner.heading')}</h1>
+    <p>${t('bookingAcceptedToRunner.greeting', { runnerName: `<strong>${runner.name}</strong>`, guideName: `<strong>${guide.name}</strong>` })}</p>
+    ${bookingDetails(t, booking)}
     <div class="detail-box">
-      <p style="margin:0 0 12px;font-weight:700;">Dados do seu guia:</p>
-      <div class="detail-row"><span class="detail-label">Nome</span><span class="detail-value">${guide.name}</span></div>
-      ${guide.email ? `<div class="detail-row"><span class="detail-label">E-mail</span><span class="detail-value">${guide.email}</span></div>` : ''}
-      ${guide.phone ? `<div class="detail-row"><span class="detail-label">WhatsApp</span><span class="detail-value">${guide.phone}</span></div>` : ''}
-      ${guide.instagram_url ? `<div class="detail-row"><span class="detail-label">Instagram</span><span class="detail-value"><a href="${guide.instagram_url}" style="color:#F5A623;">${guide.instagram_url}</a></span></div>` : ''}
+      <p style="margin:0 0 12px;font-weight:700;">${t('bookingAcceptedToRunner.guideDetailsTitle')}</p>
+      <div class="detail-row"><span class="detail-label">${t('bookingAcceptedToRunner.name')}</span><span class="detail-value">${guide.name}</span></div>
+      ${guide.email ? `<div class="detail-row"><span class="detail-label">${t('bookingAcceptedToRunner.email')}</span><span class="detail-value">${guide.email}</span></div>` : ''}
+      ${guide.phone ? `<div class="detail-row"><span class="detail-label">${t('bookingAcceptedToRunner.whatsapp')}</span><span class="detail-value">${guide.phone}</span></div>` : ''}
+      ${guide.instagram_url ? `<div class="detail-row"><span class="detail-label">${t('bookingAcceptedToRunner.instagram')}</span><span class="detail-value"><a href="${guide.instagram_url}" style="color:#F5A623;">${guide.instagram_url}</a></span></div>` : ''}
     </div>
-    <p>Entre em contato para acertar os detalhes finais. Boa corrida!</p>
+    <p>${t('bookingAcceptedToRunner.contactMessage')}</p>
   `
   return getResend().emails.send({
     from: FROM,
     to: runner.email,
-    subject: 'Sua corrida foi confirmada!',
-    html: emailWrapper(content, 'Corrida confirmada'),
+    subject: t('bookingAcceptedToRunner.subject'),
+    html: emailWrapper(locale, t, content, t('bookingAcceptedToRunner.previewText')),
   })
 }
 
 export async function sendBookingAcceptedToGuide(booking: Booking, runner: Profile, guide: Profile) {
+  const locale = resolveLocale(guide)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>Voce confirmou uma corrida!</h1>
-    <p>Ola, <strong>${guide.name}</strong>! Voce aceitou o pedido de <strong>${runner.name}</strong>.</p>
-    ${bookingDetails(booking)}
+    <h1>${t('bookingAcceptedToGuide.heading')}</h1>
+    <p>${t('bookingAcceptedToGuide.greeting', { guideName: `<strong>${guide.name}</strong>`, runnerName: `<strong>${runner.name}</strong>` })}</p>
+    ${bookingDetails(t, booking)}
     <div class="detail-box">
-      <p style="margin:0 0 12px;font-weight:700;">Dados do corredor:</p>
-      <div class="detail-row"><span class="detail-label">Nome</span><span class="detail-value">${runner.name}</span></div>
-      <div class="detail-row"><span class="detail-label">E-mail</span><span class="detail-value">${runner.email}</span></div>
-      ${runner.phone ? `<div class="detail-row"><span class="detail-label">WhatsApp</span><span class="detail-value">${runner.phone}</span></div>` : ''}
+      <p style="margin:0 0 12px;font-weight:700;">${t('bookingAcceptedToGuide.runnerDetailsTitle')}</p>
+      <div class="detail-row"><span class="detail-label">${t('bookingAcceptedToGuide.name')}</span><span class="detail-value">${runner.name}</span></div>
+      <div class="detail-row"><span class="detail-label">${t('bookingAcceptedToGuide.email')}</span><span class="detail-value">${runner.email}</span></div>
+      ${runner.phone ? `<div class="detail-row"><span class="detail-label">${t('bookingAcceptedToGuide.whatsapp')}</span><span class="detail-value">${runner.phone}</span></div>` : ''}
     </div>
-    <p>Entre em contato para acertar os detalhes. Boa corrida!</p>
+    <p>${t('bookingAcceptedToGuide.contactMessage')}</p>
     <div style="text-align:center;margin:24px 0;">
-      <a href="${APP_URL}/guia/dashboard" class="btn btn-primary">Ver meu painel</a>
+      <a href="${APP_URL}/guia/dashboard" class="btn btn-primary">${t('bookingAcceptedToGuide.viewDashboardButton')}</a>
     </div>
   `
   return getResend().emails.send({
     from: FROM,
     to: guide.email,
-    subject: 'Voce confirmou uma corrida!',
-    html: emailWrapper(content, 'Corrida confirmada'),
+    subject: t('bookingAcceptedToGuide.subject'),
+    html: emailWrapper(locale, t, content, t('bookingAcceptedToGuide.previewText')),
   })
 }
 
 export async function sendBookingRefusedToRunner(booking: Booking, runner: Profile, guide: Profile) {
+  const locale = resolveLocale(runner)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>O guia nao esta disponivel nessa data</h1>
-    <p>Ola, <strong>${runner.name}</strong>! Infelizmente <strong>${guide.name}</strong> nao esta disponivel para a corrida abaixo.</p>
-    ${bookingDetails(booking)}
-    <p>Nao desanime - ha muitos outros guias incriveis disponiveis para voce!</p>
+    <h1>${t('bookingRefusedToRunner.heading')}</h1>
+    <p>${t('bookingRefusedToRunner.greeting', { runnerName: `<strong>${runner.name}</strong>`, guideName: `<strong>${guide.name}</strong>` })}</p>
+    ${bookingDetails(t, booking)}
+    <p>${t('bookingRefusedToRunner.dontGiveUp')}</p>
     <div style="text-align:center;margin:32px 0;">
-      <a href="${APP_URL}/guias" class="btn btn-primary">Ver outros guias</a>
+      <a href="${APP_URL}/guias" class="btn btn-primary">${t('bookingRefusedToRunner.viewOtherGuidesButton')}</a>
     </div>
   `
   return getResend().emails.send({
     from: FROM,
     to: runner.email,
-    subject: 'O guia nao esta disponivel nessa data',
-    html: emailWrapper(content, 'Pedido recusado'),
+    subject: t('bookingRefusedToRunner.subject'),
+    html: emailWrapper(locale, t, content, t('bookingRefusedToRunner.previewText')),
   })
 }
 
 export async function sendReminderToGuide(booking: Booking, runner: Profile, guide: Profile) {
+  const locale = resolveLocale(guide)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>Voce tem um pedido aguardando sua resposta</h1>
-    <p>Ola, <strong>${guide.name}</strong>! Lembrete: <strong>${runner.name}</strong> ainda aguarda sua resposta.</p>
-    ${bookingDetails(booking)}
-    <p>Por favor, responda o quanto antes:</p>
+    <h1>${t('reminderToGuide.heading')}</h1>
+    <p>${t('reminderToGuide.greeting', { guideName: `<strong>${guide.name}</strong>`, runnerName: `<strong>${runner.name}</strong>` })}</p>
+    ${bookingDetails(t, booking)}
+    <p>${t('reminderToGuide.respondAsap')}</p>
     <div style="text-align:center;margin:32px 0;">
-      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=accept" class="btn btn-primary">Aceitar pedido</a>
-      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=refuse" class="btn btn-outline">Recusar pedido</a>
+      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=accept" class="btn btn-primary">${t('reminderToGuide.acceptButton')}</a>
+      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=refuse" class="btn btn-outline">${t('reminderToGuide.refuseButton')}</a>
     </div>
-    <p style="color:#6B6B6B;font-size:13px;">Se nao houver resposta em 48h, o corredor sera notificado.</p>
+    <p style="color:#6B6B6B;font-size:13px;">${t('reminderToGuide.noResponseNote')}</p>
   `
   return getResend().emails.send({
     from: FROM,
     to: guide.email,
-    subject: 'Voce tem um pedido aguardando sua resposta',
-    html: emailWrapper(content, 'Lembrete: pedido aguardando resposta'),
+    subject: t('reminderToGuide.subject'),
+    html: emailWrapper(locale, t, content, t('reminderToGuide.previewText')),
   })
 }
 
 export async function sendReviewRequestToBoth(booking: Booking, runner: Profile, guide: Profile) {
+  const runnerLocale = resolveLocale(runner)
+  const guideLocale = resolveLocale(guide)
+  const tRunner = getEmailTranslator(runnerLocale)
+  const tGuide = getEmailTranslator(guideLocale)
+
   const runnerContent = `
-    <h1>Como foi a corrida? Deixe sua avaliacao!</h1>
-    <p>Ola, <strong>${runner.name}</strong>! Esperamos que sua corrida com <strong>${guide.name}</strong> tenha sido incrivel.</p>
-    <p>Sua avaliacao ajuda outros corredores a encontrar os melhores guias. Leva menos de 1 minuto!</p>
+    <h1>${tRunner('reviewRequest.heading')}</h1>
+    <p>${tRunner('reviewRequest.greetingRunner', { runnerName: `<strong>${runner.name}</strong>`, guideName: `<strong>${guide.name}</strong>` })}</p>
+    <p>${tRunner('reviewRequest.bodyRunner')}</p>
     <div style="text-align:center;margin:32px 0;">
-      <a href="${APP_URL}/dashboard/pedidos/${booking.id}?action=review" class="btn btn-primary">Avaliar minha corrida</a>
+      <a href="${APP_URL}/dashboard/pedidos/${booking.id}?action=review" class="btn btn-primary">${tRunner('reviewRequest.buttonRunner')}</a>
     </div>
   `
   const guideContent = `
-    <h1>Como foi a corrida? Deixe sua avaliacao!</h1>
-    <p>Ola, <strong>${guide.name}</strong>! Esperamos que sua corrida com <strong>${runner.name}</strong> tenha sido otima.</p>
-    <p>Avalie o corredor para ajudar a comunidade PaceHive a crescer!</p>
+    <h1>${tGuide('reviewRequest.heading')}</h1>
+    <p>${tGuide('reviewRequest.greetingGuide', { guideName: `<strong>${guide.name}</strong>`, runnerName: `<strong>${runner.name}</strong>` })}</p>
+    <p>${tGuide('reviewRequest.bodyGuide')}</p>
     <div style="text-align:center;margin:32px 0;">
-      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=review" class="btn btn-primary">Avaliar o corredor</a>
+      <a href="${APP_URL}/guia/pedidos/${booking.id}?action=review" class="btn btn-primary">${tGuide('reviewRequest.buttonGuide')}</a>
     </div>
   `
   await Promise.all([
     getResend().emails.send({
       from: FROM,
       to: runner.email,
-      subject: 'Como foi a corrida? Deixe sua avaliacao!',
-      html: emailWrapper(runnerContent, 'Avalie sua corrida'),
+      subject: tRunner('reviewRequest.subject'),
+      html: emailWrapper(runnerLocale, tRunner, runnerContent, tRunner('reviewRequest.previewTextRunner')),
     }),
     getResend().emails.send({
       from: FROM,
       to: guide.email,
-      subject: 'Como foi a corrida? Deixe sua avaliacao!',
-      html: emailWrapper(guideContent, 'Avalie o corredor'),
+      subject: tGuide('reviewRequest.subject'),
+      html: emailWrapper(guideLocale, tGuide, guideContent, tGuide('reviewRequest.previewTextGuide')),
     }),
   ])
 }
 
 export async function sendBookingCancelledToGuide(booking: Booking, runner: Profile, guide: Profile) {
+  const locale = resolveLocale(guide)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>Pedido de corrida cancelado</h1>
-    <p>Ola, <strong>${guide.name}</strong>! O corredor <strong>${runner.name}</strong> cancelou o pedido abaixo.</p>
-    ${bookingDetails(booking)}
-    <p style="color:#6B6B6B;font-size:13px;">Se tiver duvidas, entre em contato com a equipe PaceHive.</p>
+    <h1>${t('bookingCancelledToGuide.heading')}</h1>
+    <p>${t('bookingCancelledToGuide.greeting', { guideName: `<strong>${guide.name}</strong>`, runnerName: `<strong>${runner.name}</strong>` })}</p>
+    ${bookingDetails(t, booking)}
+    <p style="color:#6B6B6B;font-size:13px;">${t('bookingCancelledToGuide.supportNote')}</p>
   `
   return getResend().emails.send({
     from: FROM,
     to: guide.email,
-    subject: 'Pedido de corrida cancelado pelo corredor',
-    html: emailWrapper(content, 'Pedido cancelado'),
+    subject: t('bookingCancelledToGuide.subject'),
+    html: emailWrapper(locale, t, content, t('bookingCancelledToGuide.previewText')),
   })
 }
 
 export async function sendBookingCancelledToRunner(booking: Booking, runner: Profile, guide: Profile) {
+  const locale = resolveLocale(runner)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>Corrida cancelada pelo guia</h1>
-    <p>Ola, <strong>${runner.name}</strong>! Infelizmente <strong>${guide.name}</strong> precisou cancelar a corrida abaixo.</p>
-    ${bookingDetails(booking)}
-    <p>Nao desanime - ha outros guias incriveis disponiveis para voce!</p>
+    <h1>${t('bookingCancelledToRunner.heading')}</h1>
+    <p>${t('bookingCancelledToRunner.greeting', { runnerName: `<strong>${runner.name}</strong>`, guideName: `<strong>${guide.name}</strong>` })}</p>
+    ${bookingDetails(t, booking)}
+    <p>${t('bookingCancelledToRunner.dontGiveUp')}</p>
     <div style="text-align:center;margin:32px 0;">
-      <a href="${APP_URL}/guias" class="btn btn-primary">Ver outros guias</a>
+      <a href="${APP_URL}/guias" class="btn btn-primary">${t('bookingCancelledToRunner.viewOtherGuidesButton')}</a>
     </div>
   `
   return getResend().emails.send({
     from: FROM,
     to: runner.email,
-    subject: 'Corrida cancelada pelo guia',
-    html: emailWrapper(content, 'Corrida cancelada'),
+    subject: t('bookingCancelledToRunner.subject'),
+    html: emailWrapper(locale, t, content, t('bookingCancelledToRunner.previewText')),
   })
 }
 
 export async function sendWelcomeToGuide(profile: Profile) {
+  const locale = resolveLocale(profile)
+  const t = getEmailTranslator(locale)
   const content = `
-    <h1>Bem-vindo a comunidade PaceHive!</h1>
-    <p>Ola, <strong>${profile.name}</strong>! E muito bom ter voce como guia PaceHive.</p>
-    <p>Agora corredores de todo o mundo podem te encontrar e correr com voce. Aqui estao os proximos passos:</p>
+    <h1>${t('welcomeToGuide.heading')}</h1>
+    <p>${t('welcomeToGuide.greeting', { name: `<strong>${profile.name}</strong>` })}</p>
+    <p>${t('welcomeToGuide.introText')}</p>
     <div class="detail-box">
-      <div class="detail-row"><span class="detail-label">1.</span><span class="detail-value">Complete seu perfil publico</span></div>
-      <div class="detail-row"><span class="detail-label">2.</span><span class="detail-value">Configure sua disponibilidade</span></div>
-      <div class="detail-row"><span class="detail-label">3.</span><span class="detail-value">Adicione sua bio e fotos</span></div>
-      <div class="detail-row"><span class="detail-label">4.</span><span class="detail-value">Conecte seu Strava ou Instagram</span></div>
+      <div class="detail-row"><span class="detail-label">1.</span><span class="detail-value">${t('welcomeToGuide.step1')}</span></div>
+      <div class="detail-row"><span class="detail-label">2.</span><span class="detail-value">${t('welcomeToGuide.step2')}</span></div>
+      <div class="detail-row"><span class="detail-label">3.</span><span class="detail-value">${t('welcomeToGuide.step3')}</span></div>
+      <div class="detail-row"><span class="detail-label">4.</span><span class="detail-value">${t('welcomeToGuide.step4')}</span></div>
     </div>
     <div style="text-align:center;margin:32px 0;">
-      <a href="${APP_URL}/guia/perfil" class="btn btn-primary">Completar meu perfil</a>
+      <a href="${APP_URL}/guia/perfil" class="btn btn-primary">${t('welcomeToGuide.completeProfileButton')}</a>
     </div>
-    <p style="color:#6B6B6B;font-size:13px;">Qualquer duvida, fale com a gente em contato@pacehive.com</p>
+    <p style="color:#6B6B6B;font-size:13px;">${t('welcomeToGuide.helpNote')}</p>
   `
   return getResend().emails.send({
     from: FROM,
     to: profile.email,
-    subject: 'Bem-vindo a comunidade PaceHive!',
-    html: emailWrapper(content, 'Bem-vindo ao PaceHive'),
+    subject: t('welcomeToGuide.subject'),
+    html: emailWrapper(locale, t, content, t('welcomeToGuide.previewText')),
   })
 }

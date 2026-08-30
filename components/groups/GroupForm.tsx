@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 import { Loader2 } from 'lucide-react'
 import type { Group } from '@/types'
 
+// Valores armazenados no banco — não traduzir os literais em si, só os rótulos exibidos.
 const MODALITIES = ['Asfalto', 'Trail', 'Pista', 'Montanha']
 const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
 const LEVELS = ['Todos os níveis', 'Iniciante', 'Intermediário', 'Avançado']
@@ -16,9 +18,10 @@ interface Props {
   showIsActive?: boolean
 }
 
-function PillSelect({ label, options, selected, onChange }: {
+function PillSelect({ label, options, labels, selected, onChange }: {
   label: string
   options: string[]
+  labels: Record<string, string>
   selected: string[]
   onChange: (val: string[]) => void
 }) {
@@ -35,7 +38,7 @@ function PillSelect({ label, options, selected, onChange }: {
                 ? 'bg-[#F5A623] border-[#F5A623] text-black'
                 : 'bg-white border-[#E5E5E5] text-[#6B6B6B] hover:border-[#F5A623]'
             }`}>
-            {opt}
+            {labels[opt] ?? opt}
           </button>
         ))}
       </div>
@@ -76,7 +79,8 @@ function Field({ label, required, children }: { label: string; required?: boolea
 
 const inputCls = "w-full px-3.5 py-2.5 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all bg-white"
 
-export default function GroupForm({ action, initialData, redirectTo, submitLabel = 'Salvar', showIsActive = false }: Props) {
+export default function GroupForm({ action, initialData, redirectTo, submitLabel, showIsActive = false }: Props) {
+  const t = useTranslations('groupForm')
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [modality, setModality] = useState<string[]>(initialData?.modality ?? [])
@@ -84,6 +88,23 @@ export default function GroupForm({ action, initialData, redirectTo, submitLabel
   const [isFree, setIsFree] = useState(initialData?.is_free ?? true)
   const [needsReg, setNeedsReg] = useState(initialData?.needs_registration ?? false)
   const [isActive, setIsActive] = useState(initialData?.is_active ?? true)
+
+  const modalityLabels: Record<string, string> = {
+    'Asfalto': t('modalityAsphalt'),
+    'Trail': t('modalityTrail'),
+    'Pista': t('modalityTrack'),
+    'Montanha': t('modalityMountain'),
+  }
+  const dayLabels: Record<string, string> = {
+    'Seg': t('dayMon'), 'Ter': t('dayTue'), 'Qua': t('dayWed'), 'Qui': t('dayThu'),
+    'Sex': t('dayFri'), 'Sáb': t('daySat'), 'Dom': t('daySun'),
+  }
+  const levelLabels: Record<string, string> = {
+    'Todos os níveis': t('levelAll'),
+    'Iniciante': t('levelBeginner'),
+    'Intermediário': t('levelIntermediate'),
+    'Avançado': t('levelAdvanced'),
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -100,7 +121,7 @@ export default function GroupForm({ action, initialData, redirectTo, submitLabel
         await action(fd)
         window.location.href = redirectTo
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erro ao salvar grupo')
+        setError(err instanceof Error ? err.message : t('errorSaving'))
       }
     })
   }
@@ -109,89 +130,89 @@ export default function GroupForm({ action, initialData, redirectTo, submitLabel
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Informações básicas */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 space-y-4">
-        <h2 className="font-bold text-[#1A1A1A]">Informações básicas</h2>
-        <Field label="Nome do grupo" required>
+        <h2 className="font-bold text-[#1A1A1A]">{t('basicInfo')}</h2>
+        <Field label={t('groupName')} required>
           <input name="name" defaultValue={initialData?.name} required
-            placeholder="Ex: Turma da Madrugada" className={inputCls} />
+            placeholder={t('groupNamePlaceholder')} className={inputCls} />
         </Field>
-        <Field label="Descrição">
+        <Field label={t('description')}>
           <textarea name="description" defaultValue={initialData?.description} rows={3}
-            placeholder="Apresente o grupo em suas próprias palavras..."
+            placeholder={t('descriptionPlaceholder')}
             className={inputCls + ' resize-none'} />
         </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Cidade" required>
+          <Field label={t('city')} required>
             <input name="city" defaultValue={initialData?.city} required
-              placeholder="São Paulo" className={inputCls} />
+              placeholder={t('cityPlaceholder')} className={inputCls} />
           </Field>
-          <Field label="Estado">
+          <Field label={t('state')}>
             <input name="state" defaultValue={initialData?.state}
-              placeholder="SP" className={inputCls} />
+              placeholder={t('statePlaceholder')} className={inputCls} />
           </Field>
         </div>
       </div>
 
       {/* Modalidade e nível */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 space-y-4">
-        <h2 className="font-bold text-[#1A1A1A]">Modalidade e nível</h2>
-        <PillSelect label="Modalidade" options={MODALITIES} selected={modality} onChange={setModality} />
-        <Field label="Nível">
+        <h2 className="font-bold text-[#1A1A1A]">{t('modalityAndLevel')}</h2>
+        <PillSelect label={t('modality')} options={MODALITIES} labels={modalityLabels} selected={modality} onChange={setModality} />
+        <Field label={t('level')}>
           <select name="level" defaultValue={initialData?.level ?? 'Todos os níveis'} className={inputCls}>
-            {LEVELS.map(l => <option key={l} value={l}>{l}</option>)}
+            {LEVELS.map(l => <option key={l} value={l}>{levelLabels[l]}</option>)}
           </select>
         </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Ritmo médio">
+          <Field label={t('avgPace')}>
             <input name="pace_range" defaultValue={initialData?.pace_range}
-              placeholder="Ex: 5:30–7:00 min/km" className={inputCls} />
+              placeholder={t('avgPacePlaceholder')} className={inputCls} />
           </Field>
-          <Field label="Distância típica">
+          <Field label={t('typicalDistance')}>
             <input name="distance_range" defaultValue={initialData?.distance_range}
-              placeholder="Ex: 8–15km" className={inputCls} />
+              placeholder={t('typicalDistancePlaceholder')} className={inputCls} />
           </Field>
         </div>
       </div>
 
       {/* Horários e local */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 space-y-4">
-        <h2 className="font-bold text-[#1A1A1A]">Horários e local</h2>
-        <PillSelect label="Dias da semana" options={DAYS} selected={days} onChange={setDays} />
+        <h2 className="font-bold text-[#1A1A1A]">{t('scheduleAndLocation')}</h2>
+        <PillSelect label={t('daysOfWeek')} options={DAYS} labels={dayLabels} selected={days} onChange={setDays} />
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Horário">
+          <Field label={t('time')}>
             <input type="time" name="meeting_time"
               defaultValue={initialData?.meeting_time?.slice(0, 5)} className={inputCls} />
           </Field>
-          <Field label="Local de encontro">
+          <Field label={t('meetingPlace')}>
             <input name="meeting_place" defaultValue={initialData?.meeting_place}
-              placeholder="Ex: Parque Ibirapuera — Portão 10" className={inputCls} />
+              placeholder={t('meetingPlacePlaceholder')} className={inputCls} />
           </Field>
         </div>
       </div>
 
       {/* Participação */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 space-y-4">
-        <h2 className="font-bold text-[#1A1A1A]">Participação</h2>
-        <Toggle label="Gratuito" description="O grupo não cobra nenhuma taxa" checked={isFree} onChange={setIsFree} />
+        <h2 className="font-bold text-[#1A1A1A]">{t('participation')}</h2>
+        <Toggle label={t('free')} description={t('freeDescription')} checked={isFree} onChange={setIsFree} />
         {!isFree && (
-          <Field label="Informações sobre o valor">
+          <Field label={t('priceInfo')}>
             <input name="price_info" defaultValue={initialData?.price_info}
-              placeholder="Ex: R$30/mês, inclui assessoria" className={inputCls} />
+              placeholder={t('priceInfoPlaceholder')} className={inputCls} />
           </Field>
         )}
-        <Toggle label="Precisa de agendamento" description="O corredor deve avisar antes de participar" checked={needsReg} onChange={setNeedsReg} />
-        <Field label="Como participar">
+        <Toggle label={t('needsRegistration')} description={t('needsRegistrationDescription')} checked={needsReg} onChange={setNeedsReg} />
+        <Field label={t('howToJoin')}>
           <textarea name="how_to_join" defaultValue={initialData?.how_to_join} rows={2}
-            placeholder="Ex: Só aparecer! / Entre em contato pelo Instagram antes."
+            placeholder={t('howToJoinPlaceholder')}
             className={inputCls + ' resize-none'} />
         </Field>
       </div>
 
       {/* Contato */}
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 space-y-4">
-        <h2 className="font-bold text-[#1A1A1A]">Contato e redes sociais</h2>
-        <Field label="Contato (WhatsApp, email ou telefone)">
+        <h2 className="font-bold text-[#1A1A1A]">{t('contactAndSocial')}</h2>
+        <Field label={t('contact')}>
           <input name="contact" defaultValue={initialData?.contact}
-            placeholder="Ex: (11) 99999-9999" className={inputCls} />
+            placeholder={t('contactPlaceholder')} className={inputCls} />
         </Field>
         <Field label="Instagram">
           <input name="instagram_url" defaultValue={initialData?.instagram_url}
@@ -201,7 +222,7 @@ export default function GroupForm({ action, initialData, redirectTo, submitLabel
 
       {showIsActive && (
         <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-          <Toggle label="Grupo ativo (visível para corredores)" checked={isActive} onChange={setIsActive} />
+          <Toggle label={t('groupActive')} checked={isActive} onChange={setIsActive} />
         </div>
       )}
 
@@ -214,7 +235,7 @@ export default function GroupForm({ action, initialData, redirectTo, submitLabel
       <button type="submit" disabled={isPending}
         className="w-full py-3.5 bg-[#F5A623] text-black font-bold rounded-xl hover:bg-[#E09510] transition-colors disabled:opacity-60 flex items-center justify-center gap-2 text-sm">
         {isPending && <Loader2 size={16} className="animate-spin" />}
-        {isPending ? 'Salvando...' : submitLabel}
+        {isPending ? t('saving') : (submitLabel ?? t('save'))}
       </button>
     </form>
   )

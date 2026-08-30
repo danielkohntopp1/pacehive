@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { NextIntlClientProvider } from 'next-intl'
 import Link from 'next/link'
 import Image from 'next/image'
 import { LayoutDashboard, Users, Compass, LogOut, UsersRound } from 'lucide-react'
+import ptMessages from '@/messages/pt.json'
 
 const ADMIN_EMAIL = 'danielkohntopp@gmail.com'
 
@@ -64,7 +66,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </aside>
 
       <main className="flex-1 lg:ml-60 p-6 lg:p-8">
-        {children}
+        {/* Admin fica sempre em português, independente do idioma escolhido no site,
+            já que componentes compartilhados com o app (ex: GroupForm) usam traduções. */}
+        <NextIntlClientProvider locale="pt" messages={ptMessages}>
+          {children}
+        </NextIntlClientProvider>
       </main>
     </div>
   )

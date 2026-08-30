@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Bell, CheckCircle, MessageCircle, PlusCircle, Star, XCircle } from 'lucide-react'
 import type { Notification } from '@/types'
@@ -16,23 +17,24 @@ const iconMap: Record<string, { icon: React.ElementType; color: string }> = {
   new_review:        { icon: Star,          color: 'text-yellow-500' },
 }
 
-function timeAgo(dateStr: string) {
-  const diff = Date.now() - new Date(dateStr).getTime()
-  const mins = Math.floor(diff / 60000)
-  if (mins < 60) return `${mins}min atrás`
-  const hours = Math.floor(mins / 60)
-  if (hours < 24) return `${hours}h atrás`
-  const days = Math.floor(hours / 24)
-  return `${days}d atrás`
-}
-
 interface Props {
   notification: Notification
   bookingBasePath: string
 }
 
 export default function NotificationItem({ notification: n, bookingBasePath }: Props) {
+  const t = useTranslations('notificationItem')
   const [isRead, setIsRead] = useState(n.is_read)
+
+  function timeAgo(dateStr: string) {
+    const diff = Date.now() - new Date(dateStr).getTime()
+    const mins = Math.floor(diff / 60000)
+    if (mins < 60) return t('minutesAgo', { count: mins })
+    const hours = Math.floor(mins / 60)
+    if (hours < 24) return t('hoursAgo', { count: hours })
+    const days = Math.floor(hours / 24)
+    return t('daysAgo', { count: days })
+  }
   const router = useRouter()
   const supabase = createClient()
 

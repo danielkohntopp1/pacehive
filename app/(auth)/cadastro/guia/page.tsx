@@ -4,77 +4,74 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 import TermsModal from '@/components/bookings/TermsModal'
 
-const RUN_TYPES = [
-  { value: 'road', label: 'Asfalto / Rua' },
-  { value: 'trail', label: 'Trilha' },
-  { value: 'track', label: 'Pista' },
-  { value: 'beach', label: 'Praia / Areia' },
-  { value: 'mountain', label: 'Montanha' },
-  { value: 'urban', label: 'Urbano' },
-]
+// Valores armazenados no banco — não traduzir os literais, só os rótulos exibidos.
+const RUN_TYPE_VALUES = ['road', 'trail', 'track', 'beach', 'mountain', 'urban']
+const SERVICE_VALUES = ['pace_guide', 'route_planning', 'race_prep', 'training_plan', 'photography', 'group_run']
+const LANGUAGE_VALUES = ['pt', 'en', 'es', 'fr', 'de']
+const EXPERIENCE_VALUES = ['menos de 1 ano', '1-2 anos', '3-5 anos', '5-10 anos', '10+ anos']
 
-const SERVICES = [
-  { value: 'pace_guide', label: 'Guia de ritmo' },
-  { value: 'route_planning', label: 'Planejamento de rota' },
-  { value: 'race_prep', label: 'Preparação para prova' },
-  { value: 'training_plan', label: 'Plano de treino' },
-  { value: 'photography', label: 'Fotos durante a corrida' },
-  { value: 'group_run', label: 'Corrida em grupo' },
-]
-
-const LANGUAGES = [
-  { value: 'pt', label: 'Português' },
-  { value: 'en', label: 'Inglês' },
-  { value: 'es', label: 'Espanhol' },
-  { value: 'fr', label: 'Francês' },
-  { value: 'de', label: 'Alemão' },
-]
-
-const EXPERIENCE_OPTIONS = [
-  { value: 'menos de 1 ano', label: 'Menos de 1 ano' },
-  { value: '1-2 anos', label: '1 a 2 anos' },
-  { value: '3-5 anos', label: '3 a 5 anos' },
-  { value: '5-10 anos', label: '5 a 10 anos' },
-  { value: '10+ anos', label: '10 anos ou mais' },
-]
-
-const schema = z.object({
-  city: z.string().min(2, 'Informe a cidade'),
-  country: z.string().min(1),
-  bio: z.string().optional(),
-  experience_years: z.string().optional(),
-  modality_presential: z.boolean(),
-  modality_virtual: z.boolean(),
-  run_types: z.array(z.string()).min(1, 'Selecione pelo menos um tipo de corrida'),
-  services: z.array(z.string()).min(1, 'Selecione pelo menos um serviço'),
-  languages: z.array(z.string()).min(1, 'Selecione pelo menos um idioma'),
-  is_paid: z.boolean(),
-  price_brl: z.string().optional(),
-  strava_url: z.string().optional(),
-  instagram_url: z.string().optional(),
-}).superRefine((data, ctx) => {
-  if (data.is_paid) {
-    const val = parseFloat(data.price_brl ?? '')
-    if (!data.price_brl || isNaN(val) || val <= 0) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Informe um valor maior que zero', path: ['price_brl'] })
+function buildSchema(t: ReturnType<typeof useTranslations>) {
+  return z.object({
+    city: z.string().min(2, t('provideCityError')),
+    country: z.string().min(1),
+    bio: z.string().optional(),
+    experience_years: z.string().optional(),
+    modality_presential: z.boolean(),
+    modality_virtual: z.boolean(),
+    run_types: z.array(z.string()).min(1, t('selectRunTypeError')),
+    services: z.array(z.string()).min(1, t('selectServiceError')),
+    languages: z.array(z.string()).min(1, t('selectLanguageError')),
+    is_paid: z.boolean(),
+    price_brl: z.string().optional(),
+    strava_url: z.string().optional(),
+    instagram_url: z.string().optional(),
+  }).superRefine((data, ctx) => {
+    if (data.is_paid) {
+      const val = parseFloat(data.price_brl ?? '')
+      if (!data.price_brl || isNaN(val) || val <= 0) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: t('provideValueError'), path: ['price_brl'] })
+      }
     }
-  }
-})
+  })
+}
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<ReturnType<typeof buildSchema>>
 
 export default function CadastroGuiaPage() {
+  const t = useTranslations('registerGuide')
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [showTerms, setShowTerms] = useState(false)
   const [termsAccepted, setTermsAccepted] = useState(false)
 
+  const runTypeLabels: Record<string, string> = {
+    road: t('runTypes.road'), trail: t('runTypes.trail'), track: t('runTypes.track'),
+    beach: t('runTypes.beach'), mountain: t('runTypes.mountain'), urban: t('runTypes.urban'),
+  }
+  const serviceLabels: Record<string, string> = {
+    pace_guide: t('services.pace_guide'), route_planning: t('services.route_planning'),
+    race_prep: t('services.race_prep'), training_plan: t('services.training_plan'),
+    photography: t('services.photography'), group_run: t('services.group_run'),
+  }
+  const languageLabels: Record<string, string> = {
+    pt: t('languages.pt'), en: t('languages.en'), es: t('languages.es'), fr: t('languages.fr'), de: t('languages.de'),
+  }
+  const experienceLabels: Record<string, string> = {
+    'menos de 1 ano': t('experience.lessThan1'),
+    '1-2 anos': t('experience.oneToTwo'),
+    '3-5 anos': t('experience.threeToFive'),
+    '5-10 anos': t('experience.fiveToTen'),
+    '10+ anos': t('experience.tenPlus'),
+  }
+
+  const schema = buildSchema(t)
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -129,7 +126,7 @@ export default function CadastroGuiaPage() {
     })
 
     if (guideError) {
-      setError('Erro ao criar perfil de guia: ' + guideError.message)
+      setError(t('errorCreatingProfile') + ': ' + guideError.message)
       return
     }
 
@@ -162,8 +159,8 @@ export default function CadastroGuiaPage() {
             height={88}
             className="mx-auto mb-4"
           />
-          <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Complete seu perfil de guia</h1>
-          <p className="text-[#6B6B6B] text-sm mt-1">Estas informações aparecerão no seu perfil público</p>
+          <h1 className="text-2xl font-extrabold text-[#1A1A1A]">{t('title')}</h1>
+          <p className="text-[#6B6B6B] text-sm mt-1">{t('subtitle')}</p>
         </div>
 
         <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm p-8">
@@ -175,23 +172,23 @@ export default function CadastroGuiaPage() {
             {/* Cidade + País */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Cidade *</label>
-                <input type="text" {...register('city')} placeholder="Ex: São Paulo" className={inputClass} />
+                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('city')} *</label>
+                <input type="text" {...register('city')} placeholder={t('cityPlaceholder')} className={inputClass} />
                 {errors.city && <p className="text-xs text-red-500 mt-1">{errors.city.message}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">País</label>
+                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('country')}</label>
                 <input type="text" {...register('country')} placeholder="BR" className={inputClass} />
               </div>
             </div>
 
             {/* Modalidade */}
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Modalidade *</label>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">{t('modality')} *</label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { field: 'modality_presential' as const, label: 'Presencial' },
-                  { field: 'modality_virtual' as const, label: 'Virtual' },
+                  { field: 'modality_presential' as const, label: t('presential') },
+                  { field: 'modality_virtual' as const, label: t('virtual') },
                 ].map((opt) => (
                   <label key={opt.field}
                     className="flex items-center gap-2 p-3 border border-[#E5E5E5] rounded-xl cursor-pointer hover:border-[#F5A623] transition-colors has-[:checked]:border-[#F5A623] has-[:checked]:bg-[#FEF3DC]">
@@ -205,22 +202,22 @@ export default function CadastroGuiaPage() {
             {/* Tipo de corrida */}
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                Tipo de corrida * <span className="text-[#6B6B6B] font-normal">(selecione todos que se aplicam)</span>
+                {t('runType')} * <span className="text-[#6B6B6B] font-normal">{t('selectAllApplicable')}</span>
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {RUN_TYPES.map((rt) => {
-                  const active = selectedRunTypes.includes(rt.value)
+                {RUN_TYPE_VALUES.map((value) => {
+                  const active = selectedRunTypes.includes(value)
                   return (
                     <button
-                      key={rt.value}
+                      key={value}
                       type="button"
-                      onClick={() => toggleArray('run_types', rt.value, selectedRunTypes)}
+                      onClick={() => toggleArray('run_types', value, selectedRunTypes)}
                       className={`${checkboxItemClass} ${active ? checkboxItemActiveClass : ''}`}
                     >
                       <span className={`w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center text-xs transition-colors ${active ? 'bg-[#F5A623] border-[#F5A623] text-black' : 'border-[#D0D0D0]'}`}>
                         {active && '✓'}
                       </span>
-                      {rt.label}
+                      {runTypeLabels[value]}
                     </button>
                   )
                 })}
@@ -231,22 +228,22 @@ export default function CadastroGuiaPage() {
             {/* Serviços */}
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                Serviços oferecidos * <span className="text-[#6B6B6B] font-normal">(selecione todos que se aplicam)</span>
+                {t('servicesOffered')} * <span className="text-[#6B6B6B] font-normal">{t('selectAllApplicable')}</span>
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {SERVICES.map((svc) => {
-                  const active = selectedServices.includes(svc.value)
+                {SERVICE_VALUES.map((value) => {
+                  const active = selectedServices.includes(value)
                   return (
                     <button
-                      key={svc.value}
+                      key={value}
                       type="button"
-                      onClick={() => toggleArray('services', svc.value, selectedServices)}
+                      onClick={() => toggleArray('services', value, selectedServices)}
                       className={`${checkboxItemClass} ${active ? checkboxItemActiveClass : ''}`}
                     >
                       <span className={`w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center text-xs transition-colors ${active ? 'bg-[#F5A623] border-[#F5A623] text-black' : 'border-[#D0D0D0]'}`}>
                         {active && '✓'}
                       </span>
-                      {svc.label}
+                      {serviceLabels[value]}
                     </button>
                   )
                 })}
@@ -256,18 +253,18 @@ export default function CadastroGuiaPage() {
 
             {/* Idiomas */}
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Idiomas falados *</label>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">{t('languagesSpoken')} *</label>
               <div className="flex flex-wrap gap-2">
-                {LANGUAGES.map((lang) => {
-                  const active = selectedLanguages.includes(lang.value)
+                {LANGUAGE_VALUES.map((value) => {
+                  const active = selectedLanguages.includes(value)
                   return (
                     <button
-                      key={lang.value}
+                      key={value}
                       type="button"
-                      onClick={() => toggleArray('languages', lang.value, selectedLanguages)}
+                      onClick={() => toggleArray('languages', value, selectedLanguages)}
                       className={`px-3.5 py-1.5 rounded-full text-sm font-medium border transition-colors ${active ? 'bg-[#F5A623] border-[#F5A623] text-black' : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#F5A623]'}`}
                     >
-                      {lang.label}
+                      {languageLabels[value]}
                     </button>
                   )
                 })}
@@ -277,18 +274,18 @@ export default function CadastroGuiaPage() {
 
             {/* Bio */}
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Bio</label>
-              <textarea {...register('bio')} rows={4} placeholder="Conte um pouco sobre você como guia e corredor..."
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('bio')}</label>
+              <textarea {...register('bio')} rows={4} placeholder={t('bioPlaceholder')}
                 className={`${inputClass} resize-none`} />
             </div>
 
             {/* Experiência */}
             <div>
-              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Experiência correndo</label>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('runningExperience')}</label>
               <select {...register('experience_years')} className={`${inputClass} bg-white`}>
-                <option value="">Selecione...</option>
-                {EXPERIENCE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                <option value="">{t('select')}</option>
+                {EXPERIENCE_VALUES.map((value) => (
+                  <option key={value} value={value}>{experienceLabels[value]}</option>
                 ))}
               </select>
             </div>
@@ -297,12 +294,12 @@ export default function CadastroGuiaPage() {
             <div>
               <label className="flex items-center gap-3 cursor-pointer mb-3">
                 <input type="checkbox" {...register('is_paid')} className="accent-[#F5A623]" />
-                <span className="text-sm font-medium text-[#1A1A1A]">Vou cobrar pelo serviço</span>
+                <span className="text-sm font-medium text-[#1A1A1A]">{t('willCharge')}</span>
               </label>
               {isPaid && (
                 <div>
-                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Valor por corrida (R$) *</label>
-                  <input type="number" step="1" min="1" {...register('price_brl')} placeholder="Ex: 150"
+                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('pricePerRun')} *</label>
+                  <input type="number" step="1" min="1" {...register('price_brl')} placeholder={t('pricePlaceholder')}
                     className={inputClass} />
                   {errors.price_brl && <p className="text-xs text-red-500 mt-1">{errors.price_brl.message}</p>}
                 </div>
@@ -312,12 +309,12 @@ export default function CadastroGuiaPage() {
             {/* Links sociais */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Strava (URL)</label>
+                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('stravaUrl')}</label>
                 <input type="url" {...register('strava_url')} placeholder="https://strava.com/athletes/..."
                   className={inputClass} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Instagram (URL)</label>
+                <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('instagramUrl')}</label>
                 <input type="url" {...register('instagram_url')} placeholder="https://instagram.com/..."
                   className={inputClass} />
               </div>
@@ -332,21 +329,21 @@ export default function CadastroGuiaPage() {
                   onChange={(e) => setTermsAccepted(e.target.checked)}
                   className="accent-[#F5A623] w-4 h-4"
                 />
-                <span className="text-sm text-[#6B6B6B]">Li e aceito os Termos de Uso para guias</span>
+                <span className="text-sm text-[#6B6B6B]">{t('acceptTerms')}</span>
               </label>
               <button
                 type="button"
                 onClick={() => setShowTerms(true)}
                 className="text-sm text-[#F5A623] font-semibold hover:underline flex-shrink-0"
               >
-                Ver termos
+                {t('viewTerms')}
               </button>
             </div>
 
             <button type="submit" disabled={isSubmitting || !termsAccepted}
               className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
               {isSubmitting && <Loader2 size={16} className="animate-spin" />}
-              {isSubmitting ? 'Salvando...' : 'Criar meu perfil de guia →'}
+              {isSubmitting ? t('saving') : t('createProfile')}
             </button>
           </form>
         </div>

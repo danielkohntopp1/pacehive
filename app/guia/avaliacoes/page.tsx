@@ -1,10 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import ReviewList from '@/components/reviews/ReviewList'
 import { Star, TrendingUp } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import type { Review, Profile } from '@/types'
 
 export default async function AvaliacoesPage() {
   const supabase = await createClient()
+  const t = await getTranslations('guideReviewsPage')
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: guide } = await supabase
@@ -22,8 +24,8 @@ export default async function AvaliacoesPage() {
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Minhas avaliações</h1>
-        <p className="text-[#6B6B6B] text-sm mt-1">Reputação construída corrida a corrida</p>
+        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">{t('title')}</h1>
+        <p className="text-[#6B6B6B] text-sm mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Summary */}
@@ -40,7 +42,7 @@ export default async function AvaliacoesPage() {
                     className={i < Math.round(guide.rating_avg) ? 'text-[#F5A623] fill-[#F5A623]' : 'text-[#E5E5E5] fill-[#E5E5E5]'} />
                 ))}
               </div>
-              <p className="text-xs text-[#6B6B6B]">{guide.rating_count} {guide.rating_count === 1 ? 'avaliação' : 'avaliações'}</p>
+              <p className="text-xs text-[#6B6B6B]">{t('reviewsCount', { count: guide.rating_count })}</p>
             </div>
 
             <div className="flex-1 border-l border-[#E5E5E5] pl-8">
@@ -50,7 +52,7 @@ export default async function AvaliacoesPage() {
                 </div>
                 <div>
                   <p className="text-3xl font-extrabold text-[#1A1A1A] leading-none">{guide.total_runs}</p>
-                  <p className="text-sm text-[#6B6B6B] mt-0.5">corridas realizadas</p>
+                  <p className="text-sm text-[#6B6B6B] mt-0.5">{t('runsCompleted')}</p>
                 </div>
               </div>
             </div>
@@ -59,7 +61,7 @@ export default async function AvaliacoesPage() {
       )}
 
       <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-        <h2 className="text-sm font-semibold text-[#6B6B6B] uppercase tracking-wider mb-4">Comentários</h2>
+        <h2 className="text-sm font-semibold text-[#6B6B6B] uppercase tracking-wider mb-4">{t('comments')}</h2>
         <ReviewList reviews={(reviews ?? []) as (Review & { reviewer: Profile })[]} />
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { useTranslations, useLocale } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import BookingStatus from '@/components/bookings/BookingStatus'
 import BookingChat from '@/components/bookings/BookingChat'
@@ -15,6 +16,7 @@ import { ArrowLeft, Calendar, CheckCircle, Clock, Flag, MapPin, MessageCircle, U
 import type { Booking } from '@/types'
 
 function TabBar({ active, onChange }: { active: 'details' | 'chat'; onChange: (t: 'details' | 'chat') => void }) {
+  const t = useTranslations('bookingDetail')
   return (
     <div className="flex gap-1 mb-4 bg-[#F0EDE8] rounded-xl p-1">
       {(['details', 'chat'] as const).map((tab) => (
@@ -26,7 +28,7 @@ function TabBar({ active, onChange }: { active: 'details' | 'chat'; onChange: (t
           }`}
         >
           {tab === 'chat' && <MessageCircle size={14} />}
-          {tab === 'details' ? 'Detalhes' : 'Chat'}
+          {tab === 'details' ? t('details') : t('chat')}
         </button>
       ))}
     </div>
@@ -34,6 +36,8 @@ function TabBar({ active, onChange }: { active: 'details' | 'chat'; onChange: (t
 }
 
 export default function RunnerBookingPage() {
+  const t = useTranslations('bookingDetail')
+  const locale = useLocale()
   const { id } = useParams<{ id: string }>()
   const [booking, setBooking] = useState<Booking | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
@@ -74,8 +78,8 @@ export default function RunnerBookingPage() {
     })
   }, [id])
 
-  if (notFound) return <p className="text-sm text-[#6B6B6B]">Pedido não encontrado.</p>
-  if (!booking || !userId) return <p className="text-sm text-[#6B6B6B]">Carregando...</p>
+  if (notFound) return <p className="text-sm text-[#6B6B6B]">{t('bookingNotFound')}</p>
+  if (!booking || !userId) return <p className="text-sm text-[#6B6B6B]">{t('loading')}</p>
 
   const b = booking
   const showChat = b.status === 'accepted' || b.status === 'completed'
@@ -94,7 +98,7 @@ export default function RunnerBookingPage() {
       )}
 
       <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors mb-6">
-        <ArrowLeft size={16} /> Voltar para pedidos
+        <ArrowLeft size={16} /> {t('backToBookings')}
       </Link>
 
       {showChat && <TabBar active={activeTab} onChange={setActiveTab} />}
@@ -103,7 +107,7 @@ export default function RunnerBookingPage() {
         <BookingChat
           bookingId={b.id}
           currentUserId={userId}
-          otherUserName={b.guide?.profile?.name ?? 'Guia'}
+          otherUserName={b.guide?.profile?.name ?? t('guide')}
           isReadOnly={b.status === 'completed'}
         />
       ) : (
@@ -111,7 +115,7 @@ export default function RunnerBookingPage() {
           <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
             <div className="flex items-start justify-between mb-5">
               <div>
-                <h1 className="text-xl font-bold text-[#1A1A1A]">Detalhes do pedido</h1>
+                <h1 className="text-xl font-bold text-[#1A1A1A]">{t('bookingDetails')}</h1>
                 <p className="text-sm text-[#6B6B6B] mt-0.5">#{b.id.slice(0, 8).toUpperCase()}</p>
               </div>
               <BookingStatus status={b.status} />
@@ -119,10 +123,10 @@ export default function RunnerBookingPage() {
 
             <div className="grid grid-cols-2 gap-3 text-sm">
               {[
-                { icon: User, label: 'Guia', value: b.guide?.profile?.name ?? '-' },
-                { icon: Calendar, label: 'Data', value: formatDate(b.run_date) },
-                { icon: Clock, label: 'Horário', value: b.run_time.slice(0, 5) },
-                { icon: MapPin, label: 'Cidade', value: b.city },
+                { icon: User, label: t('guide'), value: b.guide?.profile?.name ?? '-' },
+                { icon: Calendar, label: t('date'), value: formatDate(b.run_date, locale as 'pt' | 'en') },
+                { icon: Clock, label: t('time'), value: b.run_time.slice(0, 5) },
+                { icon: MapPin, label: t('city'), value: b.city },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="bg-[#F9F5EE] rounded-xl p-3.5">
                   <div className="flex items-center gap-1.5 text-[#6B6B6B] mb-1">
@@ -136,7 +140,7 @@ export default function RunnerBookingPage() {
 
             {b.notes && (
               <div className="mt-4 p-3.5 bg-[#F9F5EE] rounded-xl">
-                <p className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide mb-1.5">Observações</p>
+                <p className="text-xs font-medium text-[#6B6B6B] uppercase tracking-wide mb-1.5">{t('notes')}</p>
                 <p className="text-sm text-[#1A1A1A] leading-relaxed">{b.notes}</p>
               </div>
             )}
@@ -145,12 +149,12 @@ export default function RunnerBookingPage() {
               <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-xl">
                 <div className="flex items-center gap-2 mb-3">
                   <CheckCircle size={18} className="text-green-600 flex-shrink-0" />
-                  <p className="text-sm font-bold text-green-800">Corrida confirmada!</p>
+                  <p className="text-sm font-bold text-green-800">{t('bookingConfirmed')}</p>
                 </div>
-                <p className="text-xs text-green-700/70 font-medium uppercase tracking-wide mb-2">Dados de contato do guia</p>
-                <p className="text-sm text-green-800">E-mail: <strong>{b.guide.profile.email}</strong></p>
+                <p className="text-xs text-green-700/70 font-medium uppercase tracking-wide mb-2">{t('guideContactInfo')}</p>
+                <p className="text-sm text-green-800">{t('email')}: <strong>{b.guide.profile.email}</strong></p>
                 {b.guide.profile.phone && (
-                  <p className="text-sm text-green-800 mt-1">WhatsApp: <strong>{b.guide.profile.phone}</strong></p>
+                  <p className="text-sm text-green-800 mt-1">{t('whatsapp')}: <strong>{b.guide.profile.phone}</strong></p>
                 )}
               </div>
             )}
@@ -158,17 +162,17 @@ export default function RunnerBookingPage() {
 
           {b.status === 'accepted' && (
             <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
-              <h2 className="font-bold text-[#1A1A1A] mb-1">Corrida realizada?</h2>
-              <p className="text-sm text-[#6B6B6B] mb-4">Registre a conclusão para liberar as avaliações.</p>
+              <h2 className="font-bold text-[#1A1A1A] mb-1">{t('runCompleted')}</h2>
+              <p className="text-sm text-[#6B6B6B] mb-4">{t('registerCompletion')}</p>
               <CompleteButton bookingId={b.id} />
             </div>
           )}
 
           {canCancel && (
             <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
-              <h2 className="font-bold text-[#1A1A1A] mb-1">Cancelar pedido</h2>
+              <h2 className="font-bold text-[#1A1A1A] mb-1">{t('cancelBooking')}</h2>
               <p className="text-sm text-[#6B6B6B] mb-4">
-                {b.status === 'pending' ? 'O guia ainda não respondeu.' : 'A corrida estava confirmada.'}
+                {b.status === 'pending' ? t('guideHasNotResponded') : t('bookingWasConfirmed')}
               </p>
               <CancelButton bookingId={b.id} />
             </div>
@@ -176,26 +180,26 @@ export default function RunnerBookingPage() {
 
           {b.status === 'completed' && !hasReview && b.guide && (
             <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 mb-4">
-              <h2 className="text-lg font-bold text-[#1A1A1A] mb-1">Avalie sua experiência</h2>
-              <p className="text-sm text-[#6B6B6B] mb-4">Como foi correr com {b.guide.profile?.name ?? 'o guia'}?</p>
+              <h2 className="text-lg font-bold text-[#1A1A1A] mb-1">{t('rateYourExperience')}</h2>
+              <p className="text-sm text-[#6B6B6B] mb-4">{t('howWasRunningWith', { name: b.guide.profile?.name ?? t('theGuide') })}</p>
               <ReviewForm
                 bookingId={b.id}
                 reviewedId={b.guide_id}
-                reviewedName={b.guide.profile?.name ?? 'Guia'}
+                reviewedName={b.guide.profile?.name ?? t('guide')}
               />
             </div>
           )}
 
           {canReport && (
             <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-              <h2 className="font-bold text-[#1A1A1A] mb-1">Reportar problema</h2>
-              <p className="text-sm text-[#6B6B6B] mb-4">Teve algum problema com este guia? Nos informe.</p>
+              <h2 className="font-bold text-[#1A1A1A] mb-1">{t('reportProblem')}</h2>
+              <p className="text-sm text-[#6B6B6B] mb-4">{t('hadProblemWithGuide')}</p>
               <button
                 onClick={() => setShowReport(true)}
                 className="w-full flex items-center justify-center gap-2 py-3 border-2 border-[#E5E5E5] text-[#6B6B6B] font-semibold rounded-full hover:border-red-300 hover:text-red-500 transition-colors text-sm"
               >
                 <Flag size={16} />
-                Denunciar guia
+                {t('reportGuide')}
               </button>
             </div>
           )}

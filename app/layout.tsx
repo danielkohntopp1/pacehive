@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { NextIntlClientProvider } from "next-intl"
+import { getLocale, getMessages, getTranslations } from "next-intl/server"
 import "./globals.css"
 
 const plusJakartaSans = localFont({
@@ -24,20 +26,29 @@ const roboto = localFont({
   display: "swap",
 })
 
-export const metadata: Metadata = {
-  title: "PaceHive — Conectando corredores com novas experiências",
-  description:
-    "Marketplace de guias de corrida. Encontre um corredor local para guiar você em qualquer cidade do mundo.",
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("rootMeta")
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getLocale()
+  const messages = await getMessages()
+
   return (
-    <html lang="pt-BR" className={`${plusJakartaSans.variable} ${roboto.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+    <html lang={locale === "en" ? "en-US" : "pt-BR"} className={`${plusJakartaSans.variable} ${roboto.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-sans">
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
     </html>
   )
 }

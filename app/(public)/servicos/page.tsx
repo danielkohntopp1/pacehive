@@ -1,13 +1,18 @@
 import Link from 'next/link'
 import { CheckCircle2, MapPin, Video, ArrowRight } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Serviços — PaceHive',
-  description: 'Conheça todos os serviços oferecidos pela PaceHive para corredores e guias.',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('servicesPage')
+  return { title: t('metaTitle'), description: t('metaDescription') }
 }
 
-export default function ServicosPage() {
+export default async function ServicosPage() {
+  const t = await getTranslations('servicesPage')
+  const presentialItems = t.raw('presential.items') as string[]
+  const virtualItems = t.raw('virtual.items') as string[]
+
   return (
     <>
       {/* Hero */}
@@ -21,14 +26,13 @@ export default function ServicosPage() {
         <div className="relative max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-6">
             <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse flex-shrink-0" />
-            Para corredores e guias
+            {t('badge')}
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-            Explore os serviços da <span className="text-[#F5A623]">PaceHive</span>
+            {t.rich('title', { brand: (chunks) => <span className="text-[#F5A623]">{chunks}</span> })}
           </h1>
           <p className="text-white/60 text-lg leading-relaxed max-w-xl mx-auto">
-            Correndo em uma nova cidade ou guiando corredores por onde você vive,
-            a gente conecta pessoas através da corrida.
+            {t('subtitle')}
           </p>
         </div>
       </section>
@@ -37,9 +41,9 @@ export default function ServicosPage() {
       <section className="bg-[#F9F5EE] py-24 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">Modalidades</p>
+            <p className="text-sm font-bold text-[#F5A623] uppercase tracking-widest mb-3">{t('modalities')}</p>
             <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A]">
-              Como você quer correr?
+              {t('howDoYouWantToRun')}
             </h2>
           </div>
 
@@ -50,23 +54,14 @@ export default function ServicosPage() {
                 <MapPin size={26} className="text-[#F5A623]" />
               </div>
               <span className="bg-[#F5A623] text-black text-xs font-bold rounded-full px-3 py-1 mb-5 inline-block w-fit">
-                Presencial
+                {t('presential.badge')}
               </span>
-              <h2 className="text-2xl font-bold text-white mb-3">Guia Presencial</h2>
+              <h2 className="text-2xl font-bold text-white mb-3">{t('presential.title')}</h2>
               <p className="text-white/60 text-sm leading-relaxed mb-6 flex-1">
-                O guia local vai correr lado a lado com você pelas ruas da cidade, apresentando
-                os melhores percursos, pontos turísticos e a cultura local. A experiência mais
-                completa e imersiva para quem quer explorar um novo destino com confiança.
+                {t('presential.description')}
               </p>
               <ul className="space-y-2.5 mb-8">
-                {[
-                  'Rota personalizada ao seu ritmo',
-                  'Conhecimento local privilegiado',
-                  'Segurança nas ruas e atalhos',
-                  'Dicas de restaurantes e pontos turísticos',
-                  'Foto e vídeo da corrida (a combinar)',
-                  'Conversa e troca cultural',
-                ].map((item) => (
+                {presentialItems.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-white/60">
                     <CheckCircle2 size={15} className="text-[#F5A623] flex-shrink-0 mt-0.5" />
                     {item}
@@ -77,7 +72,7 @@ export default function ServicosPage() {
                 href="/guias"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#F5A623] hover:gap-3 transition-all"
               >
-                Encontrar guia presencial <ArrowRight size={15} />
+                {t('presential.cta')} <ArrowRight size={15} />
               </Link>
             </div>
 
@@ -87,23 +82,14 @@ export default function ServicosPage() {
                 <Video size={26} className="text-[#F5A623]" />
               </div>
               <span className="bg-[#0A0A0A] text-white text-xs font-bold rounded-full px-3 py-1 mb-5 inline-block w-fit">
-                Virtual
+                {t('virtual.badge')}
               </span>
-              <h2 className="text-2xl font-bold text-[#1A1A1A] mb-3">Guia Virtual</h2>
+              <h2 className="text-2xl font-bold text-[#1A1A1A] mb-3">{t('virtual.title')}</h2>
               <p className="text-[#6B6B6B] text-sm leading-relaxed mb-6 flex-1">
-                Receba um plano detalhado de rotas, dicas e recomendações antes de chegar
-                à cidade. O guia orienta você remotamente, via WhatsApp, call ou e-mail,
-                para que você possa correr com autonomia e segurança.
+                {t('virtual.description')}
               </p>
               <ul className="space-y-2.5 mb-8">
-                {[
-                  'Rota pré-planejada com mapa',
-                  'Dicas de segurança por bairro',
-                  'Horários ideais para correr',
-                  'Recomendações de hidratação e pontos de parada',
-                  'Suporte via WhatsApp durante a corrida',
-                  'Indicações de grupos locais',
-                ].map((item) => (
+                {virtualItems.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-[#6B6B6B]">
                     <CheckCircle2 size={15} className="text-[#F5A623] flex-shrink-0 mt-0.5" />
                     {item}
@@ -114,7 +100,7 @@ export default function ServicosPage() {
                 href="/guias"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#F5A623] hover:gap-3 transition-all"
               >
-                Encontrar guia virtual <ArrowRight size={15} />
+                {t('virtual.cta')} <ArrowRight size={15} />
               </Link>
             </div>
           </div>
@@ -124,19 +110,18 @@ export default function ServicosPage() {
       {/* CTA */}
       <section className="bg-[#F5A623] py-24 px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-sm font-bold text-black/40 uppercase tracking-widest mb-4">Para guias</p>
+          <p className="text-sm font-bold text-black/40 uppercase tracking-widest mb-4">{t('forGuides')}</p>
           <h2 className="text-3xl md:text-5xl font-extrabold text-[#0A0A0A] mb-5 leading-tight">
-            Quer ser um guia PaceHive?
+            {t('ctaTitle')}
           </h2>
           <p className="text-[#0A0A0A]/65 text-lg mb-10 max-w-xl mx-auto">
-            Compartilhe seu conhecimento da cidade e ajude corredores de todo o mundo.
-            Crie seu perfil em menos de 5 minutos.
+            {t('ctaSubtitle')}
           </p>
           <Link
             href="/seja-um-guia"
             className="inline-block px-10 py-4 bg-[#0A0A0A] text-white font-bold rounded-full hover:bg-[#1A1A1A] transition-colors text-base"
           >
-            Quero ser guia
+            {t('ctaButton')}
           </Link>
         </div>
       </section>

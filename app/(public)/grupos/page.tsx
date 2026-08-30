@@ -1,15 +1,20 @@
 import { createClient } from '@/lib/supabase/server'
 import GroupList from '@/components/groups/GroupList'
+import { getTranslations } from 'next-intl/server'
 import type { Group } from '@/types'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Grupos de Corrida — PaceHive',
-  description: 'Encontre grupos de corrida na sua cidade e conecte-se com a comunidade local.',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('groupsPage')
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+  }
 }
 
 export default async function GruposPage() {
   const supabase = await createClient()
+  const t = await getTranslations('groupsPage')
 
   const [{ data: groups }, { data: { user } }] = await Promise.all([
     supabase.from('groups').select('*').eq('is_active', true).order('city', { ascending: true }),
@@ -31,14 +36,14 @@ export default async function GruposPage() {
         <div className="relative max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-6">
             <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse flex-shrink-0" />
-            {groupList.length > 0 ? `${groupList.length} grupos cadastrados` : 'Comunidade de corrida'}
+            {groupList.length > 0 ? t('groupsRegistered', { count: groupList.length }) : t('runningCommunity')}
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-            Encontre um grupo de corrida{' '}
-            <span className="text-[#F5A623]">na sua cidade</span>
+            {t('titleLine1')}{' '}
+            <span className="text-[#F5A623]">{t('titleHighlight')}</span>
           </h1>
           <p className="text-white/60 text-lg max-w-xl mx-auto">
-            Conecte-se com grupos locais e continue correndo mesmo durante viagens.
+            {t('subtitle')}
           </p>
         </div>
       </section>

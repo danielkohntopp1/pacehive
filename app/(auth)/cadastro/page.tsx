@@ -4,23 +4,27 @@ import { useState, Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslations } from 'next-intl'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 
-const schema = z.object({
-  name: z.string().min(2, 'Nome muito curto'),
-  email: z.string().email('E-mail inválido'),
-  password: z.string().min(6, 'Mínimo 6 caracteres'),
-  phone: z.string().optional(),
-  wantsToBeGuide: z.boolean(),
-})
+function buildSchema(t: ReturnType<typeof useTranslations>) {
+  return z.object({
+    name: z.string().min(2, t('nameTooShort')),
+    email: z.string().email(t('invalidEmail')),
+    password: z.string().min(6, t('minChars')),
+    phone: z.string().optional(),
+    wantsToBeGuide: z.boolean(),
+  })
+}
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<ReturnType<typeof buildSchema>>
 
 function CadastroForm() {
+  const t = useTranslations('register')
   const router = useRouter()
   const searchParams = useSearchParams()
   const isGuideFlow = searchParams.get('guide') === 'true'
@@ -28,6 +32,7 @@ function CadastroForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const schema = buildSchema(t)
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { wantsToBeGuide: isGuideFlow },
@@ -46,7 +51,7 @@ function CadastroForm() {
     })
 
     if (signUpError || !authData.user) {
-      setError(signUpError?.message ?? 'Erro ao criar conta')
+      setError(signUpError?.message ?? t('errorCreatingAccount'))
       return
     }
 
@@ -59,7 +64,7 @@ function CadastroForm() {
     })
 
     if (profileError) {
-      setError('Erro ao salvar perfil')
+      setError(t('errorSavingProfile'))
       return
     }
 
@@ -81,9 +86,9 @@ function CadastroForm() {
           height={100}
           className="mx-auto mb-4"
         />
-        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">Crie sua conta</h1>
+        <h1 className="text-2xl font-extrabold text-[#1A1A1A]">{t('title')}</h1>
         <p className="text-[#6B6B6B] text-sm mt-1">
-          {isGuideFlow ? 'Primeiro passo para criar seu perfil de guia' : 'Junte-se à comunidade PaceHive'}
+          {isGuideFlow ? t('subtitleGuideFlow') : t('subtitleDefault')}
         </p>
       </div>
 
@@ -96,29 +101,29 @@ function CadastroForm() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Nome completo *</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('fullName')} *</label>
             <input
               type="text"
               {...register('name')}
-              placeholder="Seu nome"
+              placeholder={t('fullNamePlaceholder')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
             />
             {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">E-mail *</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('email')} *</label>
             <input
               type="email"
               {...register('email')}
-              placeholder="seu@email.com"
+              placeholder={t('emailPlaceholder')}
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
             />
             {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">WhatsApp (opcional)</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('whatsapp')}</label>
             <input
               type="tel"
               {...register('phone')}
@@ -128,12 +133,12 @@ function CadastroForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">Senha *</label>
+            <label className="block text-sm font-medium text-[#1A1A1A] mb-1.5">{t('password')} *</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 {...register('password')}
-                placeholder="Mínimo 6 caracteres"
+                placeholder={t('passwordPlaceholder')}
                 className="w-full px-4 py-3 pr-11 border border-[#E5E5E5] rounded-xl text-sm focus:outline-none focus:border-[#F5A623] focus:ring-2 focus:ring-[#F5A623]/20 transition-all"
               />
               <button
@@ -150,8 +155,8 @@ function CadastroForm() {
           <label className="flex items-start gap-3 p-4 border border-[#E5E5E5] rounded-xl cursor-pointer hover:border-[#F5A623] transition-colors has-[:checked]:border-[#F5A623] has-[:checked]:bg-[#FEF3DC]">
             <input type="checkbox" {...register('wantsToBeGuide')} className="mt-0.5 accent-[#F5A623]" />
             <div>
-              <p className="text-sm font-medium text-[#1A1A1A]">Quero ser guia também</p>
-              <p className="text-xs text-[#6B6B6B] mt-0.5">Você vai criar seu perfil de guia no próximo passo.</p>
+              <p className="text-sm font-medium text-[#1A1A1A]">{t('alsoWantToBeGuide')}</p>
+              <p className="text-xs text-[#6B6B6B] mt-0.5">{t('alsoWantToBeGuideDescription')}</p>
             </div>
           </label>
 
@@ -161,14 +166,14 @@ function CadastroForm() {
             className="w-full py-3.5 bg-[#F5A623] text-black font-semibold rounded-full hover:bg-[#E09510] transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isSubmitting && <Loader2 size={16} className="animate-spin" />}
-            {isSubmitting ? 'Criando conta...' : wantsGuide ? 'Criar conta e continuar →' : 'Criar conta'}
+            {isSubmitting ? t('creatingAccount') : wantsGuide ? t('createAccountAndContinue') : t('createAccount')}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-[#6B6B6B]">
-          Já tem conta?{' '}
+          {t('alreadyHaveAccount')}{' '}
           <Link href="/login" className="text-[#F5A623] font-semibold hover:underline">
-            Entrar
+            {t('signIn')}
           </Link>
         </p>
       </div>

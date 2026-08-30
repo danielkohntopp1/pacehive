@@ -1,15 +1,20 @@
 import { createClient } from '@/lib/supabase/server'
 import GuideList from '@/components/guides/GuideList'
+import { getTranslations } from 'next-intl/server'
 import type { Guide, Profile } from '@/types'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Guias de Corrida — PaceHive',
-  description: 'Encontre um guia de corrida em qualquer cidade do mundo. Corredores locais que vão te mostrar as melhores rotas.',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('guidesPage')
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+  }
 }
 
 export default async function GuiasPage() {
   const supabase = await createClient()
+  const t = await getTranslations('guidesPage')
 
   const { data: guides } = await supabase
     .from('guides')
@@ -32,14 +37,14 @@ export default async function GuiasPage() {
         <div className="relative max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-sm text-white/70 mb-6">
             <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse flex-shrink-0" />
-            {guideList.length > 0 ? `${guideList.length} guias disponíveis` : 'Guias de corrida locais'}
+            {guideList.length > 0 ? t('guidesAvailableBadge', { count: guideList.length }) : t('localGuidesBadge')}
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-            Encontre um guia para correr em{' '}
-            <span className="text-[#F5A623]">qualquer lugar do mundo</span>
+            {t('titleLine1')}{' '}
+            <span className="text-[#F5A623]">{t('titleHighlight')}</span>
           </h1>
           <p className="text-white/60 text-lg leading-relaxed max-w-xl mx-auto">
-            Conecte-se com corredores locais que conhecem cada rua, trilha e atalho da cidade.
+            {t('subtitle')}
           </p>
         </div>
       </section>

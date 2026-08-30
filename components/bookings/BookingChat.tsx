@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Lock, Send } from 'lucide-react'
 
@@ -20,6 +21,8 @@ interface Props {
 }
 
 export default function BookingChat({ bookingId, currentUserId, otherUserName, isReadOnly }: Props) {
+  const t = useTranslations('bookingChat')
+  const locale = useLocale()
   const supabase = useMemo(() => createClient(), [])
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -73,16 +76,16 @@ export default function BookingChat({ bookingId, currentUserId, otherUserName, i
   }
 
   function formatTime(ts: string) {
-    return new Date(ts).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    return new Date(ts).toLocaleTimeString(locale === 'en' ? 'en-US' : 'pt-BR', { hour: '2-digit', minute: '2-digit' })
   }
 
   return (
     <div className="bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden flex flex-col" style={{ height: '480px' }}>
       <div className="px-5 py-4 border-b border-[#E5E5E5]">
-        <h2 className="font-bold text-[#1A1A1A] text-sm">Chat com {otherUserName}</h2>
+        <h2 className="font-bold text-[#1A1A1A] text-sm">{t('chatWith', { name: otherUserName })}</h2>
         {isReadOnly && (
           <p className="text-xs text-[#6B6B6B] flex items-center gap-1 mt-0.5">
-            <Lock size={11} /> Corrida concluída — somente leitura
+            <Lock size={11} /> {t('runCompletedReadOnly')}
           </p>
         )}
       </div>
@@ -91,8 +94,8 @@ export default function BookingChat({ bookingId, currentUserId, otherUserName, i
         {messages.length === 0 && (
           <div className="flex items-center justify-center h-full">
             <p className="text-sm text-[#6B6B6B] text-center">
-              Nenhuma mensagem ainda.
-              {!isReadOnly && <><br />Comece a conversa!</>}
+              {t('noMessagesYet')}
+              {!isReadOnly && <><br />{t('startTheConversation')}</>}
             </p>
           </div>
         )}
@@ -122,7 +125,7 @@ export default function BookingChat({ bookingId, currentUserId, otherUserName, i
       {isReadOnly ? (
         <div className="px-5 py-3 border-t border-[#E5E5E5] bg-[#F9F5EE]">
           <p className="text-xs text-[#6B6B6B] text-center flex items-center justify-center gap-1.5">
-            <Lock size={12} /> Histórico de mensagens preservado
+            <Lock size={12} /> {t('historyPreserved')}
           </p>
         </div>
       ) : (
@@ -136,7 +139,7 @@ export default function BookingChat({ bookingId, currentUserId, otherUserName, i
                 sendMessage()
               }
             }}
-            placeholder="Digite uma mensagem... (Enter para enviar)"
+            placeholder={t('messagePlaceholder')}
             rows={1}
             className="flex-1 resize-none bg-[#F9F5EE] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]/30 max-h-32 overflow-y-auto"
           />
