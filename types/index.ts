@@ -93,6 +93,7 @@ export interface Notification {
   type: string
   title: string
   body?: string
+  data?: { name?: string; date?: string; rating?: number } | null
   booking_id?: string
   is_read: boolean
   created_at: string

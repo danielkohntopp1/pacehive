@@ -1324,5 +1324,35 @@
       "completeProfileButton": "Complete my profile",
       "helpNote": "Any questions, reach out to us at contato@pacehive.com"
     }
+  },
+  "notificationContent": {
+    "newBooking": {
+      "title": "New run request",
+      "body": "{name} wants to run on {date}"
+    },
+    "bookingAccepted": {
+      "title": "Run confirmed!",
+      "body": "{name} accepted your request for {date}"
+    },
+    "bookingRefused": {
+      "title": "Request declined",
+      "body": "{name} isn't available on {date}"
+    },
+    "bookingCancelled": {
+      "title": "Run cancelled",
+      "body": "{name} cancelled the run on {date}"
+    },
+    "bookingCompleted": {
+      "title": "Run completed",
+      "body": "Rate your experience with {name}"
+    },
+    "newReview": {
+      "title": "New review received",
+      "body": "{name} gave you {rating, plural, one {# star} other {# stars}}"
+    },
+    "newMessage": {
+      "title": "New message",
+      "body": "{name} sent you a message"
+    }
   }
 }

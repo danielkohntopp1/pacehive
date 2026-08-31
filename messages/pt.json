@@ -1324,5 +1324,35 @@
       "completeProfileButton": "Completar meu perfil",
       "helpNote": "Qualquer dúvida, fale com a gente em contato@pacehive.com"
     }
+  },
+  "notificationContent": {
+    "newBooking": {
+      "title": "Nova solicitação de corrida",
+      "body": "{name} quer correr em {date}"
+    },
+    "bookingAccepted": {
+      "title": "Corrida confirmada!",
+      "body": "{name} aceitou seu pedido para {date}"
+    },
+    "bookingRefused": {
+      "title": "Pedido recusado",
+      "body": "{name} não está disponível para {date}"
+    },
+    "bookingCancelled": {
+      "title": "Corrida cancelada",
+      "body": "{name} cancelou a corrida de {date}"
+    },
+    "bookingCompleted": {
+      "title": "Corrida concluída",
+      "body": "Avalie sua experiência com {name}"
+    },
+    "newReview": {
+      "title": "Nova avaliação recebida",
+      "body": "{name} te deu {rating, plural, one {# estrela} other {# estrelas}}"
+    },
+    "newMessage": {
+      "title": "Nova mensagem",
+      "body": "{name} enviou uma mensagem"
+    }
   }
 }
